@@ -195,6 +195,15 @@ extension MapExt on Map {
     return isClassBean;
   }
 
+  Map put(String key, Object? value) {
+    if (value is String && value != null && value.isNotEmpty) {
+      this[key] = value;
+    } else if (value != null) {
+      this[key] = value;
+    }
+    return this;
+  }
+
   void _print(String msg) {
     print(msg);
     //Monitor.instance.put('JsonError', msg);

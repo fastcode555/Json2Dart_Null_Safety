@@ -33,7 +33,7 @@ extension MapExt on Map {
       return result;
     } catch (e) {
       print(e);
-      _print('json 解析异常,异常值,期望double值:\"$key\":$value');
+      _print('json 解析异常,异常值:\"$key\":$value');
     }
     return 0.0;
   }
@@ -48,7 +48,7 @@ extension MapExt on Map {
         return result;
       } catch (e) {
         print(e);
-        _print('json 解析异常,异常值,期望double值:\"$key\":$value');
+        _print('json 解析异常,异常值:\"$key\":$value');
       }
     }
     return 0.0;
@@ -63,19 +63,9 @@ extension MapExt on Map {
       return result;
     } catch (e) {
       print(e);
-      _print('json 解析异常,异常值,期望int值:\"$key\":$value');
+      _print('json 解析异常,异常值:\"$key\":$value');
     }
     return 0;
-  }
-
-  bool asBool(String key) {
-    Object value = this[key];
-    if (value == null) return false;
-    if (value is bool) return value;
-    if (value == 'true') return true;
-    if (value == 'false') return false;
-    _print('json 解析异常,异常值:\"$key\":$value');
-    return false;
   }
 
   int asInts(List<String> keys) {
@@ -88,7 +78,7 @@ extension MapExt on Map {
         return result;
       } catch (e) {
         print(e);
-        _print('json 解析异常,异常值,期望int值:\"$key\":$value');
+        _print('json 解析异常,异常值:\"$key\":$value');
       }
     }
     return 0;
@@ -97,7 +87,8 @@ extension MapExt on Map {
   num asNum(String key) {
     Object value = this[key];
     if (value == null) return 0;
-    if (value is int || value is double) return value;
+    if (value is int) return value;
+    if (value is double) return value;
     try {
       if (value is String) {
         if (value.contains('.')) {
@@ -115,7 +106,7 @@ extension MapExt on Map {
 
   Color asColor(String key) {
     Object value = this[key];
-    if (value == null) return value;
+    if (value == null) return Colors.amber;
     if (value is String) {
       try {
         String hexColor = value;
@@ -134,10 +125,10 @@ extension MapExt on Map {
     return Colors.amber;
   }
 
-  List asList<T>(String key, T Function(Map<String, dynamic> json) toBean) {
+  List? asList<T>(String key, T Function(Map<String, dynamic> json) toBean) {
     try {
       if (toBean != null && this[key] != null) {
-        return (this[key] as List).map((v) => toBean(v)).toList()?.cast<T>();
+        return (this[key] as List).map((v) => toBean(v)).toList().cast<T>();
       } else if (this[key] != null) {
         return List<T>.from(this[key]);
       }
@@ -148,12 +139,12 @@ extension MapExt on Map {
     return null;
   }
 
-  List asLists<T>(List<String> keys, Function(Map<String, dynamic> json) toBean) {
+  List? asLists<T>(List<String> keys, Function(Map<String, dynamic> json) toBean) {
     for (String key in keys) {
       try {
         if (this[key] != null) {
           if (toBean != null && this[key] != null) {
-            return (this[key] as List).map((v) => toBean(v)).toList()?.cast<T>();
+            return (this[key] as List).map((v) => toBean(v)).toList().cast<T>();
           } else {
             return List<T>.from(this[key]);
           }
@@ -167,7 +158,7 @@ extension MapExt on Map {
     return null;
   }
 
-  T asBeans<T>(List<String> keys, Function(Map<String, dynamic> json) toBean) {
+  T? asBeans<T>(List<String> keys, Function(Map<String, dynamic> json) toBean) {
     for (String key in keys) {
       try {
         if (this[key] != null && _isClassBean(this[key])) {
@@ -182,7 +173,7 @@ extension MapExt on Map {
     return null;
   }
 
-  T asBean<T>(String key, Function(Map<String, dynamic> json) toBean) {
+  T? asBean<T>(String key, Function(Map<String, dynamic> json) toBean) {
     try {
       if (this[key] != null && _isClassBean(this[key])) {
         return toBean(this[key]);
@@ -207,14 +198,5 @@ extension MapExt on Map {
   void _print(String msg) {
     print(msg);
     //Monitor.instance.put('JsonError', msg);
-  }
-
-  Map put(String key, Object value) {
-    if (value is String && value != null && value.isNotEmpty) {
-      this[key] = value;
-    } else if (value != null) {
-      this[key] = value;
-    }
-    return this;
   }
 }

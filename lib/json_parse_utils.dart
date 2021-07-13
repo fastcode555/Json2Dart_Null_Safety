@@ -125,7 +125,7 @@ extension MapExt on Map {
     return Colors.amber;
   }
 
-  List? asList<T>(String key, T Function(Map<String, dynamic> json) toBean) {
+  List<T>? asList<T>(String key, T Function(Map<String, dynamic> json) toBean) {
     try {
       if (toBean != null && this[key] != null) {
         return (this[key] as List).map((v) => toBean(v)).toList().cast<T>();
@@ -139,7 +139,7 @@ extension MapExt on Map {
     return null;
   }
 
-  List? asLists<T>(List<String> keys, Function(Map<String, dynamic> json) toBean) {
+  List<T>? asLists<T>(List<String> keys, Function(Map<String, dynamic> json) toBean) {
     for (String key in keys) {
       try {
         if (this[key] != null) {
@@ -195,6 +195,11 @@ extension MapExt on Map {
     return isClassBean;
   }
 
+  void _print(String msg) {
+    print(msg);
+    //Monitor.instance.put('JsonError', msg);
+  }
+
   Map put(String key, Object? value) {
     if (value is String && value != null && value.isNotEmpty) {
       this[key] = value;
@@ -202,10 +207,5 @@ extension MapExt on Map {
       this[key] = value;
     }
     return this;
-  }
-
-  void _print(String msg) {
-    print(msg);
-    //Monitor.instance.put('JsonError', msg);
   }
 }

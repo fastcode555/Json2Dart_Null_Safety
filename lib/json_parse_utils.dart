@@ -55,7 +55,7 @@ extension MapExt on Map {
   }
 
   int asInt(String key) {
-    Object value = this[key];
+    Object? value = this[key];
     if (value == null) return 0;
     if (value is int) return value;
     try {

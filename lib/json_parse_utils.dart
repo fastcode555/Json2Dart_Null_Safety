@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 extension MapExt on Map {
   //单字段解析
   String asString(String key) {
-    Object value = this[key];
+    Object? value = this[key];
     if (value == null) return "";
     if (value is String) return value;
     return value.toString();
@@ -15,7 +15,7 @@ extension MapExt on Map {
   //多字段解析
   String asStrings(List<String> keys) {
     for (String key in keys) {
-      Object value = this[key];
+      Object? value = this[key];
       if (value == null) continue;
       if (value is String) {
         return value;
@@ -25,7 +25,7 @@ extension MapExt on Map {
   }
 
   double asDouble(String key) {
-    Object value = this[key];
+    Object? value = this[key];
     if (value == null) return 0.0;
     if (value is double) return value;
     try {
@@ -70,7 +70,7 @@ extension MapExt on Map {
 
   int asInts(List<String> keys) {
     for (String key in keys) {
-      Object value = this[key];
+      Object? value = this[key];
       if (value == null) return 0;
       if (value is int) return value;
       try {
@@ -85,7 +85,7 @@ extension MapExt on Map {
   }
 
   num asNum(String key) {
-    Object value = this[key];
+    Object? value = this[key];
     if (value == null) return 0;
     if (value is int) return value;
     if (value is double) return value;
@@ -105,7 +105,7 @@ extension MapExt on Map {
   }
 
   Color asColor(String key) {
-    Object value = this[key];
+    Object? value = this[key];
     if (value == null) return Colors.amber;
     if (value is String) {
       try {
@@ -125,7 +125,7 @@ extension MapExt on Map {
     return Colors.amber;
   }
 
-  List<T>? asList<T>(String key, T Function(Map<String, dynamic> json) toBean) {
+  List<T>? asList<T>(String key, T Function(Map<String, dynamic> json)? toBean) {
     try {
       if (toBean != null && this[key] != null) {
         return (this[key] as List).map((v) => toBean(v)).toList().cast<T>();
@@ -139,7 +139,7 @@ extension MapExt on Map {
     return null;
   }
 
-  List<T>? asLists<T>(List<String> keys, Function(Map<String, dynamic> json) toBean) {
+  List<T>? asLists<T>(List<String> keys, Function(Map<String, dynamic> json)? toBean) {
     for (String key in keys) {
       try {
         if (this[key] != null) {

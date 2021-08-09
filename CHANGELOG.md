@@ -1,3 +1,8 @@
+## 1.0.2+3
+
+- fixed the bugs,
+
+
 ## 1.0.1+2
 
 - Initial version,

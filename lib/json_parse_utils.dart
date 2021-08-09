@@ -71,7 +71,7 @@ extension MapExt on Map {
   int asInts(List<String> keys) {
     for (String key in keys) {
       Object? value = this[key];
-      if (value == null) return 0;
+      if (value == null) continue;
       if (value is int) return value;
       try {
         int result = int.parse(value.toString());

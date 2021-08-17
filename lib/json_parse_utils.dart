@@ -201,9 +201,9 @@ extension MapExt on Map {
   }
 
   Map put(String key, Object? value) {
-    if (value is String && value != null && value.isNotEmpty) {
+    if (value != null && value is String && value.isNotEmpty) {
       this[key] = value;
-    } else if (value != null) {
+    } else if (value != null && value is! String) {
       this[key] = value;
     }
     return this;

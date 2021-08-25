@@ -3,7 +3,7 @@ description: A plugin to generated json with Null-Safety feature and safe conver
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-version: 1.0.4+5
+version: 1.0.5+6
 homepage: https://github.com/fastcode555/Json2Dart_Null_Safety.git
 
 

@@ -40,7 +40,7 @@ extension MapExt on Map {
 
   double asDoubles(List<String> keys) {
     for (String key in keys) {
-      Object value = this[key];
+      Object? value = this[key];
       if (value == null) continue;
       if (value is double) return value;
       try {
@@ -84,6 +84,16 @@ extension MapExt on Map {
     return 0;
   }
 
+  bool asBool(String key) {
+    Object? value = this[key];
+    if (value == null) return false;
+    if (value is bool) return value;
+    if (value == 'true') return true;
+    if (value == 'false') return false;
+    _print('json 解析异常,异常值:\"$key\":$value');
+    return false;
+  }
+
   num asNum(String key) {
     Object? value = this[key];
     if (value == null) return 0;
@@ -125,7 +135,7 @@ extension MapExt on Map {
     return Colors.amber;
   }
 
-  List<T>? asList<T>(String key, T Function(Map<String, dynamic> json)? toBean) {
+  List<T>? asList<T>(String key, T Function(Map json)? toBean) {
     try {
       if (toBean != null && this[key] != null) {
         return (this[key] as List).map((v) => toBean(v)).toList().cast<T>();
@@ -139,7 +149,7 @@ extension MapExt on Map {
     return null;
   }
 
-  List<T>? asLists<T>(List<String> keys, Function(Map<String, dynamic> json)? toBean) {
+  List<T>? asLists<T>(List<String> keys, Function(Map json)? toBean) {
     for (String key in keys) {
       try {
         if (this[key] != null) {
@@ -158,7 +168,7 @@ extension MapExt on Map {
     return null;
   }
 
-  T? asBeans<T>(List<String> keys, Function(Map<String, dynamic> json) toBean) {
+  T? asBeans<T>(List<String> keys, Function(Map json) toBean) {
     for (String key in keys) {
       try {
         if (this[key] != null && _isClassBean(this[key])) {
@@ -173,7 +183,7 @@ extension MapExt on Map {
     return null;
   }
 
-  T? asBean<T>(String key, Function(Map<String, dynamic> json) toBean) {
+  T? asBean<T>(String key, Function(Map json) toBean) {
     try {
       if (this[key] != null && _isClassBean(this[key])) {
         return toBean(this[key]);

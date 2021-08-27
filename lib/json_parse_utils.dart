@@ -1,10 +1,11 @@
 /// @author Barry
 /// @date 2020/9/4
 /// describe:
-extension MapExt on Map {
+extension MapExt on Map? {
   //单字段解析
   String asString(String key) {
-    Object? value = this[key];
+    if (this == null) return '';
+    Object? value = this![key];
     if (value == null) return "";
     if (value is String) return value;
     return value.toString();
@@ -12,8 +13,9 @@ extension MapExt on Map {
 
   //多字段解析
   String asStrings(List<String> keys) {
+    if (this == null) return '';
     for (String key in keys) {
-      Object? value = this[key];
+      Object? value = this![key];
       if (value == null) continue;
       if (value is String) {
         return value;
@@ -23,7 +25,8 @@ extension MapExt on Map {
   }
 
   double asDouble(String key) {
-    Object? value = this[key];
+    if (this == null) return 0.0;
+    Object? value = this![key];
     if (value == null) return 0.0;
     if (value is double) return value;
     try {
@@ -31,14 +34,15 @@ extension MapExt on Map {
       return result;
     } catch (e) {
       print(e);
-      _print('json 解析异常,异常值:\"$key\":$value');
+      _print('json parse failed,exception value:\"$key\":$value');
     }
     return 0.0;
   }
 
   double asDoubles(List<String> keys) {
+    if (this == null) return 0.0;
     for (String key in keys) {
-      Object? value = this[key];
+      Object? value = this![key];
       if (value == null) continue;
       if (value is double) return value;
       try {
@@ -46,14 +50,15 @@ extension MapExt on Map {
         return result;
       } catch (e) {
         print(e);
-        _print('json 解析异常,异常值:\"$key\":$value');
+        _print('json parse failed,exception value::\"$key\":$value');
       }
     }
     return 0.0;
   }
 
   int asInt(String key) {
-    Object? value = this[key];
+    if (this == null) return 0;
+    Object? value = this![key];
     if (value == null) return 0;
     if (value is int) return value;
     try {
@@ -61,14 +66,15 @@ extension MapExt on Map {
       return result;
     } catch (e) {
       print(e);
-      _print('json 解析异常,异常值:\"$key\":$value');
+      _print('json parse failed,exception value::\"$key\":$value');
     }
     return 0;
   }
 
   int asInts(List<String> keys) {
+    if (this == null) return 0;
     for (String key in keys) {
-      Object? value = this[key];
+      Object? value = this![key];
       if (value == null) continue;
       if (value is int) return value;
       try {
@@ -76,24 +82,26 @@ extension MapExt on Map {
         return result;
       } catch (e) {
         print(e);
-        _print('json 解析异常,异常值:\"$key\":$value');
+        _print('json parse failed,exception value::\"$key\":$value');
       }
     }
     return 0;
   }
 
   bool asBool(String key) {
-    Object? value = this[key];
+    if (this == null) return false;
+    Object? value = this![key];
     if (value == null) return false;
     if (value is bool) return value;
     if (value == 'true') return true;
     if (value == 'false') return false;
-    _print('json 解析异常,异常值:\"$key\":$value');
+    _print('json parse failed,exception value::\"$key\":$value');
     return false;
   }
 
   num asNum(String key) {
-    Object? value = this[key];
+    if (this == null) return 0;
+    Object? value = this![key];
     if (value == null) return 0;
     if (value is int) return value;
     if (value is double) return value;
@@ -107,7 +115,7 @@ extension MapExt on Map {
       }
     } catch (e) {
       print(e);
-      _print('json 解析异常,异常值:\"$key\":$value');
+      _print('json parse failed,exception value::\"$key\":$value');
     }
     return 0;
   }
@@ -128,7 +136,7 @@ extension MapExt on Map {
         return Color(int.parse(hexColor, radix: 16));
       } catch (e) {
         print(e);
-        _print('json 解析异常,异常值:\"$key\":$value');
+        _print('json parse failed,exception value::\"$key\":$value');
       }
     }
     return Colors.amber;
@@ -136,32 +144,34 @@ extension MapExt on Map {
 */
 
   List<T>? asList<T>(String key, T Function(Map json)? toBean) {
+    if (this == null) return null;
     try {
-      if (toBean != null && this[key] != null) {
-        return (this[key] as List).map((v) => toBean(v)).toList().cast<T>();
-      } else if (this[key] != null) {
-        return List<T>.from(this[key]);
+      if (toBean != null && this![key] != null) {
+        return (this![key] as List).map((v) => toBean(v)).toList().cast<T>();
+      } else if (this![key] != null) {
+        return List<T>.from(this![key]);
       }
     } catch (e) {
       print(e);
-      _print('json 解析异常,异常值:\"$key\":${this[key]}');
+      _print('json parse failed,exception value::\"$key\":${this![key]}');
     }
     return null;
   }
 
   List<T>? asLists<T>(List<String> keys, Function(Map json)? toBean) {
+    if (this == null) return null;
     for (String key in keys) {
       try {
-        if (this[key] != null) {
-          if (toBean != null && this[key] != null) {
-            return (this[key] as List).map((v) => toBean(v)).toList().cast<T>();
+        if (this![key] != null) {
+          if (toBean != null && this![key] != null) {
+            return (this![key] as List).map((v) => toBean(v)).toList().cast<T>();
           } else {
-            return List<T>.from(this[key]);
+            return List<T>.from(this![key]);
           }
         }
       } catch (e) {
         print(e);
-        _print('json 解析异常,异常值:\"$key\":${this[key]}');
+        _print('json parse failed,exception value::\"$key\":${this![key]}');
       }
     }
 
@@ -169,14 +179,15 @@ extension MapExt on Map {
   }
 
   T? asBeans<T>(List<String> keys, Function(Map json) toBean) {
+    if (this == null) return null;
     for (String key in keys) {
       try {
-        if (this[key] != null && _isClassBean(this[key])) {
-          return toBean(this[key]);
+        if (this![key] != null && _isClassBean(this![key])) {
+          return toBean(this![key]);
         }
       } catch (e) {
         print(e);
-        _print('json 解析异常,异常值:\"$key\":${this[key]}');
+        _print('json parse failed,exception value::\"$key\":${this![key]}');
       }
     }
 
@@ -184,13 +195,14 @@ extension MapExt on Map {
   }
 
   T? asBean<T>(String key, Function(Map json) toBean) {
+    if (this == null) return null;
     try {
-      if (this[key] != null && _isClassBean(this[key])) {
-        return toBean(this[key]);
+      if (this![key] != null && _isClassBean(this![key])) {
+        return toBean(this![key]);
       }
     } catch (e) {
       print(e);
-      _print('json 解析异常,异常值:\"$key\":${this[key]}');
+      _print('json parse failed,exception value::\"$key\":${this![key]}');
     }
     return null;
   }
@@ -212,10 +224,10 @@ extension MapExt on Map {
 
   Map put(String key, Object? value) {
     if (value != null && value is String && value.isNotEmpty) {
-      this[key] = value;
+      this![key] = value;
     } else if (value != null && value is! String) {
-      this[key] = value;
+      this![key] = value;
     }
-    return this;
+    return this!;
   }
 }

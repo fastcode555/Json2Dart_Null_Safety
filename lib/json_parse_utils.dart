@@ -219,6 +219,7 @@ extension MapExt on Map? {
 
   void _print(String msg) {
     print(msg);
+    Json2Dart.instance.callBack?.call(msg);
     //Monitor.instance.put('JsonError', msg);
   }
 
@@ -229,5 +230,28 @@ extension MapExt on Map? {
       this![key] = value;
     }
     return this!;
+  }
+}
+
+class Json2Dart {
+  static Json2Dart? _instance;
+
+  factory Json2Dart() => _getInstance();
+
+  static Json2Dart get instance => _getInstance();
+
+  static Json2Dart _getInstance() {
+    if (_instance == null) {
+      _instance = Json2Dart._internal();
+    }
+    return _instance!;
+  }
+
+  Json2Dart._internal() {}
+
+  Function(String)? callBack;
+
+  void addCallback(Function(String) callBack) {
+    this.callBack = callBack;
   }
 }

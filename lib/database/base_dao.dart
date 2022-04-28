@@ -7,14 +7,28 @@ import 'database_ext.dart';
 ///@author:Barry
 
 abstract class BaseDao<T extends BaseDbModel> {
+  String? __tableName;
+
+  String get _table {
+    if (__tableName != null) {
+      return __tableName!;
+    }
+    String daoName = this.runtimeType.toString();
+    __tableName = daoName.replaceRange(daoName.length - 3, daoName.length, "");
+    return __tableName!;
+  }
+
+  ///insert into the string
   Future<int> insert(T t, [String? tableName]) {
-    return BaseDbManager.instance.db.insertSafe(tableName ?? table, t);
+    return BaseDbManager.instance.db.insertSafe(tableName ?? _table, t);
   }
 
+  ///update the database string
   Future<int> update(T t, [String? tableName]) {
-    return BaseDbManager.instance.db.updateSafe(tableName ?? table, t);
+    return BaseDbManager.instance.db.updateSafe(tableName ?? _table, t);
   }
 
+  ///execute the sql
   Future<void> execute(String sql, [List<Object?>? arguments]) {
     return BaseDbManager.instance.db.execute(sql);
   }
@@ -23,7 +37,7 @@ abstract class BaseDao<T extends BaseDbModel> {
   Future<void> delete(T t, [String? tableName]) {
     Map<String, dynamic> map = t.primaryKeyAndValue();
     return BaseDbManager.instance.db.delete(
-      tableName ?? table,
+      tableName ?? _table,
       where: "${map.keys.first} = ?",
       whereArgs: map.values.first,
     );
@@ -40,7 +54,7 @@ abstract class BaseDao<T extends BaseDbModel> {
       String? orderBy,
       int? limit,
       int? offset}) async {
-    List<Map<String, Object?>> _lists = await BaseDbManager.instance.db.query(tableName ?? table,
+    List<Map<String, Object?>> _lists = await BaseDbManager.instance.db.query(tableName ?? _table,
         distinct: distinct,
         columns: columns,
         where: where,
@@ -58,7 +72,7 @@ abstract class BaseDao<T extends BaseDbModel> {
   }
 
   Future<List<T>> queryAll(T Function(Map json) toBean, [String? tableName]) async {
-    List<Map<String, Object?>> _lists = await BaseDbManager.instance.db.query(tableName ?? table);
+    List<Map<String, Object?>> _lists = await BaseDbManager.instance.db.query(tableName ?? _table);
     List<T> _datas = [];
     for (Map<String, Object?> map in _lists) {
       _datas.add(toBean(map));
@@ -66,5 +80,5 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _datas;
   }
 
-  String get table;
+  Future<void> clear() async {}
 }

@@ -1,3 +1,6 @@
+## 1.1.0
+- add the function ,try to parse the string as bean or the list
+
 ## 1.0.9
 - add the callback for people who want to use it
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 /// @author Barry
 /// @date 2020/9/4
 /// describe:
@@ -146,10 +148,21 @@ extension MapExt on Map? {
   List<T>? asList<T>(String key, T Function(Map json)? toBean) {
     if (this == null) return null;
     try {
-      if (toBean != null && this![key] != null) {
-        return (this![key] as List).map((v) => toBean(v)).toList().cast<T>();
-      } else if (this![key] != null) {
-        return List<T>.from(this![key]);
+      Object? obj = this![key];
+      if (toBean != null && obj != null) {
+        if (obj is List) {
+          return obj.map((v) => toBean(v)).toList().cast<T>();
+        } else if (obj is String) {
+          List _list = jsonDecode(obj);
+          return _list.map((v) => toBean(v)).toList().cast<T>();
+        }
+      } else if (obj != null) {
+        if (obj is List) {
+          return List<T>.from(obj);
+        } else if (obj is String) {
+          List _list = jsonDecode(obj);
+          return List<T>.from(_list);
+        }
       }
     } catch (e) {
       print(e);
@@ -162,11 +175,22 @@ extension MapExt on Map? {
     if (this == null) return null;
     for (String key in keys) {
       try {
-        if (this![key] != null) {
-          if (toBean != null && this![key] != null) {
-            return (this![key] as List).map((v) => toBean(v)).toList().cast<T>();
+        Object? obj = this![key];
+        if (obj != null) {
+          if (toBean != null) {
+            if (obj is List) {
+              return obj.map((v) => toBean(v)).toList().cast<T>();
+            } else if (obj is String) {
+              List _list = jsonDecode(obj);
+              return _list.map((v) => toBean(v)).toList().cast<T>();
+            }
           } else {
-            return List<T>.from(this![key]);
+            if (obj is List) {
+              return List<T>.from(obj);
+            } else if (obj is String) {
+              List _list = jsonDecode(obj);
+              return List<T>.from(_list);
+            }
           }
         }
       } catch (e) {
@@ -182,8 +206,12 @@ extension MapExt on Map? {
     if (this == null) return null;
     for (String key in keys) {
       try {
-        if (this![key] != null && _isClassBean(this![key])) {
+        Object? obj = this![key];
+        if (obj != null && _isClassBean(obj)) {
           return toBean(this![key]);
+        } else if (obj != null && obj is String) {
+          Map _map = jsonDecode(obj);
+          return toBean(_map);
         }
       } catch (e) {
         print(e);
@@ -197,8 +225,12 @@ extension MapExt on Map? {
   T? asBean<T>(String key, Function(Map json) toBean) {
     if (this == null) return null;
     try {
-      if (this![key] != null && _isClassBean(this![key])) {
+      Object? obj = this![key];
+      if (obj != null && _isClassBean(obj)) {
         return toBean(this![key]);
+      } else if (obj != null && obj is String) {
+        Map _map = jsonDecode(obj);
+        return toBean(_map);
       }
     } catch (e) {
       print(e);

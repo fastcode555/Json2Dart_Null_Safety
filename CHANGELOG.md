@@ -1,3 +1,6 @@
+## 1.1.3+database
+- don't need to declare the package version
+
 ## 1.1.2+database
 - if use the package end with the database which will support the database，otherwise please use other don't
 end with database

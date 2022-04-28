@@ -1,3 +1,6 @@
+## 1.1.1
+- add the base db model
+
 ## 1.1.0
 - add the function ,try to parse the string as bean or the list
 

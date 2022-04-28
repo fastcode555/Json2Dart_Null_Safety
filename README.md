@@ -1,6 +1,6 @@
 # json2dart
 
-##features
+## features
 - support generate Dart.model with Null-Safety feature
 - support generate Dart.model with default value 
 

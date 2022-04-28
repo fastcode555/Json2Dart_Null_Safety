@@ -1,4 +1,5 @@
 import 'package:json2dart_safe/json2dart.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'database_ext.dart';
 
@@ -8,6 +9,8 @@ import 'database_ext.dart';
 
 abstract class BaseDao<T extends BaseDbModel> {
   String? __tableName;
+
+  Database get _db => BaseDbManager.instance.db;
 
   String get _table {
     if (__tableName != null) {
@@ -20,23 +23,23 @@ abstract class BaseDao<T extends BaseDbModel> {
 
   ///insert into the string
   Future<int> insert(T t, [String? tableName]) {
-    return BaseDbManager.instance.db.insertSafe(tableName ?? _table, t);
+    return _db.insertSafe(tableName ?? _table, t);
   }
 
   ///update the database string
   Future<int> update(T t, [String? tableName]) {
-    return BaseDbManager.instance.db.updateSafe(tableName ?? _table, t);
+    return _db.updateSafe(tableName ?? _table, t);
   }
 
   ///execute the sql
   Future<void> execute(String sql, [List<Object?>? arguments]) {
-    return BaseDbManager.instance.db.execute(sql);
+    return _db.execute(sql);
   }
 
   ///删除数据库中的数据
   Future<void> delete(T t, [String? tableName]) {
     Map<String, dynamic> map = t.primaryKeyAndValue();
-    return BaseDbManager.instance.db.delete(
+    return _db.delete(
       tableName ?? _table,
       where: "${map.keys.first} = ?",
       whereArgs: map.values.first,
@@ -54,7 +57,7 @@ abstract class BaseDao<T extends BaseDbModel> {
       String? orderBy,
       int? limit,
       int? offset}) async {
-    List<Map<String, Object?>> _lists = await BaseDbManager.instance.db.query(tableName ?? _table,
+    List<Map<String, Object?>> _lists = await _db.query(tableName ?? _table,
         distinct: distinct,
         columns: columns,
         where: where,
@@ -72,7 +75,7 @@ abstract class BaseDao<T extends BaseDbModel> {
   }
 
   Future<List<T>> queryAll(T Function(Map json) toBean, [String? tableName]) async {
-    List<Map<String, Object?>> _lists = await BaseDbManager.instance.db.query(tableName ?? _table);
+    List<Map<String, Object?>> _lists = await _db.query(tableName ?? _table);
     List<T> _datas = [];
     for (Map<String, Object?> map in _lists) {
       _datas.add(toBean(map));
@@ -80,5 +83,14 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _datas;
   }
 
-  Future<void> clear() async {}
+  //delete the table all the datas
+  Future<void> clear([String? tableName]) async {
+    try {
+      await _db.execute("delete from ${tableName ?? _table}");
+      //reset the auto increase id
+      await _db.execute("update sqlite_sequence SET seq = 0 where name ='${tableName ?? _table}';");
+    } catch (e) {
+      print(e);
+    }
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:json2dart_safe/database/base_db_manager.dart';
 import 'package:json2dart_safe/json2dart.dart';
 
 import 'database_ext.dart';

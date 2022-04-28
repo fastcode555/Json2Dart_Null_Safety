@@ -1,3 +1,7 @@
+## 1.1.2+database
+- if use the package end with the database which will support the database，otherwise please use other don't
+end with database
+
 ## 1.1.1
 - add the base db model
 

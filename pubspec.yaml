@@ -11,3 +11,4 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite: ^2.0.2+1
+  path: ^1.8.1

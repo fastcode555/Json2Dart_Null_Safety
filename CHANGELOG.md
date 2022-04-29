@@ -1,5 +1,9 @@
-## 1.1.3+database
-- don't need to declare the package version
+## 1.1.5+database
+- optimize the parameter,don't need to write the null when don't need to use the builder
+- support the database
+
+## 1.1.4
+- optimize the parameter,don't need to write the null when don't need to use the builder
 
 ## 1.1.2+database
 - if use the package end with the database which will support the database，otherwise please use other don't

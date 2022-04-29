@@ -6,6 +6,7 @@ import 'database_ext.dart';
 /// @date 27/4/22
 /// describe:
 ///@author:Barry
+const String primaryKey = "PRIMARY KEY";
 
 abstract class BaseDao<T extends BaseDbModel> {
   String? __tableName;

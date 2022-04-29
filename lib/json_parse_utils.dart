@@ -145,7 +145,7 @@ extension MapExt on Map? {
   }
 */
 
-  List<T>? asList<T>(String key, [T Function(Map json)? toBean]) {
+  List<T>? asList<T>(String key, [Function(Map json)? toBean]) {
     if (this == null) return null;
     try {
       Object? obj = this![key];
@@ -171,7 +171,7 @@ extension MapExt on Map? {
     return null;
   }
 
-  List<T>? asLists<T>(List<String> keys, [T Function(Map json)? toBean]) {
+  List<T>? asLists<T>(List<String> keys, [Function(Map json)? toBean]) {
     if (this == null) return null;
     for (String key in keys) {
       try {

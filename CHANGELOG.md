@@ -1,3 +1,8 @@
+## 1.1.7+database
+- optimize the parameter,don't need to write the null when don't need to use the builder
+- support database
+- add the method to parse the json as the model
+
 ## 1.1.6+database
 - optimize the parameter,don't need to write the null when don't need to use the builder
 - support database

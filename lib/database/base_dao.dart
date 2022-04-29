@@ -47,7 +47,7 @@ abstract class BaseDao<T extends BaseDbModel> {
     );
   }
 
-  Future<List<T>> query(T Function(Map json) toBean,
+  Future<List<T>> query(
       {String? tableName,
       bool? distinct,
       List<String>? columns,
@@ -70,16 +70,16 @@ abstract class BaseDao<T extends BaseDbModel> {
         offset: offset);
     List<T> _datas = [];
     for (Map<String, Object?> map in _lists) {
-      _datas.add(toBean(map));
+      _datas.add(fromJson(map));
     }
     return _datas;
   }
 
-  Future<List<T>> queryAll(T Function(Map json) toBean, [String? tableName]) async {
+  Future<List<T>> queryAll([String? tableName]) async {
     List<Map<String, Object?>> _lists = await _db.query(tableName ?? _table);
     List<T> _datas = [];
     for (Map<String, Object?> map in _lists) {
-      _datas.add(toBean(map));
+      _datas.add(fromJson(map));
     }
     return _datas;
   }
@@ -94,4 +94,6 @@ abstract class BaseDao<T extends BaseDbModel> {
       print(e);
     }
   }
+
+  T fromJson(Map json);
 }

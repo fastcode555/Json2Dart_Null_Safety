@@ -1,3 +1,7 @@
+## 1.1.6+database
+- optimize the parameter,don't need to write the null when don't need to use the builder
+- support database
+
 ## 1.1.5
 - optimize the parameter,don't need to write the null when don't need to use the builder
 

@@ -11,6 +11,10 @@ const String primaryKey = "PRIMARY KEY";
 abstract class BaseDao<T extends BaseDbModel> {
   String? __tableName;
 
+  BaseDao({String? tableName}) {
+    __tableName = tableName;
+  }
+
   Database get _db => BaseDbManager.instance.db;
 
   String get _table {
@@ -39,7 +43,7 @@ abstract class BaseDao<T extends BaseDbModel> {
 
   ///execute the sql
   Future<void> execute(String sql, [List<Object?>? arguments]) {
-    return _db.execute(sql);
+    return _db.execute(sql, arguments);
   }
 
   ///删除数据库中的数据
@@ -81,6 +85,7 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _datas;
   }
 
+  ///查询其中的所有数据
   Future<List<T>?> queryAll([String? tableName]) async {
     List<Map<String, Object?>> _lists = await _db.query(tableName ?? _table);
     if (_lists.isEmpty) return null;
@@ -91,7 +96,19 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _datas;
   }
 
-  //delete the table all the datas
+  ///according the argument query the data
+  Future<T?> queryOne(Object arg, [String? tableName]) async {
+    List<T>? _items = await query(tableName: tableName, where: "$primaryKey = ?", whereArgs: [arg]);
+    return _items?.first;
+  }
+
+  ///get the all datas count
+  Future<int> queryCount([String? tableName]) async {
+    List<Map<String, dynamic>> _maps = await _db.query(tableName ?? _table, columns: [primaryKey]);
+    return _maps.length;
+  }
+
+  ///delete the table all the datas
   Future<void> clear([String? tableName]) async {
     try {
       await _db.execute("delete from ${tableName ?? _table}");
@@ -102,5 +119,12 @@ abstract class BaseDao<T extends BaseDbModel> {
     }
   }
 
+  ///delete the table
+  Future<void> drop([String? tableName]) async {
+    return _db.execute("DROP TABLE ${tableName ?? _table}");
+  }
+
   T fromJson(Map json);
+
+  String get primaryKey;
 }

@@ -48,11 +48,11 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _db.delete(
       tableName ?? _table,
       where: "${map.keys.first} = ?",
-      whereArgs: map.values.first,
+      whereArgs: [map.values.first],
     );
   }
 
-  Future<List<T>> query(
+  Future<List<T>?> query(
       {String? tableName,
       bool? distinct,
       List<String>? columns,
@@ -73,6 +73,7 @@ abstract class BaseDao<T extends BaseDbModel> {
         orderBy: orderBy,
         limit: limit,
         offset: offset);
+    if (_lists.isEmpty) return null;
     List<T> _datas = [];
     for (Map<String, Object?> map in _lists) {
       _datas.add(fromJson(map));
@@ -80,8 +81,9 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _datas;
   }
 
-  Future<List<T>> queryAll([String? tableName]) async {
+  Future<List<T>?> queryAll([String? tableName]) async {
     List<Map<String, Object?>> _lists = await _db.query(tableName ?? _table);
+    if (_lists.isEmpty) return null;
     List<T> _datas = [];
     for (Map<String, Object?> map in _lists) {
       _datas.add(fromJson(map));

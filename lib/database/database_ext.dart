@@ -24,6 +24,23 @@ extension DataBaseExt on Database {
     );
   }
 
+  ///将模型插入到数据库中
+  Future<int> insertMap(
+    String tableName,
+    Map<String, dynamic> t, {
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
+    Map<String, dynamic> values = Map.from(t);
+    _convertSafeMap(values);
+    return insert(
+      tableName,
+      values,
+      nullColumnHack: nullColumnHack,
+      conflictAlgorithm: conflictAlgorithm,
+    );
+  }
+
   ///更新数据库中的模型
   Future<int> updateSafe(
     String tableName,

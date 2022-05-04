@@ -1,3 +1,10 @@
+## 1.2.0+database
+
+- optimize the parameter,don't need to write the null when don't need to use the builder
+- support database
+- add the method to parse the json as the model
+- can add the default value for the parse failed field
+
 ## 1.1.9
 
 - can add the default value for the parse failed field

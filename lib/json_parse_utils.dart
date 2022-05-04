@@ -5,17 +5,17 @@ import 'dart:convert';
 /// describe:
 extension MapExt on Map? {
   //单字段解析
-  String asString(String key) {
-    if (this == null) return '';
+  String asString(String key, [String? defValue]) {
+    if (this == null) return defValue ?? '';
     Object? value = this![key];
-    if (value == null) return "";
+    if (value == null) return defValue ?? '';
     if (value is String) return value;
     return value.toString();
   }
 
   //多字段解析
-  String asStrings(List<String> keys) {
-    if (this == null) return '';
+  String asStrings(List<String> keys, [String? defValue]) {
+    if (this == null) return defValue ?? '';
     for (String key in keys) {
       Object? value = this![key];
       if (value == null) continue;
@@ -23,13 +23,13 @@ extension MapExt on Map? {
         return value;
       }
     }
-    return "";
+    return defValue ?? "";
   }
 
-  double asDouble(String key) {
-    if (this == null) return 0.0;
+  double asDouble(String key, [double? defValue]) {
+    if (this == null) return defValue ?? 0.0;
     Object? value = this![key];
-    if (value == null) return 0.0;
+    if (value == null) return defValue ?? 0.0;
     if (value is double) return value;
     try {
       double result = double.parse(value.toString());
@@ -38,11 +38,11 @@ extension MapExt on Map? {
       print(e);
       _print('json parse failed,exception value:\"$key\":$value');
     }
-    return 0.0;
+    return defValue ?? 0.0;
   }
 
-  double asDoubles(List<String> keys) {
-    if (this == null) return 0.0;
+  double asDoubles(List<String> keys, [double? defValue]) {
+    if (this == null) return defValue ?? 0.0;
     for (String key in keys) {
       Object? value = this![key];
       if (value == null) continue;
@@ -55,13 +55,13 @@ extension MapExt on Map? {
         _print('json parse failed,exception value::\"$key\":$value');
       }
     }
-    return 0.0;
+    return defValue ?? 0.0;
   }
 
-  int asInt(String key) {
-    if (this == null) return 0;
+  int asInt(String key, [int? defValue]) {
+    if (this == null) return defValue ?? 0;
     Object? value = this![key];
-    if (value == null) return 0;
+    if (value == null) return defValue ?? 0;
     if (value is int) return value;
     try {
       int result = int.parse(value.toString());
@@ -70,11 +70,11 @@ extension MapExt on Map? {
       print(e);
       _print('json parse failed,exception value::\"$key\":$value');
     }
-    return 0;
+    return defValue ?? 0;
   }
 
-  int asInts(List<String> keys) {
-    if (this == null) return 0;
+  int asInts(List<String> keys, [int? defValue]) {
+    if (this == null) return defValue ?? 0;
     for (String key in keys) {
       Object? value = this![key];
       if (value == null) continue;
@@ -87,18 +87,18 @@ extension MapExt on Map? {
         _print('json parse failed,exception value::\"$key\":$value');
       }
     }
-    return 0;
+    return defValue ?? 0;
   }
 
-  bool asBool(String key) {
-    if (this == null) return false;
+  bool asBool(String key, [bool? defValue]) {
+    if (this == null) return defValue ?? false;
     Object? value = this![key];
-    if (value == null) return false;
+    if (value == null) return defValue ?? false;
     if (value is bool) return value;
     if (value == 'true') return true;
     if (value == 'false') return false;
     _print('json parse failed,exception value::\"$key\":$value');
-    return false;
+    return defValue ?? false;
   }
 
   num asNum(String key) {

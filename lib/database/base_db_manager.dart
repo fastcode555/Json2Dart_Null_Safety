@@ -16,7 +16,10 @@ abstract class BaseDbManager {
     BaseDbManager._instance = manager;
   }
 
-  FutureOr<void> onUpgrade(Database db, int oldVersion, int newVersion) async {}
+  //版本号变更，调用onCreate，创建未创建的table
+  FutureOr<void> onUpgrade(Database db, int oldVersion, int newVersion) async {
+    await onCreate(db, newVersion);
+  }
 
   FutureOr<void> onCreate(Database db, int version) async {}
 

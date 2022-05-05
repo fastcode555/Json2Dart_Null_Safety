@@ -6,5 +6,5 @@
 
 ## Getting Started
 - Generated dart bean from json
-- You can install the plugin Json2Dart-Null-Safety to genereate Dart.model https://raw.githubusercontent.com/fastcode555/JsonBeanGenerator/master/JsonBeanGenerator-1.0.8.zip
+- You can install the plugin Json2Dart-Null-Safety to genereate Dart.model https://github.com/fastcode555/JsonBeanGenerator/tree/master/publish_version
 - You can generate Dart model in this website https://fastcode555.github.io/#tools/Json2DartPage

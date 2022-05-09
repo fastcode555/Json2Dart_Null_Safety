@@ -1,3 +1,8 @@
+## 1.2.1+database
+
+- support database
+- add insertAll and fix the update method
+
 ## 1.2.0+database
 
 - optimize the parameter,don't need to write the null when don't need to use the builder

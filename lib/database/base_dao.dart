@@ -31,6 +31,14 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _db.insertSafe(tableName ?? _table, t);
   }
 
+  ///insert all the bean
+  Future<int> insertAll(List<T> t, [String? tableName]) {
+    for (T c in t) {
+      _db.insertSafe(tableName ?? _table, c);
+    }
+    return Future.value(0);
+  }
+
   ///insert the bean map into the table
   Future<int> insertMap(Map<String, dynamic> t, [String? tableName]) {
     return _db.insertMap(tableName ?? _table, t);

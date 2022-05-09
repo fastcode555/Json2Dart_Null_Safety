@@ -47,9 +47,16 @@ extension DataBaseExt on Database {
     BaseDbModel t, {
     ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
   }) {
+    Map<String, dynamic> map = t.primaryKeyAndValue();
     Map<String, dynamic> values = t.toJson();
     _convertSafeMap(values);
-    return update(tableName, values, conflictAlgorithm: conflictAlgorithm);
+    return update(
+      tableName,
+      values,
+      conflictAlgorithm: conflictAlgorithm,
+      where: "${map.keys.first} = ?",
+      whereArgs: [map.values.first],
+    );
   }
 
   ///将所有数组或者bean对象转换成string，重新放回数组中，这样才可以安全的存储map

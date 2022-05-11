@@ -36,7 +36,7 @@ abstract class BaseDbManager {
   }
 
   //数据库的版本号，可复写
-  int getDbVersion() => 1;
+  int getDbVersion() => 2;
 
   //数据库名称，可复写
   String getDbName() => 'client_db.db';

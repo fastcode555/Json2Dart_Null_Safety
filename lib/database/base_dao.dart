@@ -127,6 +127,18 @@ abstract class BaseDao<T extends BaseDbModel> {
     }
   }
 
+  ///get a random item
+  Future<T?> random([String? tableName]) async {
+    List<T>? items = await query(tableName: tableName, orderBy: "RANDOM()", limit: 1);
+    return items?.first;
+  }
+
+  ///get a random list
+  Future<List<T>?> randoms(int count, [String? tableName]) async {
+    List<T>? items = await query(tableName: tableName, orderBy: "RANDOM()", limit: count);
+    return items;
+  }
+
   ///delete the table
   Future<void> drop([String? tableName]) async {
     return _db.execute("DROP TABLE ${tableName ?? _table}");

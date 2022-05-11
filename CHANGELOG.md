@@ -1,3 +1,7 @@
+## 1.2.2+database
+
+- add the method which to random get the data
+
 ## 1.2.1+database
 
 - support database

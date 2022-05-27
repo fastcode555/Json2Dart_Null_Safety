@@ -213,4 +213,4 @@ Future<ResultData> search(Map<String, dynamic> parameters) {
 
 ### 五. 结尾
 
-毕竟不常写文章，如有描述或者其他问题，欢迎大家指出，谢谢！！！
+如果有任何问题需要改进，欢迎大家提出来。另外希望大家动动小指头，点亮star

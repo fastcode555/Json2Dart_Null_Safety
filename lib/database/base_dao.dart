@@ -1,8 +1,6 @@
 import 'package:json2dart_safe/json2dart.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'database_ext.dart';
-
 /// @date 27/4/22
 /// describe:
 ///@author:Barry

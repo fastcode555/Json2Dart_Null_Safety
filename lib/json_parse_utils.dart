@@ -352,7 +352,7 @@ class Json2Dart {
     return _instance!;
   }
 
-  Json2Dart._internal() {}
+  Json2Dart._internal();
 
   Function(String)? callBack;
 

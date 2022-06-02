@@ -95,6 +95,7 @@ extension MapExt on Map? {
     Object? value = this![key];
     if (value == null) return defValue ?? false;
     if (value is bool) return value;
+    if (value is num) return value == 1;
     if (value == 'true') return true;
     if (value == 'false') return false;
     _print('json parse failed,exception value::\"$key\":$value');

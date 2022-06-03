@@ -114,6 +114,16 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _maps.length;
   }
 
+  Future<List<T>?> rawQuery(String sql, [List<Object?>? arguments]) async {
+    List<Map<String, Object?>> _lists = await _db.rawQuery(sql, arguments);
+    if (_lists.isEmpty) return null;
+    List<T> _datas = [];
+    for (Map<String, Object?> map in _lists) {
+      _datas.add(fromJson(map));
+    }
+    return _datas;
+  }
+
   ///delete the table all the datas
   Future<void> clear([String? tableName]) async {
     try {

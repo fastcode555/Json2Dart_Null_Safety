@@ -14,14 +14,22 @@ extension MapExt on Map? {
   }
 
   //多字段解析
+  //多字段解析
   String asStrings(List<String> keys, [String? defValue]) {
     if (this == null) return defValue ?? '';
+    List<Object>? _values;
     for (String key in keys) {
       Object? value = this![key];
       if (value == null) continue;
       if (value is String) {
         return value;
+      } else {
+        _values ??= [];
+        _values.add(value);
       }
+    }
+    if (_values != null && _values.isNotEmpty) {
+      return _values[0].toString();
     }
     return defValue ?? "";
   }

@@ -1,3 +1,7 @@
+## 1.3.0+database
+
+- update to fix the proguard
+
 ## 1.2.2+database
 
 - add the method which to random get the data

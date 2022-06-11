@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:json2dart_safe/json2dart.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -19,13 +21,15 @@ abstract class BaseDao<T extends BaseDbModel> {
   String get table => __tableName;
 
   ///insert into the string
-  Future<int> insert(T t, [String? tableName]) {
+  Future<int> insert(T? t, [String? tableName]) {
+    if (t == null) return Future.value(-1);
     return _db.insertSafe(tableName ?? table, t);
   }
 
   ///insert all the bean
-  Future<int> insertAll(List<T> t, [String? tableName]) {
-    for (T c in t) {
+  Future<int> insertAll(List<T?> t, [String? tableName]) {
+    for (T? c in t) {
+      if (c == null) continue;
       _db.insertSafe(tableName ?? table, c);
     }
     return Future.value(0);
@@ -37,7 +41,8 @@ abstract class BaseDao<T extends BaseDbModel> {
   }
 
   ///update the database string
-  Future<int> update(T t, [String? tableName]) {
+  Future<int> update(T? t, [String? tableName]) {
+    if (t == null) return Future.value(-1);
     return _db.updateSafe(tableName ?? table, t);
   }
 
@@ -47,7 +52,8 @@ abstract class BaseDao<T extends BaseDbModel> {
   }
 
   ///删除数据库中的数据
-  Future<void> delete(T t, [String? tableName]) {
+  Future<void> delete(T? t, [String? tableName]) {
+    if (t == null) return Future.value(Void);
     Map<String, dynamic> map = t.primaryKeyAndValue();
     return _db.delete(
       tableName ?? table,

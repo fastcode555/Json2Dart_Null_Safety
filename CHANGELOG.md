@@ -1,3 +1,7 @@
+## 1.3.1+database
+
+- can pass the null value to the database
+
 ## 1.3.0+database
 
 - update to fix the proguard

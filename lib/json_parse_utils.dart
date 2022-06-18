@@ -354,12 +354,7 @@ class Json2Dart {
 
   static Json2Dart get instance => _getInstance();
 
-  static Json2Dart _getInstance() {
-    if (_instance == null) {
-      _instance = Json2Dart._internal();
-    }
-    return _instance!;
-  }
+  static Json2Dart _getInstance() => _instance ??= Json2Dart._internal();
 
   Json2Dart._internal();
 

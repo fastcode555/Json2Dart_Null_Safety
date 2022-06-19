@@ -1,5 +1,6 @@
-import 'dart:ffi';
+import 'dart:convert';
 
+import 'package:json2dart_safe/database/base_dao_mixin.dart';
 import 'package:json2dart_safe/json2dart.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -7,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 /// describe:
 ///@author:Barry
 
-abstract class BaseDao<T extends BaseDbModel> {
+abstract class BaseDao<T extends BaseDbModel> extends BaseDaoMixin<T> with _SafeInsertFeature {
   String __tableName = '';
   String _primaryKey = '';
 
@@ -16,44 +17,49 @@ abstract class BaseDao<T extends BaseDbModel> {
     _primaryKey = primaryKey;
   }
 
+  @override
   Database get _db => BaseDbManager.instance.db;
 
   String get table => __tableName;
 
-  ///insert into the string
-  Future<int> insert(T? t, [String? tableName]) {
-    if (t == null) return Future.value(-1);
-    return _db.insertSafe(tableName ?? table, t);
-  }
+  @override
+  Future<int> insert(T? t, [String? tableName]) => _insertSafe(tableName ?? table, t);
 
-  ///insert all the bean
-  Future<int> insertAll(List<T?> t, [String? tableName]) {
+  @override
+  Future<int> insertAll(
+    List<T?> t, {
+    String? tableName,
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) async {
+    final _batch = _db.batch();
     for (T? c in t) {
       if (c == null) continue;
-      _db.insertSafe(tableName ?? table, c);
+      Map<String, dynamic> values = Map.from(c.toJson());
+      _convertSafeMap(values);
+      _batch.insert(
+        tableName ?? table,
+        values,
+        nullColumnHack: nullColumnHack,
+        conflictAlgorithm: conflictAlgorithm,
+      );
     }
+    await _batch.commit(noResult: true);
     return Future.value(0);
   }
 
-  ///insert the bean map into the table
-  Future<int> insertMap(Map<String, dynamic> t, [String? tableName]) {
-    return _db.insertMap(tableName ?? table, t);
-  }
+  @override
+  Future<int> insertMap(Map<String, dynamic> t, [String? tableName]) => _insertMap(tableName ?? table, t);
 
-  ///update the database string
-  Future<int> update(T? t, [String? tableName]) {
+  @override
+  Future<int> update(T? t, [String? tableName]) => _updateSafe(tableName ?? table, t);
+
+  @override
+  Future<void> execute(String sql, [List<Object?>? arguments]) => _db.execute(sql, arguments);
+
+  @override
+  Future<int> delete(T? t, [String? tableName]) {
     if (t == null) return Future.value(-1);
-    return _db.updateSafe(tableName ?? table, t);
-  }
-
-  ///execute the sql
-  Future<void> execute(String sql, [List<Object?>? arguments]) {
-    return _db.execute(sql, arguments);
-  }
-
-  ///删除数据库中的数据
-  Future<void> delete(T? t, [String? tableName]) {
-    if (t == null) return Future.value(Void);
     Map<String, dynamic> map = t.primaryKeyAndValue();
     return _db.delete(
       tableName ?? table,
@@ -62,6 +68,7 @@ abstract class BaseDao<T extends BaseDbModel> {
     );
   }
 
+  @override
   Future<List<T>?> query(
       {String? tableName,
       bool? distinct,
@@ -91,7 +98,7 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _datas;
   }
 
-  ///查询其中的所有数据
+  @override
   Future<List<T>?> queryAll([String? tableName]) async {
     List<Map<String, Object?>> _lists = await _db.query(tableName ?? table);
     if (_lists.isEmpty) return null;
@@ -102,18 +109,19 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _datas;
   }
 
-  ///according the argument query the data
+  @override
   Future<T?> queryOne(Object arg, [String? tableName]) async {
     List<T>? _items = await query(tableName: tableName, where: "$_primaryKey = ?", whereArgs: [arg]);
     return _items?.first;
   }
 
-  ///get the all datas count
+  @override
   Future<int> queryCount([String? tableName]) async {
     List<Map<String, dynamic>> _maps = await _db.query(tableName ?? table, columns: [_primaryKey]);
     return _maps.length;
   }
 
+  @override
   Future<List<T>?> rawQuery(String sql, [List<Object?>? arguments]) async {
     List<Map<String, Object?>> _lists = await _db.rawQuery(sql, arguments);
     if (_lists.isEmpty) return null;
@@ -124,7 +132,7 @@ abstract class BaseDao<T extends BaseDbModel> {
     return _datas;
   }
 
-  ///delete the table all the datas
+  @override
   Future<void> clear([String? tableName]) async {
     try {
       await _db.execute("delete from ${tableName ?? table}");
@@ -135,22 +143,100 @@ abstract class BaseDao<T extends BaseDbModel> {
     }
   }
 
-  ///get a random item
+  @override
   Future<T?> random([String? tableName]) async {
     List<T>? items = await query(tableName: tableName, orderBy: "RANDOM()", limit: 1);
     return items?.first;
   }
 
-  ///get a random list
+  @override
   Future<List<T>?> randoms(int count, [String? tableName]) async {
     List<T>? items = await query(tableName: tableName, orderBy: "RANDOM()", limit: count);
     return items;
   }
 
-  ///delete the table
+  @override
   Future<void> drop([String? tableName]) async {
     return _db.execute("DROP TABLE ${tableName ?? table}");
   }
+}
 
-  T fromJson(Map json);
+mixin _SafeInsertFeature {
+  Database get _db;
+
+  ///将模型插入到数据库中
+  Future<int> _insertSafe(
+    String tableName,
+    BaseDbModel? t, {
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
+    if (t == null) return Future.value(-1);
+    Map<String, dynamic> values = t.toJson();
+    _convertSafeMap(values);
+    return _db.insert(
+      tableName,
+      values,
+      nullColumnHack: nullColumnHack,
+      conflictAlgorithm: conflictAlgorithm,
+    );
+  }
+
+  ///将模型插入到数据库中
+  Future<int> _insertMap(
+    String tableName,
+    Map<String, dynamic> t, {
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
+    Map<String, dynamic> values = Map.from(t);
+    _convertSafeMap(values);
+    return _db.insert(
+      tableName,
+      values,
+      nullColumnHack: nullColumnHack,
+      conflictAlgorithm: conflictAlgorithm,
+    );
+  }
+
+  ///更新数据库中的模型
+  Future<int> _updateSafe(
+    String tableName,
+    BaseDbModel? t, {
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
+    if (t == null) return Future.value(-1);
+    Map<String, dynamic> map = t.primaryKeyAndValue();
+    Map<String, dynamic> values = t.toJson();
+    _convertSafeMap(values);
+    return _db.update(
+      tableName,
+      values,
+      conflictAlgorithm: conflictAlgorithm,
+      where: "${map.keys.first} = ?",
+      whereArgs: [map.values.first],
+    );
+  }
+
+  ///将所有数组或者bean对象转换成string，重新放回数组中，这样才可以安全的存储map
+  void _convertSafeMap(Map<String, Object?> values) {
+    for (String key in values.keys) {
+      Object? value = values[key];
+      if (value == null) continue;
+      if (_isClassBean(value)) {
+        values[key] = jsonEncode(value);
+      }
+    }
+  }
+
+  ///判断是对象或者数组
+  bool _isClassBean(Object obj) {
+    bool isClassBean = true;
+    if (obj is String || obj is num || obj is bool) {
+      isClassBean = false;
+    } else if (obj is Map && obj.isEmpty) {
+      isClassBean = false;
+    }
+    return isClassBean;
+  }
 }

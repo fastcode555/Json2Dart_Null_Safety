@@ -49,6 +49,9 @@ mixin _QueryMixin<T> {
 
   ///随机查询一组数据
   Future<List<T>?> randoms(int count, [String? tableName]);
+
+  ///查询多个ids
+//Future<List<T>?> queryMultiIds(List<Object?>? ids);
 }
 
 abstract class ABBaseDao<T> with _InsertMixin<T>, _QueryMixin<T> {

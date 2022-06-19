@@ -51,17 +51,20 @@ mixin _QueryMixin<T> {
   Future<List<T>?> randoms(int count, [String? tableName]);
 }
 
-abstract class BaseDaoMixin<T> with _InsertMixin<T>, _QueryMixin<T> {
+abstract class ABBaseDao<T> with _InsertMixin<T>, _QueryMixin<T> {
   ///插入map
   Future<int> update(T? t, [String? tableName]);
 
   ///删除数据
   Future<int> delete(T? t, [String? tableName]);
 
+  ///执行sql语句
   Future<void> execute(String sql, [List<Object?>? arguments]);
 
+  ///清空表所有数据
   Future<void> clear([String? tableName]);
 
+  ///删除表所有数据
   Future<void> drop([String? tableName]);
 
   T fromJson(Map json);

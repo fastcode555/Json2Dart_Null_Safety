@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:json2dart_safe/database/base_dao_mixin.dart';
+import 'package:json2dart_safe/database/abstract_base_dao.dart';
 import 'package:json2dart_safe/json2dart.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 /// describe:
 ///@author:Barry
 
-abstract class BaseDao<T extends BaseDbModel> extends BaseDaoMixin<T> with _SafeInsertFeature {
+abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeInsertFeature {
   String __tableName = '';
   String _primaryKey = '';
 

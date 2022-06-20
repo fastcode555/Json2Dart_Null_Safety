@@ -250,10 +250,10 @@ packages:
   json2dart_safe:
     dependency: "direct main"
     description:
-      name: json2dart_safe
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.5+database"
+      path: ".."
+      relative: true
+    source: path
+    version: "1.3.6+database"
   lints:
     dependency: transitive
     description:

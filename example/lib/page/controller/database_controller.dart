@@ -3,10 +3,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
-import 'package:gesound/common/model/audio_model.dart';
 import 'package:gesound/common/model/category_model.dart';
 import 'package:gesound/common/model/playlist_model.dart';
-import 'package:gesound/common/utils/loading_util.dart';
 import 'package:gesound/database/audio_model_dao.dart';
 import 'package:gesound/database/category_model_dao.dart';
 import 'package:gesound/database/db_manager.dart';
@@ -106,15 +104,6 @@ class DataBaseController extends GetxController {
   Future<List<PlaylistModel>> queryPlaylist(CategoryModel model) async {
     List<PlaylistModel> _playlists = await _playlistDao.queryMultiIds(model.playlistIds);
     return _playlists;
-  }
-
-  ///查询该播放列表的所有音乐资源
-  Future<List<AudioModel>> queryAudioModels(PlaylistModel model) async {
-    if (model.songIds == null || model.songIds!.isEmpty) return Future.value([]);
-    LoadingUtil.show();
-    List<AudioModel> _audioModels = await _audioDao.queryMultiIds(model.songIds);
-    LoadingUtil.dismiss();
-    return _audioModels;
   }
 
   ///sort playlist

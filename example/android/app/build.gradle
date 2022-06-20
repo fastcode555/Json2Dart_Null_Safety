@@ -1,0 +1,168 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+def currentTime = "${new Date().format('yyyyMMdd')}"
+
+android {
+    compileSdkVersion flutter.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        applicationId "com.gorden.club.gesound"
+        minSdkVersion 20
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        config {
+            storeFile file("../supermusic.jks")
+            keyAlias "supermusic"
+            keyPassword "123456"
+            storePassword "123456"
+        }
+
+        debug {
+            storeFile file("../supermusic.jks")
+            keyAlias "supermusic"
+            keyPassword "123456"
+            storePassword "123456"
+        }
+    }
+
+    buildTypes {
+        release {
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+            shrinkResources false
+        }
+        release {
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+            shrinkResources false
+        }
+    }
+
+    //修改输出apk的文件名
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFileName = "gesound-v${defaultConfig.versionName}-c${defaultConfig.versionCode}-${currentTime}-${output.name}.apk"
+        }
+    }
+
+    //拷贝apk到CI打包需要的路径
+    tasks.whenTaskAdded { task ->
+        outputReleaseFile(task, "infinity", "gesound")
+    }
+
+    bundle {
+        density {
+            // Different APKs are generated for devices with different screen densities; true by default.
+            enableSplit true
+        }
+        abi {
+            // Different APKs are generated for devices with different CPU architectures; true by default.
+            enableSplit true
+        }
+        language {
+            // This is disabled so that the App Bundle does NOT split the APK for each language.
+            // We're gonna use the same APK for all languages.
+            enableSplit false
+        }
+    }
+}
+
+void outputReleaseFile(task, fileDir, moduleName) {
+
+    if (task.name.startsWith("assemble") || task.name.equalsIgnoreCase("bundleRelease")) {
+        // 如果是assemble开始任务，在最后执行拷贝apk
+        task.doLast {
+
+            android.applicationVariants.all { variant ->
+                def output = variant.outputs[0]
+                def outputFile = output.outputFile
+
+                //def targetDir = "../../build/app_ci/${fileDir}/android/$moduleName"
+                def targetDir = "../../build/app_ci"
+                if (outputFile != null && task.name.startsWith("assemble")) {
+
+                    copy {
+                        from output.outputFile
+                        into "${targetDir}"
+                    }
+                    if (variant.baseName == "release") {
+                        project.copy {
+                            from "${project.buildDir}/outputs/apk/${variant.dirName}/output-metadata.json"
+                            into "${targetDir}"
+                        }
+                        copy {
+                            from "${project.buildDir}/outputs/mapping/${variant.dirName}/mapping.txt"
+                            into "${targetDir}"
+                            rename("mapping.txt", "mapping_${android.defaultConfig.versionName}.txt")
+                        }
+
+                    }
+                } else if (outputFile != null && task.name.startsWith("bundle")) {
+
+                    copy {
+                        from "${project.buildDir}/outputs/bundle/release/${project.name}-${variant.baseName}.aab"
+                        into "${targetDir}"
+                        rename "${project.name}-${variant.baseName}.aab", "${moduleName}-v${android.defaultConfig.versionName}-${"${new Date().format('yyyyMMdd')}"}.aab"
+                    }
+
+                    copy {
+                        from "${project.buildDir}/outputs/mapping/${variant.dirName}/mapping.txt"
+                        into "${targetDir}"
+                        rename("mapping.txt", "mapping_aab_${android.defaultConfig.versionName}.txt")
+                    }
+                }
+            }
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}

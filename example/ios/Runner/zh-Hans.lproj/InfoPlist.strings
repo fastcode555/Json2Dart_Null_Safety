@@ -1,0 +1,5 @@
+"CFBundleName" = "Gesound";
+"NSCameraUsageDescription" = "此应用需要相机访问权限才能扫描二维码";
+"NSPhotoLibraryUsageDescription" = "用于用户设置头像或反馈图片";
+"NSMicrophoneUsageDescription" = "用于为图像选择器插件捕获音频";
+"NSAppleMusicUsageDescription" = "用于浏览和播放本地音乐";

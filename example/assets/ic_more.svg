@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="5"
+    height="19" viewBox="0 0 5 19">
+    <defs>
+        <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1"
+            gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#fff" />
+            <stop offset="1" stop-color="#d1d1d1" />
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" y1="0.951" y2="0.111"
+            xlink:href="#linear-gradient" />
+    </defs>
+    <g id="组_150" data-name="组 150" transform="translate(-349 -198)">
+        <g id="组_134" data-name="组 134" transform="translate(333.672 227.5) rotate(-90)">
+            <path id="path_13" data-name="path 13"
+                d="M28.656,15.328a2.5,2.5,0,1,0,2.5,2.5,2.5,2.5,0,0,0-2.5-2.5Z"
+                transform="translate(-1.656)" fill="url(#linear-gradient)" />
+            <path id="path_14" data-name="path 14"
+                d="M28.429,15.328A2.272,2.272,0,1,0,30.7,17.6a2.271,2.271,0,0,0-2.272-2.272Z"
+                transform="translate(-1.429 0.228)" fill="url(#linear-gradient-2)" />
+        </g>
+        <g id="组_135" data-name="组 135" transform="translate(333.672 234.5) rotate(-90)">
+            <path id="path_13-2" data-name="path 13"
+                d="M28.656,15.328a2.5,2.5,0,1,0,2.5,2.5,2.5,2.5,0,0,0-2.5-2.5Z"
+                transform="translate(-1.656)" fill="url(#linear-gradient)" />
+            <path id="path_14-2" data-name="path 14"
+                d="M28.429,15.328A2.272,2.272,0,1,0,30.7,17.6a2.271,2.271,0,0,0-2.272-2.272Z"
+                transform="translate(-1.429 0.228)" fill="url(#linear-gradient-2)" />
+        </g>
+        <g id="组_136" data-name="组 136" transform="translate(333.672 241.5) rotate(-90)">
+            <path id="path_13-3" data-name="path 13"
+                d="M28.656,15.328a2.5,2.5,0,1,0,2.5,2.5,2.5,2.5,0,0,0-2.5-2.5Z"
+                transform="translate(-1.656)" fill="url(#linear-gradient)" />
+            <path id="path_14-3" data-name="path 14"
+                d="M28.429,15.328A2.272,2.272,0,1,0,30.7,17.6a2.271,2.271,0,0,0-2.272-2.272Z"
+                transform="translate(-1.429 0.228)" fill="url(#linear-gradient-2)" />
+        </g>
+    </g>
+</svg>

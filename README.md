@@ -1,6 +1,7 @@
 # json2dart
 
 [Chinese](README_CN.md)
+[How to Use It(Chinese)](json2dart_database.md)
 ## features
 
 - support generate Dart.model with Null-Safety feature

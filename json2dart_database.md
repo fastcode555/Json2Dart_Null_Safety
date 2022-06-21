@@ -106,13 +106,13 @@ class CategoryDaoTestDao extends BaseDao<CategoryDaoTest> {
   CategoryDaoTestDao() : super(_tableName, 'category_id');
 
   static String tableSql([String? tableName]) => ""
-      "CREATE TABLE IF NOT EXISTS `${tableName ?? _tableName}` ("
-      "`playlist_count` TEXT,"
-      "`playlist_ids` TEXT,"
-      "`create_time` INTEGER,"
-      "`name` TEXT,"
-      "`position` INTEGER,"
-      "`category_id` INTEGER PRIMARY KEY AUTOINCREMENT)";
+          "CREATE TABLE IF NOT EXISTS `${tableName ?? _tableName}` ("
+          "`playlist_count` TEXT,"
+          "`playlist_ids` TEXT,"
+          "`create_time` INTEGER,"
+          "`name` TEXT,"
+          "`position` INTEGER,"
+          "`category_id` INTEGER PRIMARY KEY AUTOINCREMENT)";
 
   @override
   CategoryDaoTest fromJson(Map json) => CategoryDaoTest.fromJson(json);
@@ -123,8 +123,9 @@ class CategoryDaoTestDao extends BaseDao<CategoryDaoTest> {
 
 ### 1.无视复杂的数据类型
 
-当模型中包含非常多复杂的类型时，比如模型中含有其它模型**，模型中含有数组之类的，存储是遇到这种数据会直接将数据转换成string进行存储**， 取出时，取出时**
-会判断是不是string，是的话尝试转换成Map将将其转换成正常数据**</br></br>
+当模型中包含非常多复杂的类型时，比如模型中含有其它模型，<font color=blue>模型中含有数组之类的，存储是遇到这种数据会直接将数据转换成string进行存储</font>
+， 取出时，取出时会 <font color=blue>判断是不是string，是的话尝试转换成Map将将其转换成正常数据</font>
+</br></br>
 
 相比用过floor或者其它数据,可能都遇到过：
 

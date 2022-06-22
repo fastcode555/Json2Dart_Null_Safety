@@ -8,8 +8,8 @@
 
 - **ClassName** 只需要下划线的文件名（会自动生成文件跟对应的模型的驼峰式名字）
 - **勾选Sqlite Support**,然后可以在右方的输入框中输入primaryKey(Ps:primary key如果是json中已有的，只会有**PRIMARY KEY**
-  的属性，如果是josn数据中没有的，会根据输入的自动自动增加一个属性，并带有**PRIMARY KEY** 跟**AUTOINCREMENT**)</br></br>
-- json 模型可以选择lib下的任何目录，生成的模型会在选择的文件夹下，dao类的生成只会生成在lib/database的目录下，并有新表时，自动插入生成语句到代码中
+  的属性，如果是json数据中没有的，会根据输入的自动增加一个属性到model的模型类中，并带有**PRIMARY KEY** 跟**AUTOINCREMENT**)</br></br>
+- json 模型可以选择lib下的任何目录，生成的模型会在选择的文件夹下，dao类的生成只会生成在**lib/database**的目录下，并在有新表时，自动插入生成语句到代码的方法中
 
 ### 1.下面简单演示一下生成：取一段json，如下
 
@@ -27,7 +27,7 @@
 
 ### 2.调用插件,生成的模型和dao类，分别如下
 
-为了支持数据库以及区分bean的区别会override以下三个方法
+为了支持数据库以及更好的区分bean，会override以下三个方法
 
 - **hashCode** 跟 **==**(equal) 方法
 - 自动with基类（**BaseDbModel**,不使用extends，方便给其它基类继承)，实现**primaryKeyAndValue**
@@ -55,13 +55,10 @@ class CategoryDaoTest with BaseDbModel {
   });
 
   @override
-  Map<String, dynamic> toJson() => <String, dynamic>{}
-    ..put('playlist_count', playlistCount)
-    ..put('playlist_ids', playlistIds)
-    ..put('create_time', createTime)
-    ..put('name', name)
-    ..put('position', position)
-    ..put('category_id', categoryId);
+  Map<String, dynamic> toJson() =>
+      <String, dynamic>{}..put('playlist_count', playlistCount)..put(
+          'playlist_ids', playlistIds)..put('create_time', createTime)..put('name', name)..put(
+          'position', position)..put('category_id', categoryId);
 
   CategoryDaoTest.fromJson(Map json) {
     playlistCount = json.asString('playlist_count');
@@ -106,13 +103,13 @@ class CategoryDaoTestDao extends BaseDao<CategoryDaoTest> {
   CategoryDaoTestDao() : super(_tableName, 'category_id');
 
   static String tableSql([String? tableName]) => ""
-          "CREATE TABLE IF NOT EXISTS `${tableName ?? _tableName}` ("
-          "`playlist_count` TEXT,"
-          "`playlist_ids` TEXT,"
-          "`create_time` INTEGER,"
-          "`name` TEXT,"
-          "`position` INTEGER,"
-          "`category_id` INTEGER PRIMARY KEY AUTOINCREMENT)";
+      "CREATE TABLE IF NOT EXISTS `${tableName ?? _tableName}` ("
+      "`playlist_count` TEXT,"
+      "`playlist_ids` TEXT,"
+      "`create_time` INTEGER,"
+      "`name` TEXT,"
+      "`position` INTEGER,"
+      "`category_id` INTEGER PRIMARY KEY AUTOINCREMENT)";
 
   @override
   CategoryDaoTest fromJson(Map json) => CategoryDaoTest.fromJson(json);
@@ -138,7 +135,7 @@ class CategoryDaoTestDao extends BaseDao<CategoryDaoTest> {
 
 - 该类含有List或其它bean类时，会自动转换成string，存入对应字段，无需进行额外转换,取出时自动判断并成功解析
 - 数据库存入bool值，取出为0或1，结合解析类，仍然支持取出的值为bool值
-- 如果只是常用的方法，几乎不需要做任何代码的编写，如果根据业务类型需要，择可在dao类中复写或者增加方法。
+- 如果只是常用的方法，几乎不需要做任何代码的编写，如果根据业务类型需要，则可在dao类中复写或者增加方法。
 
 ## BaseDao目前有的方法
 

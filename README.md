@@ -1,6 +1,7 @@
 # json2dart
 
 [Chinese](README_CN.md)
+There is an [example](https://github.com/fastcode555/Json2Dart_Null_Safety/tree/develop_database/example)，you can try it;
 ## features
 
 - support generate Dart.model with Null-Safety feature

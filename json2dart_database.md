@@ -55,10 +55,13 @@ class CategoryDaoTest with BaseDbModel {
   });
 
   @override
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{}..put('playlist_count', playlistCount)..put(
-          'playlist_ids', playlistIds)..put('create_time', createTime)..put('name', name)..put(
-          'position', position)..put('category_id', categoryId);
+  Map<String, dynamic> toJson() => <String, dynamic>{}
+    ..put('playlist_count', playlistCount)
+    ..put('playlist_ids', playlistIds)
+    ..put('create_time', createTime)
+    ..put('name', name)
+    ..put('position', position)
+    ..put('category_id', categoryId);
 
   CategoryDaoTest.fromJson(Map json) {
     playlistCount = json.asString('playlist_count');

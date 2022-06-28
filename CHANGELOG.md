@@ -1,3 +1,6 @@
+## 1.4.0
+- add two funtion removeNull and removeNullOrEmpty
+
 ## 1.1.9
 
 - can add the default value for the parse failed field

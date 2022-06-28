@@ -275,15 +275,16 @@ extension MapExt on Map? {
 
   void removeNull() {
     if (this == null || this!.isEmpty) return;
-    var keys = this!.keys;
+    var keys = List.from(this!.keys);
     for (Object key in keys) {
       if (this![key] == null) this?.remove(key);
     }
+    keys.clear();
   }
 
   void removeNullOrEmpty() {
     if (this == null || this!.isEmpty) return;
-    var keys = this!.keys;
+    var keys = List.from(this!.keys);
     for (Object key in keys) {
       Object? obj = this![key];
       if (obj == null) this?.remove(key);
@@ -291,6 +292,7 @@ extension MapExt on Map? {
         this?.remove(key);
       }
     }
+    keys.clear();
   }
 
   ///获取缩进空白符

@@ -35,7 +35,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
     final _batch = _db.batch();
     for (T? c in t) {
       if (c == null) continue;
-      Map<String, dynamic> values = Map.from(c.toJson());
+      Map<String, dynamic> values = c.toJson();
       _convertSafeMap(values);
       _batch.insert(
         tableName ?? table,
@@ -53,6 +53,31 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
 
   @override
   Future<int> update(T? t, [String? tableName]) => _updateSafe(tableName ?? table, t);
+
+  @override
+  Future<int> updateAll(
+    List<T>? t, {
+    String? tableName,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) async {
+    if (t == null || t.isEmpty) return Future.value(-1);
+    final _batch = _db.batch();
+    for (T? c in t) {
+      if (c == null) continue;
+      Map<String, dynamic> values = c.toJson();
+      Map keyAndValues = c.primaryKeyAndValue();
+      _convertSafeMap(values);
+      _batch.update(
+        tableName ?? table,
+        values,
+        conflictAlgorithm: conflictAlgorithm,
+        where: "${keyAndValues.keys.first} = ?",
+        whereArgs: [keyAndValues.values.first],
+      );
+    }
+    await _batch.commit(noResult: true);
+    return Future.value(0);
+  }
 
   @override
   Future<void> execute(String sql, [List<Object?>? arguments]) => _db.execute(sql, arguments);

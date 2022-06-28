@@ -55,8 +55,15 @@ mixin _QueryMixin<T> {
 }
 
 abstract class ABBaseDao<T> with _InsertMixin<T>, _QueryMixin<T> {
-  ///插入map
+  ///更新map
   Future<int> update(T? t, [String? tableName]);
+
+  ///更新所有数据库
+  Future<int> updateAll(
+    List<T>? t, {
+    String? tableName,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  });
 
   ///删除数据
   Future<int> delete(T? t, [String? tableName]);

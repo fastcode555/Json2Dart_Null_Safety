@@ -272,6 +272,28 @@ extension MapExt on Map? {
     return this!;
   }
 
+  Map removeNull() {
+    if (this == null || this!.isEmpty) return {};
+    var keys = this!.keys;
+    for (Object key in keys) {
+      if (this![key] == null) this?.remove(key);
+    }
+    return this!;
+  }
+
+  Map removeNullOrEmpty() {
+    if (this == null || this!.isEmpty) return {};
+    var keys = this!.keys;
+    for (Object key in keys) {
+      Object? obj = this![key];
+      if (obj == null) this?.remove(key);
+      if (obj is String && obj.trim().length == 0) {
+        this?.remove(key);
+      }
+    }
+    return this!;
+  }
+
   ///获取缩进空白符
   String _getDeepSpace(int deep) {
     var tab = StringBuffer();

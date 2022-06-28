@@ -1,6 +1,7 @@
 # json2dart
 
 - [Chinese](README_CN.md)
+- There is an [example](https://github.com/fastcode555/Json2Dart_Null_Safety/tree/develop_database/example)，you can try it;
 - [How to Use It(Chinese)](json2dart_database.md)
 ## features
 

@@ -1,3 +1,6 @@
+## 1.4.0
+- add two funtion removeNull and removeNullOrEmpty
+
 ## 1.3.6+database
 
 - add the example for the project

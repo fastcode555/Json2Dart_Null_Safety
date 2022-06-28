@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:gesound/common/model/playlist_model.dart';
 import 'package:gesound/res/strings.dart';
 import 'package:get/get.dart';
+import 'package:json2dart_db/json2dart_db.dart';
 import 'package:json2dart_safe/json2dart.dart';
 
 class CategoryModel with BaseDbModel {

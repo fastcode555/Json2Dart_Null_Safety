@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-import 'package:json2dart_safe/database/abstract_base_dao.dart';
-import 'package:json2dart_safe/json2dart.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'abstract_base_dao.dart';
+import 'base_db_manager.dart';
+import 'base_db_model.dart';
 
 /// @date 27/4/22
 /// describe:

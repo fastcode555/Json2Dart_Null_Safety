@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flustars/flustars.dart';
+import 'package:json2dart_db/json2dart_db.dart';
 import 'package:json2dart_safe/json2dart.dart';
 
 class Items {

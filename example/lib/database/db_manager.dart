@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:json2dart_safe/json2dart.dart';
+import 'package:json2dart_db/json2dart_db.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'audio_model_dao.dart';

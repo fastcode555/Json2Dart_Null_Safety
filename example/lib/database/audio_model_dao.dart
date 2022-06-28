@@ -1,5 +1,5 @@
 import 'package:gesound/common/model/audio_model.dart';
-import 'package:json2dart_safe/json2dart.dart';
+import 'package:json2dart_db/json2dart_db.dart';
 
 class AudioModelDao extends BaseDao<AudioModel> {
   static const String _tableName = 'audio_model';

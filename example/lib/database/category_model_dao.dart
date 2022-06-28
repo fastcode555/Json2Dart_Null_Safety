@@ -1,5 +1,5 @@
 import 'package:gesound/common/model/category_model.dart';
-import 'package:json2dart_safe/json2dart.dart';
+import 'package:json2dart_db/json2dart_db.dart';
 
 class CategoryModelDao extends BaseDao<CategoryModel> {
   static const String _tableName = 'category_model';

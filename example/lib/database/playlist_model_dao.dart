@@ -1,5 +1,5 @@
 import 'package:gesound/common/model/playlist_model.dart';
-import 'package:json2dart_safe/json2dart.dart';
+import 'package:json2dart_db/json2dart_db.dart';
 
 class PlaylistModelDao extends BaseDao<PlaylistModel> {
   static const String _tableName = 'playlist_model';

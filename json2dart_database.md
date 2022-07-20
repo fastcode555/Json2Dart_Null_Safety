@@ -172,5 +172,5 @@ class CategoryDaoTestDao extends BaseDao<CategoryDaoTest> {
 
 ## PS:
 
-1.尚未支持migiration，查看floor源码，只是在onUpgrade中增加old version跟new version的判断，然后根据业务进行字段的表的扩增
+1.~~尚未支持migiration，查看floor源码，只是在onUpgrade中增加old version跟new version的判断，然后根据业务进行字段的表的扩增~~,已经支持对单个表进行升级，同个模型的分表暂不支持
 2.floor命令行有watch的功能，可支持表重新生成，不支持此类功能，需使用者手动为表加字段

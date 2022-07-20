@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:sqflite/sqflite.dart';
@@ -17,7 +18,14 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   BaseDao(String tableName, String primaryKey) {
     __tableName = tableName;
     _primaryKey = primaryKey;
+    BaseDbManager manager = BaseDbManager.instance;
+    if (manager.oldVersion != -1 && manager.newVersion != -1) {
+      onUpgrade(manager.oldVersion, manager.newVersion);
+    }
   }
+
+  ///增加表更新的方法，这里只是回调到每个dao类中，一个dao类一个表，针对当前表进行更新
+  FutureOr<void> onUpgrade(int oldVersion, int newVersion) {}
 
   @override
   Database get _db => BaseDbManager.instance.db;

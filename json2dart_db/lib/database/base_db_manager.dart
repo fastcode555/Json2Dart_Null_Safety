@@ -9,6 +9,10 @@ abstract class BaseDbManager {
 
   Database get db => _database!;
 
+  //获取数据库的版本
+  int oldVersion = -1;
+  int newVersion = -1;
+
   static BaseDbManager get instance => _instance!;
   bool isCreateFinish = false;
 
@@ -18,6 +22,9 @@ abstract class BaseDbManager {
 
   ///版本号变更，调用onCreate，创建未创建的table
   FutureOr<void> onUpgrade(Database db, int oldVersion, int newVersion) async {
+    this.newVersion = newVersion;
+    this.oldVersion = oldVersion;
+    //执行创建新的表
     await onCreate(db, newVersion);
   }
 

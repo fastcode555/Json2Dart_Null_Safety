@@ -55,13 +55,15 @@ class CategoryDaoTest with BaseDbModel {
   });
 
   @override
-  Map<String, dynamic> toJson() => <String, dynamic>{}
-    ..put('playlist_count', playlistCount)
-    ..put('playlist_ids', playlistIds)
-    ..put('create_time', createTime)
-    ..put('name', name)
-    ..put('position', position)
-    ..put('category_id', categoryId);
+  Map<String, dynamic> toJson() =>
+      {
+        'playlist_count': playlistCount,
+        'playlist_ids': playlistIds,
+        'create_time': createTime,
+        'name': name,
+        'position': position,
+        'category_id': categoryId,
+      };
 
   CategoryDaoTest.fromJson(Map json) {
     playlistCount = json.asString('playlist_count');
@@ -168,9 +170,11 @@ class CategoryDaoTestDao extends BaseDao<CategoryDaoTest> {
 - clear 清空表数据
 - drop 删除表
 
+## [BookReader](https://github.com/fastcode555/book_reader)
+
 ## [具体demo可点击参考](https://github.com/fastcode555/Json2Dart_Null_Safety/tree/develop_database/example)
 
 ## PS:
 
-1.~~尚未支持migiration，查看floor源码，只是在onUpgrade中增加old version跟new version的判断，然后根据业务进行字段的表的扩增~~,已经支持对单个表进行升级，同个模型的分表暂不支持
-2.floor命令行有watch的功能，可支持表重新生成，不支持此类功能，需使用者手动为表加字段
+1.~~尚未支持migiration，查看floor源码，只是在onUpgrade中增加old version跟new version的判断，然后根据业务进行字段的表的扩增~~
+,已经支持对单个表进行升级，同个模型的分表暂不支持 2.floor命令行有watch的功能，可支持表重新生成，不支持此类功能，需使用者手动为表加字段

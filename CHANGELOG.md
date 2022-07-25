@@ -1,4 +1,9 @@
+## 1.4.4
+
+- add a callback for json parse failed
+
 ## 1.4.0
+
 - add two funtion removeNull and removeNullOrEmpty
 
 ## 1.3.6+database

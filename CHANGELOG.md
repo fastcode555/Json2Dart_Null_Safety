@@ -1,3 +1,7 @@
+## 1.4.5
+
+- rewrite the format method
+
 ## 1.4.4
 
 - add a callback for json parse failed

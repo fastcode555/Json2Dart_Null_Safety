@@ -46,6 +46,7 @@ extension MapExt on Map? {
     } catch (e) {
       print(e);
       _print('json parse failed,exception value:\"$key\":$value');
+      _printDetail('asDouble', key, this);
     }
     return defValue ?? 0.0;
   }
@@ -62,6 +63,7 @@ extension MapExt on Map? {
       } catch (e) {
         print(e);
         _print('json parse failed,exception value::\"$key\":$value');
+        _printDetail('asDoubles', key, this);
       }
     }
     return defValue ?? 0.0;
@@ -78,6 +80,7 @@ extension MapExt on Map? {
     } catch (e) {
       print(e);
       _print('json parse failed,exception value::\"$key\":$value');
+      _printDetail('asInt', key, this);
     }
     return defValue ?? 0;
   }
@@ -94,6 +97,7 @@ extension MapExt on Map? {
       } catch (e) {
         print(e);
         _print('json parse failed,exception value::\"$key\":$value');
+        _printDetail('asInts', key, this);
       }
     }
     return defValue ?? 0;
@@ -108,6 +112,7 @@ extension MapExt on Map? {
     if (value == 'true') return true;
     if (value == 'false') return false;
     _print('json parse failed,exception value::\"$key\":$value');
+    _printDetail('asBool', key, this);
     return defValue ?? false;
   }
 
@@ -128,6 +133,7 @@ extension MapExt on Map? {
     } catch (e) {
       print(e);
       _print('json parse failed,exception value::\"$key\":$value');
+      _printDetail('asNum', key, this);
     }
     return 0;
   }
@@ -148,6 +154,7 @@ extension MapExt on Map? {
       } catch (e) {
         print(e);
         _print('json parse failed,exception value::\"$key\":$value');
+        _printDetail('asColor', key, this);
       }
     }
     return Colors.amber;
@@ -175,6 +182,7 @@ extension MapExt on Map? {
     } catch (e) {
       print(e);
       _print('json parse failed,exception value::\"$key\":${this![key]}');
+      _printDetail('asList', key, this);
     }
     return null;
   }
@@ -204,6 +212,7 @@ extension MapExt on Map? {
       } catch (e) {
         print(e);
         _print('json parse failed,exception value::\"$key\":${this![key]}');
+        _printDetail('asLists', key, this);
       }
     }
 
@@ -224,6 +233,7 @@ extension MapExt on Map? {
       } catch (e) {
         print(e);
         _print('json parse failed,exception value::\"$key\":${this![key]}');
+        _printDetail('asBeans', key, this);
       }
     }
 
@@ -243,6 +253,7 @@ extension MapExt on Map? {
     } catch (e) {
       print(e);
       _print('json parse failed,exception value::\"$key\":${this![key]}');
+      _printDetail('asBean', key, this);
     }
     return null;
   }
@@ -261,6 +272,10 @@ extension MapExt on Map? {
     print(msg);
     Json2Dart.instance.callBack?.call(msg);
     //Monitor.instance.put('JsonError', msg);
+  }
+
+  void _printDetail(String method, String key, Map? map) {
+    Json2Dart.instance.detailCallBack?.call(method, key, map);
   }
 
   Map put(String key, Object? value) {
@@ -375,13 +390,18 @@ class Json2Dart {
 
   static Json2Dart get instance => _getInstance();
 
-  static Json2Dart _getInstance() => _instance ??= Json2Dart._internal();
+  static Json2Dart _getInstance() => _instance ??= Json2Dart._();
 
-  Json2Dart._internal();
+  Json2Dart._();
 
   Function(String)? callBack;
+  Function(String method, String key, Map? map)? detailCallBack;
 
   void addCallback(Function(String) callBack) {
     this.callBack = callBack;
+  }
+
+  void addDetailCallback(Function(String method, String key, Map? map) callBack) {
+    this.detailCallBack = callBack;
   }
 }

@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 /// @author Barry
 /// @date 2020/9/4
 /// describe:
@@ -138,7 +136,7 @@ extension MapExt on Map? {
     return 0;
   }
 
-  Color asColor(String key) {
+  /* Color asColor(String key) {
     Object? value = this?[key];
     if (value == null) return Colors.amber;
     if (value is String) {
@@ -158,7 +156,7 @@ extension MapExt on Map? {
       }
     }
     return Colors.amber;
-  }
+  }*/
 
   List<T>? asList<T>(String key, [Function(Map json)? toBean]) {
     if (this == null) return null;

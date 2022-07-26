@@ -1,3 +1,7 @@
+## 1.4.6
+
+- rewrite the format method
+
 ## 1.4.5
 
 - rewrite the format method

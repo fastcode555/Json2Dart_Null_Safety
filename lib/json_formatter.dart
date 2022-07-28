@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class JsonFormatter {
   JsonFormatter._();
 
@@ -5,21 +7,29 @@ class JsonFormatter {
   //缩进符号：indentation
   //style：需要进行格式化的样式
 
-  static String decode(
+  static String format(
     dynamic data, {
     int deep = 0,
     String indentation = "  ",
     String key = "",
   }) {
-    StringBuffer buffer = StringBuffer();
-    //解析List
-    if (data is List) {
-      buffer.write(_parseList(data));
-    } else if (data is Map) {
-      //解析map
-      buffer.write(_parseMap(data, count: deep, indentation: indentation));
+    try {
+      if (data is String) {
+        data = jsonDecode(data);
+      }
+      StringBuffer buffer = StringBuffer();
+      //解析List
+      if (data is List) {
+        buffer.write(_parseList(data));
+      } else if (data is Map) {
+        //解析map
+        buffer.write(_parseMap(data, count: deep, indentation: indentation));
+      }
+      return buffer.toString();
+    } catch (e) {
+      print(e);
     }
-    return buffer.toString();
+    return "";
   }
 
   ///解析Map

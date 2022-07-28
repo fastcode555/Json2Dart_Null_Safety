@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:json2dart_safe/json_formatter.dart';
-
 /// @author Barry
 /// @date 2020/9/4
 /// describe:
@@ -321,15 +319,6 @@ class Json2Dart {
   static Json2Dart _getInstance() => _instance ??= Json2Dart._();
 
   Json2Dart._();
-
-  static String formatJson(dynamic obj) {
-    if (obj is String) {
-      return JsonFormatter.decode(jsonDecode(obj));
-    } else if (obj is List || obj is Map) {
-      return JsonFormatter.decode(obj);
-    }
-    return obj.toString();
-  }
 
   Function(String)? callBack;
   Function(String method, String key, Map? map)? detailCallBack;

@@ -1,3 +1,7 @@
+## 1.5.0
+
+- refactor according to the suggestion
+
 ## 1.4.6
 
 - rewrite the format method

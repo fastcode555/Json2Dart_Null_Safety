@@ -57,9 +57,11 @@ class JsonFormatter {
       } else if (obj is num || obj is bool) {
         buffer.write('$space\"$key\":$obj');
       } else if (obj is Map) {
-        buffer.write(_parseMap(obj, count: count + 1, indentation: indentation, key: key));
+        buffer.write(_parseMap(obj,
+            count: count + 1, indentation: indentation, key: key));
       } else if (obj is List) {
-        buffer.write(_parseList(obj, deep: count + 1, indentation: indentation, key: key));
+        buffer.write(_parseList(obj,
+            deep: count + 1, indentation: indentation, key: key));
       }
       if (i != keys.length - 1) {
         buffer.write(",\n");
@@ -102,7 +104,8 @@ class JsonFormatter {
       } else if (obj is Map) {
         buffer.write(_parseMap(obj, count: deep + 1, indentation: indentation));
       } else if (obj is List) {
-        buffer.write(_parseList(obj, deep: deep + 1, indentation: indentation, key: key));
+        buffer.write(_parseList(obj,
+            deep: deep + 1, indentation: indentation, key: key));
       }
       if (i != data.length - 1) {
         buffer.write(",\n");

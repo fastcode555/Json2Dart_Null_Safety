@@ -342,7 +342,8 @@ class Json2Dart {
   }
 
   ///添加报错回调，详细的解析方式跟map
-  void addDetailCallback(Function(String method, String key, Map? map) callBack) {
+  void addDetailCallback(
+      Function(String method, String key, Map? map) callBack) {
     this.detailCallBack = callBack;
   }
 }

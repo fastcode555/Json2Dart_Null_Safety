@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
+    <g id="组_623" data-name="组 623" transform="translate(-16.933 -152.933)">
+        <g id="组_506" data-name="组 506" transform="translate(-3 -3)">
+            <circle id="椭圆_8" data-name="椭圆 8" cx="7.5" cy="7.5" r="7.5" transform="translate(19.933 155.933)" fill="#1e5d5d"/>
+            <path id="Icon_ionic-ios-close" data-name="Icon ionic-ios-close" d="M15.835,14.967l2.627-2.628a.616.616,0,0,0-.871-.871L14.964,14.1l-2.627-2.628a.616.616,0,1,0-.871.871l2.627,2.628L11.466,17.6a.616.616,0,0,0,.871.871l2.627-2.628,2.627,2.628a.616.616,0,0,0,.871-.871Z" transform="translate(11.984 147.98)" fill="#fff"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,5 @@
+"CFBundleName" = "Gesound";
+"NSCameraUsageDescription" = "此應用需要相機訪問權限才能掃描二維碼";
+"NSPhotoLibraryUsageDescription" = "用於用戶設置頭像或反饋圖片";
+"NSMicrophoneUsageDescription" = "用於為圖像選擇器插件捕獲音頻";
+"NSAppleMusicUsageDescription" = "用於瀏覽和播放本地音樂";

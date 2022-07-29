@@ -1,11 +1,12 @@
 # json2dart_db 的数据库支持
+
 - 1.可根据model生成表结构。
 - 2.支持表升级。
 
 ## 一.模型以及表的生成
 
 选择一个json模型，将模型复制到生成的插件中
-![Alt](http://tva1.sinaimg.cn/large/e6c76645gy1h3fls4pxqlj20mj0kd3zj.jpg)
+![Alt](pics/plugin_panel.jpeg)
 根据上方图片显示：
 
 - **ClassName** 只需要下划线的文件名（会自动生成文件跟对应的模型的驼峰式名字）

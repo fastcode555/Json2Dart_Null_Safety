@@ -1,0 +1,5 @@
+"CFBundleName" = "Gesound";
+"NSCameraUsageDescription" = "This app needs camera access to scan QR codes";
+"NSPhotoLibraryUsageDescription" = "Used for user to set avatar or feedback picture";
+"NSMicrophoneUsageDescription" = "Used to capture audio for the image selector plugin";
+"NSAppleMusicUsageDescription" = "For browsing and playing local music";

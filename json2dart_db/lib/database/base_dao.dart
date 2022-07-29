@@ -10,8 +10,8 @@ import 'base_db_model.dart';
 /// @date 27/4/22
 /// describe:
 ///@author:Barry
-
-abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeInsertFeature {
+abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
+    with _SafeInsertFeature {
   String __tableName = '';
   String _primaryKey = '';
 
@@ -33,7 +33,8 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   String get table => __tableName;
 
   @override
-  Future<int> insert(T? t, [String? tableName]) => _insertSafe(tableName ?? table, t);
+  Future<int> insert(T? t, [String? tableName]) =>
+      _insertSafe(tableName ?? table, t);
 
   @override
   Future<int> insertAll(
@@ -59,10 +60,12 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   }
 
   @override
-  Future<int> insertMap(Map<String, dynamic> t, [String? tableName]) => _insertMap(tableName ?? table, t);
+  Future<int> insertMap(Map<String, dynamic> t, [String? tableName]) =>
+      _insertMap(tableName ?? table, t);
 
   @override
-  Future<int> update(T? t, [String? tableName]) => _updateSafe(tableName ?? table, t);
+  Future<int> update(T? t, [String? tableName]) =>
+      _updateSafe(tableName ?? table, t);
 
   @override
   Future<int> updateAll(
@@ -90,7 +93,8 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   }
 
   @override
-  Future<void> execute(String sql, [List<Object?>? arguments]) => _db.execute(sql, arguments);
+  Future<void> execute(String sql, [List<Object?>? arguments]) =>
+      _db.execute(sql, arguments);
 
   @override
   Future<int> delete(T? t, [String? tableName]) {
@@ -146,13 +150,15 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
 
   @override
   Future<T?> queryOne(Object arg, [String? tableName]) async {
-    List<T>? _items = await query(tableName: tableName, where: "$_primaryKey = ?", whereArgs: [arg]);
+    List<T>? _items = await query(
+        tableName: tableName, where: "$_primaryKey = ?", whereArgs: [arg]);
     return _items?.first;
   }
 
   @override
   Future<int> queryCount([String? tableName]) async {
-    List<Map<String, dynamic>> _maps = await _db.query(tableName ?? table, columns: [_primaryKey]);
+    List<Map<String, dynamic>> _maps =
+        await _db.query(tableName ?? table, columns: [_primaryKey]);
     return _maps.length;
   }
 
@@ -172,7 +178,8 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
     try {
       await _db.execute("delete from ${tableName ?? table}");
       //reset the auto increase id
-      await _db.execute("update sqlite_sequence SET seq = 0 where name ='${tableName ?? table}';");
+      await _db.execute(
+          "update sqlite_sequence SET seq = 0 where name ='${tableName ?? table}';");
     } catch (e) {
       print(e);
     }
@@ -180,13 +187,15 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
 
   @override
   Future<T?> random([String? tableName]) async {
-    List<T>? items = await query(tableName: tableName, orderBy: "RANDOM()", limit: 1);
+    List<T>? items =
+        await query(tableName: tableName, orderBy: "RANDOM()", limit: 1);
     return items?.first;
   }
 
   @override
   Future<List<T>?> randoms(int count, [String? tableName]) async {
-    List<T>? items = await query(tableName: tableName, orderBy: "RANDOM()", limit: count);
+    List<T>? items =
+        await query(tableName: tableName, orderBy: "RANDOM()", limit: count);
     return items;
   }
 

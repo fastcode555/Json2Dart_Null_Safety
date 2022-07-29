@@ -30,6 +30,7 @@ abstract class BaseDbManager {
 
   FutureOr<void> onCreate(Database db, int version) async {}
 
+  ///项目进行初始化
   Future<void> init([String? dbName]) async {
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, dbName ?? getDbName());

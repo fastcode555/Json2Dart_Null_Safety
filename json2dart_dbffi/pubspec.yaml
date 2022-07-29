@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqflite:
+  sqflite_common_ffi:
   path:
 
 dev_dependencies:

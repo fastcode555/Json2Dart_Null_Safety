@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite_common_ffi:
+  sqflite_common:
   path:
 
 dev_dependencies:

@@ -6,42 +6,43 @@ class AudioModelDao extends BaseDao<AudioModel> {
 
   AudioModelDao() : super(_tableName, 'song_num');
 
-  static String tableSql([String? tableName]) => ""
-      "CREATE TABLE IF NOT EXISTS `${tableName ?? _tableName}` ("
-      "`lyrics_time` TEXT,"
-      "`song_singer_name` TEXT,"
-      "`song_name` TEXT,"
-      "`music_verify` INTEGER,"
-      "`duration` INTEGER,"
-      "`playlist_ids` TEXT,"
-      "`update_time` TEXT,"
-      "`video_url` TEXT,"
-      "`issue_date` TEXT,"
-      "`song_singer_image` TEXT,"
-      "`song_created_at` TEXT,"
-      "`language_text` TEXT,"
-      "`song_album_image` TEXT,"
-      "`song_album_views` INTEGER,"
-      "`song_singer_views` INTEGER,"
-      "`song_singer` INTEGER,"
-      "`audio_url_size` INTEGER,"
-      "`song_views` INTEGER,"
-      "`song_updated_at` TEXT,"
-      "`audio_url_size_time` INTEGER,"
-      "`song_album_name` TEXT,"
-      "`lyric_content` TEXT,"
-      "`down_load_url` TEXT,"
-      "`song_album` INTEGER,"
-      "`index_no` INTEGER,"
-      "`album_update_time` TEXT,"
-      "`audio_url` TEXT,"
-      "`album_language` TEXT,"
-      "`format` TEXT,"
-      "`source` TEXT,"
-      "`ext` TEXT,"
-      "`local_path` TEXT,"
-      "`is_audio_book` BOOLEAN,"
-      "`song_num` TEXT PRIMARY KEY)";
+  static String tableSql([String? tableName]) => '''
+      CREATE TABLE IF NOT EXISTS `${tableName ?? _tableName}` (
+      `lyrics_time` TEXT,
+      `song_singer_name` TEXT,
+      `song_name` TEXT,
+      `music_verify` INTEGER,
+      `duration` INTEGER,
+      `playlist_ids` TEXT,
+      `update_time` TEXT,
+      `video_url` TEXT,
+      `issue_date` TEXT,
+      `song_singer_image` TEXT,
+      `song_created_at` TEXT,
+      `language_text` TEXT,
+      `song_album_image` TEXT,
+      `song_album_views` INTEGER,
+      `song_singer_views` INTEGER,
+      `song_singer` INTEGER,
+      `audio_url_size` INTEGER,
+      `song_views` INTEGER,
+      `song_updated_at` TEXT,
+      `audio_url_size_time` INTEGER,
+      `song_album_name` TEXT,
+      `lyric_content` TEXT,
+      `down_load_url` TEXT,
+      `song_album` INTEGER,
+      `index_no` INTEGER,
+      `album_update_time` TEXT,
+      `audio_url` TEXT,
+      `album_language` TEXT,
+      `format` TEXT,
+      `source` TEXT,
+      `ext` TEXT,
+      `local_path` TEXT,
+      `is_audio_book` BOOLEAN,
+      `song_num` TEXT PRIMARY KEY
+      );''';
 
   @override
   AudioModel fromJson(Map json) => AudioModel.fromJson(json);

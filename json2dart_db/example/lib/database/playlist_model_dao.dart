@@ -6,26 +6,27 @@ class PlaylistModelDao extends BaseDao<PlaylistModel> {
 
   PlaylistModelDao() : super(_tableName, 'playlist_id');
 
-  static String tableSql([String? tableName]) => ""
-      "CREATE TABLE IF NOT EXISTS `${tableName ?? _tableName}` ("
-      "`cover` TEXT,"
-      "`create_time` TEXT,"
-      "`singer_name` TEXT,"
-      "`name` TEXT,"
-      "`song_ids` TEXT,"
-      "`count` INTEGER,"
-      "`position` INTEGER,"
-      "`singer_num` INTEGER,"
-      "`song_num` TEXT,"
-      "`type` INTEGER,"
-      "`is_pin` BOOLEAN,"
-      "`source` TEXT,"
-      "`extra_id` TEXT,"
-      "`ext` TEXT,"
-      "`playlist_type` TEXT,"
-      "`last_play_audioId` TEXT,"
-      "`last_play_position` INTEGER,"
-      "`playlist_id` INTEGER PRIMARY KEY AUTOINCREMENT)";
+  static String tableSql([String? tableName]) => '''
+      CREATE TABLE IF NOT EXISTS `${tableName ?? _tableName}` (
+      `cover` TEXT,
+      `create_time` TEXT,
+      `singer_name` TEXT,
+      `name` TEXT,
+      `song_ids` TEXT,
+      `count` INTEGER,
+      `position` INTEGER,
+      `singer_num` INTEGER,
+      `song_num` TEXT,
+      `type` INTEGER,
+      `is_pin` BOOLEAN,
+      `source` TEXT,
+      `extra_id` TEXT,
+      `ext` TEXT,
+      `playlist_type` TEXT,
+      `last_play_audioId` TEXT,
+      `last_play_position` INTEGER,
+      `playlist_id` INTEGER PRIMARY KEY AUTOINCREMENT
+      );''';
 
   @override
   PlaylistModel fromJson(Map json) => PlaylistModel.fromJson(json);

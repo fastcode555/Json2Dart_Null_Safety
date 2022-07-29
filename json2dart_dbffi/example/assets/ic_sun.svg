@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+    <g id="sun" transform="translate(-128 -737)">
+        <g id="椭圆_5" data-name="椭圆 5" transform="translate(128 737)" fill="#fff"
+            stroke="rgba(0,0,0,0.2)" stroke-width="1">
+            <circle cx="25" cy="25" r="25" stroke="none" />
+            <circle cx="25" cy="25" r="24.5" fill="none" />
+        </g>
+        <g id="组_11" data-name="组 11" transform="translate(2 -10)">
+            <g id="椭圆_8" data-name="椭圆 8" transform="translate(145 766)" fill="#fff"
+                stroke="#323232" stroke-width="2">
+                <circle cx="6" cy="6" r="6" stroke="none" />
+                <circle cx="6" cy="6" r="5" fill="none" />
+            </g>
+            <line id="直线_1" data-name="直线 1" y1="3.429" transform="translate(151 760)" fill="none"
+                stroke="#323232" stroke-linecap="round" stroke-width="2" />
+            <line id="直线_7" data-name="直线 7" y1="3.429"
+                transform="translate(159.485 763.515) rotate(45)" fill="none" stroke="#323232"
+                stroke-linecap="round" stroke-width="2" />
+            <line id="直线_3" data-name="直线 3" y1="3.429" transform="translate(163 772) rotate(90)"
+                fill="none" stroke="#323232" stroke-linecap="round" stroke-width="2" />
+            <line id="直线_8" data-name="直线 8" y1="3.429"
+                transform="translate(159.485 780.485) rotate(135)" fill="none" stroke="#323232"
+                stroke-linecap="round" stroke-width="2" />
+            <line id="直线_2" data-name="直线 2" y1="3.429" transform="translate(151 780.571)"
+                fill="none" stroke="#323232" stroke-linecap="round" stroke-width="2" />
+            <line id="直线_5" data-name="直线 5" y1="3.429"
+                transform="translate(144.939 778.061) rotate(45)" fill="none" stroke="#323232"
+                stroke-linecap="round" stroke-width="2" />
+            <line id="直线_4" data-name="直线 4" y1="3.429"
+                transform="translate(142.429 772) rotate(90)" fill="none" stroke="#323232"
+                stroke-linecap="round" stroke-width="2" />
+            <line id="直线_6" data-name="直线 6" y1="3.429"
+                transform="translate(144.939 765.939) rotate(135)" fill="none" stroke="#323232"
+                stroke-linecap="round" stroke-width="2" />
+        </g>
+    </g>
+</svg>

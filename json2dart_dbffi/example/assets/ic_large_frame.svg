@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="34" viewBox="0 0 30 34">
+    <g id="组_370" data-name="组 370" transform="translate(-251 -615)">
+        <g id="矩形_20" data-name="矩形 20" transform="translate(251 615)" fill="none" stroke="#323232"
+            stroke-width="2" opacity="0.64">
+            <rect width="30" height="34" rx="4" stroke="none" />
+            <rect x="1" y="1" width="28" height="32" rx="3" fill="none" />
+        </g>
+        <g id="组_15" data-name="组 15" transform="translate(-1109 35)">
+            <rect id="矩形_26" data-name="矩形 26" width="16" height="2" rx="1"
+                transform="translate(1367 588)" fill="#323232" />
+            <rect id="矩形_25" data-name="矩形 25" width="16" height="2" rx="1"
+                transform="translate(1367 592)" fill="#323232" />
+            <rect id="矩形_23" data-name="矩形 23" width="16" height="2" rx="1"
+                transform="translate(1367 596)" fill="#323232" />
+            <rect id="矩形_22" data-name="矩形 22" width="16" height="2" rx="1"
+                transform="translate(1367 600)" fill="#323232" />
+            <rect id="矩形_24" data-name="矩形 24" width="9.6" height="2" rx="1"
+                transform="translate(1367 604)" fill="#323232" />
+        </g>
+    </g>
+</svg>

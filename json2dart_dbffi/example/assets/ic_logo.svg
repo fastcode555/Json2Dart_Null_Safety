@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="108.895" height="87.682"
+    viewBox="0 0 108.895 87.682">
+    <g id="logo" transform="translate(-125.552 -309.766)">
+        <path id="减去_2" data-name="减去 2"
+            d="M-478,972h-14V926a4,4,0,0,0-4-4h-16V898a4.005,4.005,0,0,1,4-4h38a4,4,0,0,1,4,4v72a2,2,0,0,1-2,2h-4V903a3,3,0,0,0-3-3,3,3,0,0,0-3,3v69Z"
+            transform="translate(1196.113 39.651) rotate(45)" fill="#fff" />
+        <path id="减去_3" data-name="减去 3"
+            d="M-477,940h-33a2,2,0,0,1-2-2V898a4.005,4.005,0,0,1,4-4h38a4,4,0,0,1,4,4v40a2,2,0,0,1-2,2h-3V902a3,3,0,0,0-3-3,3,3,0,0,0-3,3v38Z"
+            transform="translate(1152.272 41.066) rotate(45)" fill="#fff" />
+    </g>
+</svg>

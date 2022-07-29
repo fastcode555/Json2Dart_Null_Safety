@@ -1,0 +1,4 @@
+"CFBundleName" = "BookReader";
+"NSCameraUsageDescription" = "用於用戶設置頭像或反饋圖片";
+"NSPhotoLibraryUsageDescription" = "用於用戶設置頭像或反饋圖片";
+"NSMicrophoneUsageDescription" = "用於為圖像選擇器插件捕獲音頻";

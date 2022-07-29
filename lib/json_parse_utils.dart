@@ -261,7 +261,7 @@ extension MapExt on Map? {
     bool isClassBean = true;
     if (obj is String || obj is num || obj is bool) {
       isClassBean = false;
-    } else if (obj is Map && obj.length == 0) {
+    } else if (obj is Map && obj.isEmpty) {
       isClassBean = false;
     }
     return isClassBean;
@@ -301,7 +301,7 @@ extension MapExt on Map? {
     for (Object key in keys) {
       Object? obj = this![key];
       if (obj == null) this?.remove(key);
-      if (obj is String && obj.trim().length == 0) {
+      if (obj is String && obj.trim().isEmpty) {
         this?.remove(key);
       }
     }

@@ -5,7 +5,7 @@ import 'dart:convert';
 /// describe:
 
 extension MapExt on Map? {
-  //单字段解析
+  ///单字段解析
   String asString(String key, [String? defValue]) {
     if (this == null) return defValue ?? '';
     Object? value = this![key];
@@ -14,7 +14,7 @@ extension MapExt on Map? {
     return value.toString();
   }
 
-  //多字段解析
+  ///多字段解析Strings
   String asStrings(List<String> keys, [String? defValue]) {
     if (this == null) return defValue ?? '';
     List<Object>? _values;
@@ -34,6 +34,7 @@ extension MapExt on Map? {
     return defValue ?? "";
   }
 
+  ///解析成double值
   double asDouble(String key, [double? defValue]) {
     if (this == null) return defValue ?? 0.0;
     Object? value = this![key];
@@ -50,6 +51,7 @@ extension MapExt on Map? {
     return defValue ?? 0.0;
   }
 
+  ///多字段解析成double值
   double asDoubles(List<String> keys, [double? defValue]) {
     if (this == null) return defValue ?? 0.0;
     for (String key in keys) {
@@ -68,6 +70,7 @@ extension MapExt on Map? {
     return defValue ?? 0.0;
   }
 
+  ///解析成int值
   int asInt(String key, [int? defValue]) {
     if (this == null) return defValue ?? 0;
     Object? value = this![key];
@@ -84,6 +87,7 @@ extension MapExt on Map? {
     return defValue ?? 0;
   }
 
+  ///解析成ints值
   int asInts(List<String> keys, [int? defValue]) {
     if (this == null) return defValue ?? 0;
     for (String key in keys) {
@@ -102,6 +106,7 @@ extension MapExt on Map? {
     return defValue ?? 0;
   }
 
+  ///解析成bool值
   bool asBool(String key, [bool? defValue]) {
     if (this == null) return defValue ?? false;
     Object? value = this![key];
@@ -115,6 +120,7 @@ extension MapExt on Map? {
     return defValue ?? false;
   }
 
+  ///解析成int或者double值
   num asNum(String key) {
     if (this == null) return 0;
     Object? value = this![key];
@@ -159,6 +165,7 @@ extension MapExt on Map? {
     return Colors.amber;
   }*/
 
+  ///解析成List
   List<T>? asList<T>(String key, [Function(Map json)? toBean]) {
     if (this == null) return null;
     try {
@@ -186,6 +193,7 @@ extension MapExt on Map? {
     return null;
   }
 
+  ///多字段解析成Lists
   List<T>? asLists<T>(List<String> keys, [Function(Map json)? toBean]) {
     if (this == null) return null;
     for (String key in keys) {
@@ -218,6 +226,7 @@ extension MapExt on Map? {
     return null;
   }
 
+  ///多字段解析成model
   T? asBeans<T>(List<String> keys, Function(Map json) toBean) {
     if (this == null) return null;
     for (String key in keys) {
@@ -239,6 +248,7 @@ extension MapExt on Map? {
     return null;
   }
 
+  ///解析成 model
   T? asBean<T>(String key, Function(Map json) toBean) {
     if (this == null) return null;
     try {
@@ -277,6 +287,7 @@ extension MapExt on Map? {
     Json2Dart.instance.detailCallBack?.call(method, key, map);
   }
 
+  ///key and value的功能
   Map put(String key, Object? value) {
     if (value != null && value is String && value.isNotEmpty) {
       this![key] = value;
@@ -286,6 +297,7 @@ extension MapExt on Map? {
     return this!;
   }
 
+  ///移除掉空的
   void removeNull() {
     if (this == null || this!.isEmpty) return;
     var keys = List.from(this!.keys);
@@ -295,6 +307,7 @@ extension MapExt on Map? {
     keys.clear();
   }
 
+  ///移除null值或空值
   void removeNullOrEmpty() {
     if (this == null || this!.isEmpty) return;
     var keys = List.from(this!.keys);
@@ -323,10 +336,12 @@ class Json2Dart {
   Function(String)? callBack;
   Function(String method, String key, Map? map)? detailCallBack;
 
+  ///添加报错回调
   void addCallback(Function(String) callBack) {
     this.callBack = callBack;
   }
 
+  ///添加报错回调，详细的解析方式跟map
   void addDetailCallback(Function(String method, String key, Map? map) callBack) {
     this.detailCallBack = callBack;
   }

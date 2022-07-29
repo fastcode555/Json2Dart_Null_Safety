@@ -6,7 +6,6 @@ class JsonFormatter {
   //count：当前的层级
   //缩进符号：indentation
   //style：需要进行格式化的样式
-
   static String format(
     dynamic data, {
     int deep = 0,

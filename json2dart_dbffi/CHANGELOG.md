@@ -1,3 +1,8 @@
+## 0.0.5
+
+- add the feature to add the new column for the table
+- the bool for ffi have problem，save as String
+
 ## 0.0.4
 
 - to support android,ios,macos,linux,window platform

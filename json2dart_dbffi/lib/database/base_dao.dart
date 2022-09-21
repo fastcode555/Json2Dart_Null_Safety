@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 import 'abstract_base_dao.dart';
@@ -10,7 +11,7 @@ import 'base_db_model.dart';
 /// @date 27/4/22
 /// describe:
 ///@author:Barry
-abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeInsertFeature {
+abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeInsertFeature, _UpgradeTableFeature {
   String __tableName = '';
   String _primaryKey = '';
 
@@ -193,6 +194,20 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   Future<void> drop([String? tableName]) async {
     return _db.execute("DROP TABLE ${tableName ?? table}");
   }
+
+  @override
+
+  ///add the new column for table,
+  ///the filed just like 'name Text'
+  void addColumn(String field) {
+    execute('ALTER TABLE $table ADD COLUMN $field');
+    debugPrint("The table $table add column excute");
+  }
+}
+
+///增加升级表操作的功能
+mixin _UpgradeTableFeature {
+  void addColumn(String field);
 }
 
 mixin _SafeInsertFeature {
@@ -259,6 +274,8 @@ mixin _SafeInsertFeature {
       if (value == null) continue;
       if (_isClassBean(value)) {
         values[key] = jsonEncode(value);
+      } else if (value is bool) {
+        values[key] = value.toString();
       }
     }
   }

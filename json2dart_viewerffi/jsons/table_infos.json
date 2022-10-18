@@ -1,0 +1,7 @@
+{
+  "type": "table",
+  "name": "book_model",
+  "tbl_name": "book_model",
+  "rootpage": 11,
+  "sql": "CREATE TABLE `book_model` (\n  `cover` TEXT,\n  `path` TEXT,\n  `chapter` TEXT,\n  `wordCount` INTEGER,\n  `md5_id` TEXT PRIMARY KEY,\n  `author` TEXT,\n  `description` TEXT,\n  `title` TEXT,\n  `last_index` INTEGER,\n  `last_offset` DOUBLE,\n  `chapter_count` INTEGER\n, test_key2 String)"
+}

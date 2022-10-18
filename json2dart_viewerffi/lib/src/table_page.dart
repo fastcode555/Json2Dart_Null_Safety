@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:json2dart_dbffi/json2dart_dbffi.dart';
-import 'package:json2dart_viewerffi/src/detail_page.dart';
-import 'package:json2dart_viewerffi/src/widgets/custom_scaffold.dart';
+
+import 'detail_page.dart';
+import 'widgets/custom_scaffold.dart';
 
 /// @date 18/10/22
 /// describe:
@@ -23,7 +24,7 @@ class TablePage extends StatelessWidget {
             itemBuilder: (_, index) {
               String tableName = data.data![index];
               return InkWell(
-                onTap: () {
+                onTap: () async {
                   Navigator.of(context).pushNamed(DetailPage.routeName, arguments: tableName);
                 },
                 child: Container(

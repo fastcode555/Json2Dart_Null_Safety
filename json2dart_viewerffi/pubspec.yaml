@@ -1,15 +1,16 @@
 name: json2dart_viewerffi
-description: A new Flutter project.
+description: A project to view sqlite datas.
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 0.0.1
+homepage: https://github.com/fastcode555/Json2Dart_Null_Safety/tree/master/json2dart_viewerffi
 
 environment:
   sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
   flutter_ume: '>=0.3.0'
+  auto_size_text:
   flutter:
     sdk: flutter
 
   json2dart_dbffi:
-    path: ../json2dart_dbffi

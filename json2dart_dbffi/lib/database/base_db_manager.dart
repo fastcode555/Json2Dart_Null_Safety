@@ -58,4 +58,15 @@ abstract class BaseDbManager {
 
   ///数据库名称，可复写
   String getDbName() => 'client_db.db';
+
+  ///查询数据库中所有的表
+  Future<List<String>> queryTables() async {
+    List<Map<String, Object?>> maps =
+    await _database!.rawQuery("select name from sqlite_master where type='table' order by name;");
+    List<String> _tabls = [];
+    for (Map<String, Object?> map in maps) {
+      _tabls.add(map['name'].toString());
+    }
+    return _tabls;
+  }
 }

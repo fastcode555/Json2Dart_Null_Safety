@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:json2dart_dbffi/json2dart_dbffi.dart';
+
+import 'detail_page.dart';
+import 'table_page.dart';
 
 /// @date 2020/12/17
 /// describe:悬浮面板
@@ -27,15 +29,12 @@ class _OverlayPaneState extends State<OverlayPane> {
             color: Colors.black.withOpacity(0.7),
             height: height / (_isFullScreen ? 1 : 2) - _statusHeight,
             width: double.infinity,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
+            child: Stack(
               children: [
+                _buildNavigator(),
                 Row(
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.delete, color: Colors.white),
-                      onPressed: () {},
-                    ),
+                    const Spacer(),
                     IconButton(
                       icon: Icon(
                         _isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
@@ -47,7 +46,6 @@ class _OverlayPaneState extends State<OverlayPane> {
                     ),
                   ],
                 ),
-                Expanded(child: _buildListView()),
               ],
             ),
           ),
@@ -56,22 +54,20 @@ class _OverlayPaneState extends State<OverlayPane> {
     );
   }
 
-  Widget _buildListView() {
-    return FutureBuilder<List<String>>(
-      future: BaseDbManager.instance.queryTables(),
-      builder: (_, data) {
-        return ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          itemBuilder: (_, index) {
-            String tableName = data.data![index];
-            return Container(
-              height: 30,
-              alignment: Alignment.centerLeft,
-              child: Text(tableName, style: TextStyle(color: Colors.white)),
-            );
-          },
-          itemCount: data.data?.length ?? 0,
-        );
+  Widget _buildNavigator() {
+    return Navigator(
+      initialRoute: TablePage.routeName,
+      onGenerateRoute: (RouteSettings settins) {
+        late WidgetBuilder builder;
+        switch (settins.name) {
+          case TablePage.routeName:
+            builder = (context) => TablePage();
+            break;
+          case DetailPage.routeName:
+            builder = (context) => DetailPage(tableName: settins.arguments as String);
+            break;
+        }
+        return MaterialPageRoute(builder: builder);
       },
     );
   }

@@ -1,3 +1,8 @@
+## 0.0.6
+
+- add the feature to query all the table
+- add the feature to query the table structure
+
 ## 0.0.5
 
 - add the feature to add the new column for the table

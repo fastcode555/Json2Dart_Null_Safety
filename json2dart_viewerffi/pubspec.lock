@@ -82,9 +82,9 @@ packages:
   json2dart_dbffi:
     dependency: "direct main"
     description:
-      name: json2dart_dbffi
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../json2dart_dbffi"
+      relative: true
+    source: path
     version: "0.0.6"
   json2dart_safe:
     dependency: transitive

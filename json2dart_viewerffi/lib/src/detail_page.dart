@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:json2dart_dbffi/database/model/table_info.dart';
@@ -38,6 +39,8 @@ class _DetailPageState extends State<DetailPage> {
           onPressed: () => Navigator.of(context).pushNamed(TableStructurePage.routeName, arguments: widget.tableName),
           child: Text('Structure'),
         ),
+        TextButton(onPressed: _handleClearDatas, child: Text('Clear Data')),
+        TextButton(onPressed: _handleDropTable, child: Text('Drop')),
       ],
       body: LayoutBuilder(
         builder: (_, constraint) {
@@ -81,5 +84,51 @@ class _DetailPageState extends State<DetailPage> {
     if (_tableInfo != null) return _tableInfo;
     _tableInfo = (await BaseDbManager.instance.queryTableInfo(widget.tableName));
     return _tableInfo;
+  }
+
+  ///删除某个表
+  void _handleDropTable() {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text('Tip'),
+          content: Text('Do you want to drop this table?'),
+          actions: <Widget>[
+            CupertinoDialogAction(child: Text('Cancel'), onPressed: Navigator.of(context).pop),
+            CupertinoDialogAction(
+              child: Text('Confirm'),
+              onPressed: () {
+                BaseDbManager.instance.drop(widget.tableName);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  ///删除表的数据
+  void _handleClearDatas() {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text('Tip'),
+          content: Text('Could you please confirm whether to delete all the data of this table?'),
+          actions: <Widget>[
+            CupertinoDialogAction(child: Text('Cancel'), onPressed: Navigator.of(context).pop),
+            CupertinoDialogAction(
+              child: Text('Confirm'),
+              onPressed: () {
+                BaseDbManager.instance.clearTable(widget.tableName).then((value) {
+                  setState(() {});
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

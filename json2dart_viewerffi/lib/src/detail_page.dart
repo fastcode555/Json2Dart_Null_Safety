@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:json2dart_dbffi/database/model/column_info.dart';
 import 'package:json2dart_dbffi/database/model/table_info.dart';
@@ -10,6 +11,8 @@ import 'package:json2dart_viewerffi/src/widgets/custom_scaffold.dart';
 
 /// @date 18/10/22
 /// describe: 显示数表的具体数据，暂未增加查询的功能
+
+const double _minWidth = 150;
 
 class DetailPage extends StatefulWidget {
   static const String routeName = "/src/detail_page";
@@ -23,6 +26,7 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   TableInfo? _tableInfo;
+  double _width = _minWidth;
 
   @override
   void initState() {
@@ -33,27 +37,41 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       lable: widget.tableName,
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: FutureBuilder<TableInfo?>(
-          future: _queryTableInfo(),
-          builder: (_, data) {
-            if (_tableInfo == null) return const SizedBox();
-            return Container(
-              width: _tableInfo!.columns!.length * 150,
-              child: Column(
-                children: [
-                  const Divider(color: Colors.white, thickness: 1, height: 1),
-                  _buildTableHeader(),
-                  const Divider(color: Colors.white, thickness: 1, height: 1),
-                  Expanded(child: _buildListView()),
-                ],
-              ),
-            );
-          },
-        ),
+      body: LayoutBuilder(
+        builder: (_, constraint) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: FutureBuilder<TableInfo?>(
+              future: _queryTableInfo(),
+              builder: (_, data) {
+                if (_tableInfo == null) return const SizedBox();
+                double containerWidth = _calculateSize(_tableInfo!.columns!.length, constraint.maxWidth);
+                return Container(
+                  width: containerWidth,
+                  child: Column(
+                    children: [
+                      const Divider(color: Colors.white, thickness: 1, height: 1),
+                      _buildTableHeader(),
+                      const Divider(color: Colors.white, thickness: 1, height: 1),
+                      Expanded(child: _buildListView()),
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
+  }
+
+  ///计算布局的宽度
+  double _calculateSize(int columnCount, double maxWidth) {
+    double containerWidth = columnCount * _minWidth;
+    bool needAssignWidth = maxWidth > containerWidth;
+    containerWidth = needAssignWidth ? maxWidth : containerWidth;
+    _width = needAssignWidth ? maxWidth / columnCount : _width;
+    return containerWidth;
   }
 
   ///生成表头
@@ -65,20 +83,20 @@ class _DetailPageState extends State<DetailPage> {
     List<Widget> children = [];
     for (int i = 0; i < columnInfos.length; i++) {
       ColumnInfo info = columnInfos[i];
+      String type = info.type == null || info.type!.isEmpty ? '' : "(${info.type})";
       children.add(
         Container(
           height: 35,
-          width: 150,
+          width: _width,
           decoration: BoxDecoration(
-            border: Border(
-              right: i != columnInfos.length - 1 ? BorderSide(color: Colors.white) : BorderSide.none,
-            ),
+            color: Colors.white.withOpacity(0.1),
+            border: Border(right: i != columnInfos.length - 1 ? BorderSide(color: Colors.white) : BorderSide.none),
           ),
           alignment: Alignment.center,
           child: AutoSizeText(
-            '${info.name}(${info.type})',
+            '${info.name}$type',
             maxLines: 1,
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
             minFontSize: 10,
           ),
         ),
@@ -99,7 +117,8 @@ class _DetailPageState extends State<DetailPage> {
       future: _queryList(),
       builder: (_, data) {
         return ListView.separated(
-          itemBuilder: (_, index) => _buildRow(index, data.data![index]),
+          physics: ClampingScrollPhysics(),
+          itemBuilder: (_, index) => _buildRow(index, data.data![index], data.data),
           separatorBuilder: (_, index) => const Divider(color: Colors.white, thickness: 1, height: 1),
           itemCount: data.data?.length ?? 0,
         );
@@ -111,9 +130,10 @@ class _DetailPageState extends State<DetailPage> {
     return BaseDbManager.instance.db.query(widget.tableName);
   }
 
-  Widget _buildRow(int index, Map<String, Object?> map) {
+  Widget _buildRow(int index, Map<String, Object?> map, List<Map<String, Object?>>? data) {
     List<Widget> children = [];
     List<ColumnInfo> columnInfos = _tableInfo!.columns!;
+    bool isLastItem = data!.length - 1 == index;
     for (int i = 0; i < columnInfos.length; i++) {
       ColumnInfo info = columnInfos[i];
       String filedValue = '${map[info.name]}';
@@ -124,7 +144,7 @@ class _DetailPageState extends State<DetailPage> {
           },
           child: Container(
             height: 35,
-            width: 150,
+            width: _width,
             decoration: BoxDecoration(
               border: Border(
                 right: i != columnInfos.length - 1 ? BorderSide(color: Colors.white) : BorderSide.none,
@@ -139,6 +159,12 @@ class _DetailPageState extends State<DetailPage> {
             ),
           ),
         ),
+      );
+    }
+    if (isLastItem) {
+      return Container(
+        decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white))),
+        child: Row(children: children),
       );
     }
     return Row(children: children);

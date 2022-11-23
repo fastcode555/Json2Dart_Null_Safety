@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:json2dart_dbffi/json2dart_dbffi.dart';
 
-import 'detail_page.dart';
+import 'table_detail_page.dart';
 import 'widgets/custom_scaffold.dart';
 
 /// @date 18/10/22
 /// describe:
-class TablePage extends StatelessWidget {
+
+class TablePage extends StatefulWidget {
   static const String routeName = "/";
 
-  const TablePage({Key? key}) : super(key: key);
+  @override
+  _TablePageState createState() => _TablePageState();
+}
 
+class _TablePageState extends State<TablePage> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -25,7 +29,12 @@ class TablePage extends StatelessWidget {
               String tableName = data.data![index];
               return InkWell(
                 onTap: () async {
-                  Navigator.of(context).pushNamed(DetailPage.routeName, arguments: tableName);
+                  //after delete table need to requery the table
+                  Navigator.of(context).pushNamed(TableDetailPage.routeName, arguments: tableName).then((value) {
+                    if (value != null && value is String) {
+                      setState(() {});
+                    }
+                  });
                 },
                 child: Container(
                   height: 30,
@@ -36,7 +45,15 @@ class TablePage extends StatelessWidget {
                         width: 30,
                         child: Text('${index + 1}.', style: TextStyle(color: Colors.white)),
                       ),
-                      Text(tableName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      FutureBuilder<int>(
+                        future: BaseDbManager.instance.queryCount(tableName),
+                        builder: (_, data) {
+                          return Text(
+                            '$tableName(${data.data ?? 0})',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

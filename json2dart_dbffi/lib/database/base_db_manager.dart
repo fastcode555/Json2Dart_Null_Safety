@@ -88,4 +88,26 @@ abstract class BaseDbManager {
     }
     return null;
   }
+
+  ///删除数据表的功能
+  Future<void> drop(String tableName) async {
+    return _database!.execute("DROP TABLE $tableName");
+  }
+
+  ///查询该表的数据数
+  Future<int> queryCount(String tableName) async {
+    List<Map<String, Object?>> data = await _database!.rawQuery('SELECT count(*) FROM $tableName');
+    return data[0]['count(*)'] as int;
+  }
+
+  ///删除所有数据
+  Future<void> clearTable(String tableName) async {
+    try {
+      await _database!.execute("delete from $tableName");
+      //reset the auto increase id
+      await _database!.execute("update sqlite_sequence SET seq = 0 where name ='$tableName';");
+    } catch (e) {
+      print(e);
+    }
+  }
 }

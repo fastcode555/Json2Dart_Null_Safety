@@ -16,24 +16,38 @@ import 'table_structure_page.dart';
 
 const double _minWidth = 150;
 
-class DetailPage extends StatefulWidget {
-  static const String routeName = "/src/detail_page";
+class TableDetailPage extends StatefulWidget {
+  static const String routeName = "/src/table_detail_page";
   final String tableName;
 
-  const DetailPage({super.key, required this.tableName});
+  const TableDetailPage({super.key, required this.tableName});
 
   @override
-  _DetailPageState createState() => _DetailPageState();
+  _TableDetailPageState createState() => _TableDetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _TableDetailPageState extends State<TableDetailPage> {
   TableInfo? _tableInfo;
   double _width = _minWidth;
+  ValueNotifier<int> _countNotifier = ValueNotifier(0);
+
+  @override
+  void initState() {
+    super.initState();
+    _queryCount();
+  }
+
+  void _queryCount() {
+    BaseDbManager.instance.queryCount(widget.tableName).then((value) {
+      _countNotifier.value = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       lable: widget.tableName,
+      title: _buildTitleWidget(),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pushNamed(TableStructurePage.routeName, arguments: widget.tableName),
@@ -99,7 +113,9 @@ class _DetailPageState extends State<DetailPage> {
             CupertinoDialogAction(
               child: Text('Confirm'),
               onPressed: () {
-                BaseDbManager.instance.drop(widget.tableName);
+                BaseDbManager.instance.drop(widget.tableName).then((value) {
+                  Navigator.of(context).pop(widget.tableName);
+                });
               },
             ),
           ],
@@ -128,6 +144,15 @@ class _DetailPageState extends State<DetailPage> {
             ),
           ],
         );
+      },
+    );
+  }
+
+  Widget _buildTitleWidget() {
+    return ValueListenableBuilder<int>(
+      valueListenable: _countNotifier,
+      builder: (_, data, __) {
+        return Text('${widget.tableName}(${data})');
       },
     );
   }

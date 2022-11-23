@@ -152,8 +152,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
 
   @override
   Future<int> queryCount([String? tableName]) async {
-    List<Map<String, dynamic>> _maps = await _db.query(tableName ?? table, columns: [_primaryKey]);
-    return _maps.length;
+    return BaseDbManager.instance.queryCount(tableName ?? table);
   }
 
   @override

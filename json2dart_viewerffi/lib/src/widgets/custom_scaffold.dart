@@ -12,6 +12,7 @@ class CustomScaffold extends StatelessWidget {
   final Color? bgColor;
   final bool automaticallyImplyLeading;
   final bool? centerTitle;
+  final Widget? title;
 
   const CustomScaffold({
     Key? key,
@@ -24,6 +25,7 @@ class CustomScaffold extends StatelessWidget {
     this.automaticallyImplyLeading = true,
     this.bgColor,
     this.centerTitle = true,
+    this.title,
   }) : super(key: key);
 
   @override
@@ -42,7 +44,7 @@ class CustomScaffold extends StatelessWidget {
               leading: _buildLeading(context),
               elevation: 0.0,
               centerTitle: centerTitle,
-              title: Text(lable ?? ''),
+              title: title ?? Text(lable ?? ''),
             )
           : null,
       body: body,

@@ -8,6 +8,8 @@ import 'package:json2dart_viewerffi/src/widgets/custom_scaffold.dart';
 import 'package:json2dart_viewerffi/src/widgets/db_list_view.dart';
 import 'package:json2dart_viewerffi/src/widgets/db_table_header.dart';
 
+import 'table_structure_page.dart';
+
 /// @date 18/10/22
 /// describe: 显示数表的具体数据，暂未增加查询的功能
 
@@ -31,6 +33,12 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       lable: widget.tableName,
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pushNamed(TableStructurePage.routeName, arguments: widget.tableName),
+          child: Text('Structure'),
+        ),
+      ],
       body: LayoutBuilder(
         builder: (_, constraint) {
           return SingleChildScrollView(

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:json2dart_viewerffi/src/table_structure_page.dart';
 
 import 'detail_page.dart';
 import 'table_page.dart';
@@ -65,6 +66,9 @@ class _OverlayPaneState extends State<OverlayPane> {
             break;
           case DetailPage.routeName:
             builder = (context) => DetailPage(tableName: settins.arguments as String);
+            break;
+          case TableStructurePage.routeName:
+            builder = (context) => TableStructurePage(tableName: settins.arguments as String);
             break;
         }
         return MaterialPageRoute(builder: builder);

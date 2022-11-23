@@ -23,7 +23,7 @@ class CustomScaffold extends StatelessWidget {
     this.body,
     this.automaticallyImplyLeading = true,
     this.bgColor,
-    this.centerTitle,
+    this.centerTitle = true,
   }) : super(key: key);
 
   @override
@@ -33,7 +33,10 @@ class CustomScaffold extends StatelessWidget {
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       appBar: showAppBar
           ? AppBar(
-              actions: actions,
+              actions: [
+                if (actions != null) ...actions!,
+                const SizedBox(width: 50),
+              ],
               backgroundColor: Colors.transparent,
               automaticallyImplyLeading: automaticallyImplyLeading,
               leading: _buildLeading(context),

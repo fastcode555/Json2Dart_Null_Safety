@@ -14,7 +14,7 @@ class TablePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      lable: "Tables",
+      lable: "${BaseDbManager.instance.getDbName()}:(Version:${BaseDbManager.instance.getDbVersion()})",
       automaticallyImplyLeading: false,
       body: FutureBuilder<List<String>>(
         future: BaseDbManager.instance.queryTables(),
@@ -30,7 +30,15 @@ class TablePage extends StatelessWidget {
                 child: Container(
                   height: 30,
                   alignment: Alignment.centerLeft,
-                  child: Text(tableName, style: TextStyle(color: Colors.white)),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 30,
+                        child: Text('${index + 1}.', style: TextStyle(color: Colors.white)),
+                      ),
+                      Text(tableName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
                 ),
               );
             },

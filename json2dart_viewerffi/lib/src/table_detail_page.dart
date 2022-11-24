@@ -30,6 +30,7 @@ class _TableDetailPageState extends State<TableDetailPage> {
   TableInfo? _tableInfo;
   double _width = _minWidth;
   ValueNotifier<int> _countNotifier = ValueNotifier(0);
+  //final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -69,6 +70,7 @@ class _TableDetailPageState extends State<TableDetailPage> {
                   width: containerWidth,
                   child: Column(
                     children: [
+                      //InputPanelField(controller: _controller),
                       const Divider(color: Colors.white, thickness: 1, height: 1),
                       DbTableHeader(rowWidth: _width, tableInfo: _tableInfo),
                       const Divider(color: Colors.white, thickness: 1, height: 1),
@@ -152,7 +154,12 @@ class _TableDetailPageState extends State<TableDetailPage> {
     return ValueListenableBuilder<int>(
       valueListenable: _countNotifier,
       builder: (_, data, __) {
-        return Text('${widget.tableName}(${data})');
+        return GestureDetector(
+          onTap: () {
+            _queryCount();
+          },
+          child: Text('${widget.tableName}(${data})'),
+        );
       },
     );
   }

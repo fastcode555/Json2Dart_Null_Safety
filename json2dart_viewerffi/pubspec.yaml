@@ -14,4 +14,3 @@ dependencies:
     sdk: flutter
 
   json2dart_dbffi:
-    path: ../json2dart_dbffi

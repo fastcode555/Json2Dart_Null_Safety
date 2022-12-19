@@ -166,9 +166,7 @@ class _InputPanelFieldState extends State<InputPanelField> {
   }
 
   Future<Null> _focusNodeListener() async {
-    if (_focusNode.hasFocus &&
-        _controller.text != null &&
-        _controller.text.isNotEmpty) {
+    if (_focusNode.hasFocus && _controller.text.isNotEmpty) {
       setState(() {
         _isShowClean = true;
       });
@@ -181,9 +179,7 @@ class _InputPanelFieldState extends State<InputPanelField> {
 
   @override
   void didUpdateWidget(InputPanelField oldWidget) {
-    if (_focusNode.hasFocus &&
-        _controller.text != null &&
-        _controller.text.isNotEmpty) {
+    if (_focusNode.hasFocus && _controller.text.isNotEmpty) {
       _isShowClean = true;
     } else {
       _isShowClean = false;

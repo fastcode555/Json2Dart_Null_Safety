@@ -1,3 +1,7 @@
+## 0.0.8
+
+- Reformat the codes
+
 ## 0.0.6
 
 - add the feature to query all the table

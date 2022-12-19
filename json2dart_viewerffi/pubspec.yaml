@@ -1,7 +1,7 @@
 name: json2dart_viewerffi
 description: A project to view sqlite datas,contain tables,colums,table strcture.
 
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/fastcode555/Json2Dart_Null_Safety/tree/master/json2dart_viewerffi
 
 environment:

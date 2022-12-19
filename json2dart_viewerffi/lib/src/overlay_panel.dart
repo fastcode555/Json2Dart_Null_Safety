@@ -16,11 +16,13 @@ class OverlayPane extends StatefulWidget {
 class _OverlayPaneState extends State<OverlayPane> {
   bool _isFullScreen = false;
 
-  double get _statusHeight => _isFullScreen ? MediaQuery.of(context).padding.top : 0;
+  double get _statusHeight =>
+      _isFullScreen ? MediaQuery.of(context).padding.top : 0;
 
   @override
   Widget build(BuildContext context) {
-    double height = window.physicalSize.height / MediaQuery.of(context).devicePixelRatio;
+    double height =
+        window.physicalSize.height / MediaQuery.of(context).devicePixelRatio;
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -38,7 +40,9 @@ class _OverlayPaneState extends State<OverlayPane> {
                     const Spacer(),
                     IconButton(
                       icon: Icon(
-                        _isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                        _isFullScreen
+                            ? Icons.fullscreen_exit
+                            : Icons.fullscreen,
                         color: Colors.white,
                       ),
                       onPressed: () {
@@ -65,10 +69,12 @@ class _OverlayPaneState extends State<OverlayPane> {
             builder = (context) => TablePage();
             break;
           case TableDetailPage.routeName:
-            builder = (context) => TableDetailPage(tableName: settins.arguments as String);
+            builder = (context) =>
+                TableDetailPage(tableName: settins.arguments as String);
             break;
           case TableStructurePage.routeName:
-            builder = (context) => TableStructurePage(tableName: settins.arguments as String);
+            builder = (context) =>
+                TableStructurePage(tableName: settins.arguments as String);
             break;
         }
         return MaterialPageRoute(builder: builder);

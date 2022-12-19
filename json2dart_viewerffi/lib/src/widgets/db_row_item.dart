@@ -40,14 +40,19 @@ class DbRowItem extends StatelessWidget {
             width: rowWidth,
             decoration: BoxDecoration(
               border: Border(
-                right: i != columnInfos.length - 1 ? BorderSide(color: Colors.white) : BorderSide.none,
+                right: i != columnInfos.length - 1
+                    ? BorderSide(color: Colors.white)
+                    : BorderSide.none,
               ),
             ),
             alignment: Alignment.center,
             child: AutoSizeText(
               filedValue,
               maxLines: 1,
-              style: TextStyle(color: Colors.white, fontSize: 14, overflow: TextOverflow.ellipsis),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  overflow: TextOverflow.ellipsis),
               minFontSize: 10,
             ),
           ),
@@ -56,7 +61,8 @@ class DbRowItem extends StatelessWidget {
     }
     if (isLastItem) {
       return Container(
-        decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white))),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.white))),
         child: Row(children: children),
       );
     }

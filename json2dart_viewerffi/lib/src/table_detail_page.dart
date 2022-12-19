@@ -51,7 +51,9 @@ class _TableDetailPageState extends State<TableDetailPage> {
       title: _buildTitleWidget(),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pushNamed(TableStructurePage.routeName, arguments: widget.tableName),
+          onPressed: () => Navigator.of(context).pushNamed(
+              TableStructurePage.routeName,
+              arguments: widget.tableName),
           child: Text('Structure'),
         ),
         TextButton(onPressed: _handleClearDatas, child: Text('Clear Data')),
@@ -65,16 +67,21 @@ class _TableDetailPageState extends State<TableDetailPage> {
               future: _queryTableInfo(),
               builder: (_, data) {
                 if (_tableInfo == null) return const SizedBox();
-                double containerWidth = _calculateSize(_tableInfo!.columns!.length, constraint.maxWidth);
+                double containerWidth = _calculateSize(
+                    _tableInfo!.columns!.length, constraint.maxWidth);
                 return Container(
                   width: containerWidth,
                   child: Column(
                     children: [
                       //InputPanelField(controller: _controller),
-                      const Divider(color: Colors.white, thickness: 1, height: 1),
+                      const Divider(
+                          color: Colors.white, thickness: 1, height: 1),
                       DbTableHeader(rowWidth: _width, tableInfo: _tableInfo),
-                      const Divider(color: Colors.white, thickness: 1, height: 1),
-                      Expanded(child: DbListView(tableInfo: _tableInfo!, rowWidth: _width)),
+                      const Divider(
+                          color: Colors.white, thickness: 1, height: 1),
+                      Expanded(
+                          child: DbListView(
+                              tableInfo: _tableInfo!, rowWidth: _width)),
                     ],
                   ),
                 );
@@ -98,7 +105,8 @@ class _TableDetailPageState extends State<TableDetailPage> {
   ///查询表信息
   Future<TableInfo?> _queryTableInfo() async {
     if (_tableInfo != null) return _tableInfo;
-    _tableInfo = (await BaseDbManager.instance.queryTableInfo(widget.tableName));
+    _tableInfo =
+        (await BaseDbManager.instance.queryTableInfo(widget.tableName));
     return _tableInfo;
   }
 
@@ -111,7 +119,8 @@ class _TableDetailPageState extends State<TableDetailPage> {
           title: Text('Tip'),
           content: Text('Do you want to drop this table?'),
           actions: <Widget>[
-            CupertinoDialogAction(child: Text('Cancel'), onPressed: Navigator.of(context).pop),
+            CupertinoDialogAction(
+                child: Text('Cancel'), onPressed: Navigator.of(context).pop),
             CupertinoDialogAction(
               child: Text('Confirm'),
               onPressed: () {
@@ -133,13 +142,17 @@ class _TableDetailPageState extends State<TableDetailPage> {
       builder: (context) {
         return CupertinoAlertDialog(
           title: Text('Tip'),
-          content: Text('Could you please confirm whether to delete all the data of this table?'),
+          content: Text(
+              'Could you please confirm whether to delete all the data of this table?'),
           actions: <Widget>[
-            CupertinoDialogAction(child: Text('Cancel'), onPressed: Navigator.of(context).pop),
+            CupertinoDialogAction(
+                child: Text('Cancel'), onPressed: Navigator.of(context).pop),
             CupertinoDialogAction(
               child: Text('Confirm'),
               onPressed: () {
-                BaseDbManager.instance.clearTable(widget.tableName).then((value) {
+                BaseDbManager.instance
+                    .clearTable(widget.tableName)
+                    .then((value) {
                   setState(() {});
                 });
               },

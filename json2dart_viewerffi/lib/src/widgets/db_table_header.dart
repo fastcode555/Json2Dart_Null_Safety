@@ -24,20 +24,25 @@ class DbTableHeader extends StatelessWidget {
     List<Widget> children = [];
     for (int i = 0; i < columnInfos.length; i++) {
       ColumnInfo info = columnInfos[i];
-      String type = info.type == null || info.type!.isEmpty ? '' : "(${info.type})";
+      String type =
+          info.type == null || info.type!.isEmpty ? '' : "(${info.type})";
       children.add(
         Container(
           height: 35,
           width: rowWidth,
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.1),
-            border: Border(right: i != columnInfos.length - 1 ? BorderSide(color: Colors.white) : BorderSide.none),
+            border: Border(
+                right: i != columnInfos.length - 1
+                    ? BorderSide(color: Colors.white)
+                    : BorderSide.none),
           ),
           alignment: Alignment.center,
           child: AutoSizeText(
             '${info.name}$type',
             maxLines: 1,
-            style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
             minFontSize: 10,
           ),
         ),

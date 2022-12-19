@@ -146,7 +146,9 @@ class _InputPanelFieldState extends State<InputPanelField> {
           _controller.text = _controller.text.substring(0, widget.maxLength);
           //移动角标到最后位置
           _controller.selection = TextSelection.fromPosition(
-            TextPosition(affinity: TextAffinity.downstream, offset: _controller.text.length),
+            TextPosition(
+                affinity: TextAffinity.downstream,
+                offset: _controller.text.length),
           );
         }
       }
@@ -164,7 +166,9 @@ class _InputPanelFieldState extends State<InputPanelField> {
   }
 
   Future<Null> _focusNodeListener() async {
-    if (_focusNode.hasFocus && _controller.text != null && _controller.text.isNotEmpty) {
+    if (_focusNode.hasFocus &&
+        _controller.text != null &&
+        _controller.text.isNotEmpty) {
       setState(() {
         _isShowClean = true;
       });
@@ -177,7 +181,9 @@ class _InputPanelFieldState extends State<InputPanelField> {
 
   @override
   void didUpdateWidget(InputPanelField oldWidget) {
-    if (_focusNode.hasFocus && _controller.text != null && _controller.text.isNotEmpty) {
+    if (_focusNode.hasFocus &&
+        _controller.text != null &&
+        _controller.text.isNotEmpty) {
       _isShowClean = true;
     } else {
       _isShowClean = false;
@@ -187,7 +193,9 @@ class _InputPanelFieldState extends State<InputPanelField> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.padding != null ? Padding(child: _buildTextField(), padding: widget.padding!) : _buildTextField();
+    return widget.padding != null
+        ? Padding(child: _buildTextField(), padding: widget.padding!)
+        : _buildTextField();
   }
 
   _buildTextField() {
@@ -198,14 +206,18 @@ class _InputPanelFieldState extends State<InputPanelField> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (widget.leftIconEnable) widget.leftWidget ?? Icon(Icons.search, size: 16, color: _iconColor),
+            if (widget.leftIconEnable)
+              widget.leftWidget ??
+                  Icon(Icons.search, size: 16, color: _iconColor),
             if (widget.leftIconEnable) SizedBox(width: 5),
             Expanded(
               child: TextField(
                 focusNode: _focusNode,
                 textAlign: TextAlign.start,
-                onEditingComplete:
-                    widget.onEditingComplete ?? (widget.scopeNode != null ? () => widget.scopeNode!.nextFocus() : null),
+                onEditingComplete: widget.onEditingComplete ??
+                    (widget.scopeNode != null
+                        ? () => widget.scopeNode!.nextFocus()
+                        : null),
                 controller: _controller,
                 //双击或长按报错
                 //enableInteractiveSelection: false,
@@ -251,7 +263,8 @@ class _InputPanelFieldState extends State<InputPanelField> {
             ),
             onTap: () {
               // 保证在组件build的第一帧时才去触发取消清空内
-              WidgetsBinding.instance.addPostFrameCallback((_) => _controller.clear());
+              WidgetsBinding.instance
+                  .addPostFrameCallback((_) => _controller.clear());
               widget.cancelCallBack?.call();
               setState(() {
                 _isShowClean = false;
@@ -269,7 +282,8 @@ class _InputPanelFieldState extends State<InputPanelField> {
             ? BoxDecoration(
                 color: _focusNode.hasFocus
                     ? widget.focusColor
-                    : (widget.normalColor ?? widget.focusColor!.withOpacity(0.5)),
+                    : (widget.normalColor ??
+                        widget.focusColor!.withOpacity(0.5)),
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               )
             : BoxDecoration(

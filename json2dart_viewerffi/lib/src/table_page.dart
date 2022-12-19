@@ -18,7 +18,8 @@ class _TablePageState extends State<TablePage> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      lable: "${BaseDbManager.instance.getDbName()}:(Version:${BaseDbManager.instance.getDbVersion()})",
+      lable:
+          "${BaseDbManager.instance.getDbName()}:(Version:${BaseDbManager.instance.getDbVersion()})",
       automaticallyImplyLeading: false,
       body: FutureBuilder<List<String>>(
         future: BaseDbManager.instance.queryTables(),
@@ -30,7 +31,10 @@ class _TablePageState extends State<TablePage> {
               return InkWell(
                 onTap: () async {
                   //after delete table need to requery the table
-                  Navigator.of(context).pushNamed(TableDetailPage.routeName, arguments: tableName).then((value) {
+                  Navigator.of(context)
+                      .pushNamed(TableDetailPage.routeName,
+                          arguments: tableName)
+                      .then((value) {
                     if (value != null && value is String) {
                       setState(() {});
                     }
@@ -43,14 +47,17 @@ class _TablePageState extends State<TablePage> {
                     children: [
                       SizedBox(
                         width: 30,
-                        child: Text('${index + 1}.', style: TextStyle(color: Colors.white)),
+                        child: Text('${index + 1}.',
+                            style: TextStyle(color: Colors.white)),
                       ),
                       FutureBuilder<int>(
                         future: BaseDbManager.instance.queryCount(tableName),
                         builder: (_, data) {
                           return Text(
                             '$tableName(${data.data ?? 0})',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           );
                         },
                       ),

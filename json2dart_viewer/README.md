@@ -15,13 +15,8 @@
 ![Alt](imgs/table_structure.jpg)
 
 # 接入插件
-是根据Ume插件规范开发的插件，使用方式跟这其一样，大家可以参考字节跳动的原项目[flutter_ume](https://pub.dev/packages/flutter_ume)
-## 1.pubspec.yaml接入
-```yaml
-  json2dart_viewer: ^1.0.0+2
-```
-
 ## 2.代码接入
+是根据Ume插件规范开发的插件，使用方式跟这其一样，大家可以参考字节跳动的原项目[flutter_ume](https://pub.dev/packages/flutter_ume)
 ```dart
 import 'package:json2dart_viewer/json2dart_viewer.dart';
 PluginManager.instance

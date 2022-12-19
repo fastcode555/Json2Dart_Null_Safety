@@ -10,7 +10,8 @@ class DbListView extends StatelessWidget {
   final TableInfo tableInfo;
   final double rowWidth;
 
-  const DbListView({required this.tableInfo, required this.rowWidth, Key? key}) : super(key: key);
+  const DbListView({required this.tableInfo, required this.rowWidth, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class DbListView extends StatelessWidget {
               rowWidth: rowWidth,
             );
           },
-          separatorBuilder: (_, index) => const Divider(color: Colors.white, thickness: 1, height: 1),
+          separatorBuilder: (_, index) =>
+              const Divider(color: Colors.white, thickness: 1, height: 1),
           itemCount: data.data?.length ?? 0,
         );
       },

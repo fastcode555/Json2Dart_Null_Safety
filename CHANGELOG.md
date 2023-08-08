@@ -1,3 +1,7 @@
+## 1.5.1
+
+- refactor according to the suggestion
+
 ## 1.5.0
 
 - refactor according to the suggestion

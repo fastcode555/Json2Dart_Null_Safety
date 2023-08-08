@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:json2dart_dbffi/database/model/column_info.dart';
 import 'package:json2dart_dbffi/database/model/table_info.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:path_provider/path_provider.dart';
 
 abstract class BaseDbManager {
   static BaseDbManager? _instance;
@@ -39,8 +41,11 @@ abstract class BaseDbManager {
 
   ///项目进行初始化
   Future<void> init([String? dbName]) async {
+    BaseDbManager.initial(this);
     // Init ffi loader if needed.
     sqfliteFfiInit();
+    // String dbPath = await _createDbPath();
+    // databaseFactoryFfi.setDatabasesPath(dbPath);
     var databasesPath = await databaseFactoryFfi.getDatabasesPath();
     String path = join(databasesPath, dbName ?? getDbName());
     _database = await databaseFactoryFfi.openDatabase(
@@ -52,7 +57,6 @@ abstract class BaseDbManager {
         onOpen: onOpen,
       ),
     );
-    BaseDbManager.initial(this);
   }
 
   ///数据库的版本号，可复写
@@ -61,10 +65,34 @@ abstract class BaseDbManager {
   ///数据库名称，可复写
   String getDbName() => 'client_db.db';
 
+  ///创建数据库的地址
+  static Future<String> _createDbPath() async {
+    Directory directory = await _getAppDirectory();
+    Directory dbDir = Directory("${directory.path}db");
+    dbDir.createSync();
+    return "${dbDir.path}/${BaseDbManager.instance.getDbName()}";
+  }
+
+  ///获取应用的文件夹
+  static Future<Directory> _getAppDirectory() async {
+    Directory tempDir;
+    if (Platform.isIOS || Platform.isMacOS) {
+      tempDir = await getApplicationDocumentsDirectory();
+    } else {
+      tempDir = (await getExternalStorageDirectory())!;
+    }
+    String tempPath = "${tempDir.path}/";
+    Directory file = Directory(tempPath);
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+    return file;
+  }
+
   ///查询数据库中所有的表
   Future<List<String>> queryTables() async {
-    List<Map<String, Object?>> maps = await _database!.rawQuery(
-        "select name from sqlite_master where type='table' order by name;");
+    List<Map<String, Object?>> maps =
+    await _database!.rawQuery("select name from sqlite_master where type='table' order by name;");
     List<String> _tables = [];
     for (Map<String, Object?> map in maps) {
       _tables.add(map['name'].toString());
@@ -74,12 +102,10 @@ abstract class BaseDbManager {
 
   ///查询表信息
   Future<TableInfo?> queryTableInfo(String name) async {
-    List<Map<String, Object?>> maps = await _database!
-        .rawQuery('select * from sqlite_master where name = "$name"');
+    List<Map<String, Object?>> maps = await _database!.rawQuery('select * from sqlite_master where name = "$name"');
     if (maps.isNotEmpty) {
       TableInfo tableInfo = TableInfo.fromJson(maps[0]);
-      List<Map<String, Object?>> datas =
-          await _database!.rawQuery("pragma table_info ('$name');");
+      List<Map<String, Object?>> datas = await _database!.rawQuery("pragma table_info ('$name');");
       List<ColumnInfo> columns = [];
       for (Map<String, Object?> map in datas) {
         ColumnInfo info = ColumnInfo.fromJson(map);
@@ -98,8 +124,7 @@ abstract class BaseDbManager {
 
   ///查询该表的数据数
   Future<int> queryCount(String tableName) async {
-    List<Map<String, Object?>> data =
-        await _database!.rawQuery('SELECT count(*) FROM $tableName');
+    List<Map<String, Object?>> data = await _database!.rawQuery('SELECT count(*) FROM $tableName');
     return data[0]['count(*)'] as int;
   }
 
@@ -108,8 +133,7 @@ abstract class BaseDbManager {
     try {
       await _database!.execute("delete from $tableName");
       //reset the auto increase id
-      await _database!.execute(
-          "update sqlite_sequence SET seq = 0 where name ='$tableName';");
+      await _database!.execute("update sqlite_sequence SET seq = 0 where name ='$tableName';");
     } catch (e) {
       print(e);
     }

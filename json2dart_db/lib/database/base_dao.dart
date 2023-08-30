@@ -28,7 +28,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
   FutureOr<void> onUpgrade(int oldVersion, int newVersion) {}
 
   @override
-  Database get _db => BaseDbManager.instance.db;
+  Database get db => BaseDbManager.instance.db;
 
   String get table => __tableName;
 
@@ -43,7 +43,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
     String? nullColumnHack,
     ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
   }) async {
-    final _batch = _db.batch();
+    final _batch = db.batch();
     for (T? c in t) {
       if (c == null) continue;
       Map<String, dynamic> values = c.toJson();
@@ -74,7 +74,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
     ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
   }) async {
     if (t == null || t.isEmpty) return Future.value(-1);
-    final _batch = _db.batch();
+    final _batch = db.batch();
     for (T? c in t) {
       if (c == null) continue;
       Map<String, dynamic> values = c.toJson();
@@ -94,13 +94,13 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
 
   @override
   Future<void> execute(String sql, [List<Object?>? arguments]) =>
-      _db.execute(sql, arguments);
+      db.execute(sql, arguments);
 
   @override
   Future<int> delete(T? t, [String? tableName]) {
     if (t == null) return Future.value(-1);
     Map<String, dynamic> map = t.primaryKeyAndValue();
-    return _db.delete(
+    return db.delete(
       tableName ?? table,
       where: "${map.keys.first} = ?",
       whereArgs: [map.values.first],
@@ -119,7 +119,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
       String? orderBy,
       int? limit,
       int? offset}) async {
-    List<Map<String, Object?>> _lists = await _db.query(tableName ?? table,
+    List<Map<String, Object?>> _lists = await db.query(tableName ?? table,
         distinct: distinct,
         columns: columns,
         where: where,
@@ -139,7 +139,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
 
   @override
   Future<List<T>?> queryAll([String? tableName]) async {
-    List<Map<String, Object?>> _lists = await _db.query(tableName ?? table);
+    List<Map<String, Object?>> _lists = await db.query(tableName ?? table);
     if (_lists.isEmpty) return null;
     List<T> _datas = [];
     for (Map<String, Object?> map in _lists) {
@@ -158,13 +158,13 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
   @override
   Future<int> queryCount([String? tableName]) async {
     List<Map<String, dynamic>> _maps =
-        await _db.query(tableName ?? table, columns: [_primaryKey]);
+        await db.query(tableName ?? table, columns: [_primaryKey]);
     return _maps.length;
   }
 
   @override
   Future<List<T>?> rawQuery(String sql, [List<Object?>? arguments]) async {
-    List<Map<String, Object?>> _lists = await _db.rawQuery(sql, arguments);
+    List<Map<String, Object?>> _lists = await db.rawQuery(sql, arguments);
     if (_lists.isEmpty) return null;
     List<T> _datas = [];
     for (Map<String, Object?> map in _lists) {
@@ -176,9 +176,9 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
   @override
   Future<void> clear([String? tableName]) async {
     try {
-      await _db.execute("delete from ${tableName ?? table}");
+      await db.execute("delete from ${tableName ?? table}");
       //reset the auto increase id
-      await _db.execute(
+      await db.execute(
           "update sqlite_sequence SET seq = 0 where name ='${tableName ?? table}';");
     } catch (e) {
       print(e);
@@ -201,12 +201,12 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T>
 
   @override
   Future<void> drop([String? tableName]) async {
-    return _db.execute("DROP TABLE ${tableName ?? table}");
+    return db.execute("DROP TABLE ${tableName ?? table}");
   }
 }
 
 mixin _SafeInsertFeature {
-  Database get _db;
+  Database get db;
 
   ///将模型插入到数据库中
   Future<int> _insertSafe(
@@ -218,7 +218,7 @@ mixin _SafeInsertFeature {
     if (t == null) return Future.value(-1);
     Map<String, dynamic> values = t.toJson();
     _convertSafeMap(values);
-    return _db.insert(
+    return db.insert(
       tableName,
       values,
       nullColumnHack: nullColumnHack,
@@ -235,7 +235,7 @@ mixin _SafeInsertFeature {
   }) {
     Map<String, dynamic> values = Map.from(t);
     _convertSafeMap(values);
-    return _db.insert(
+    return db.insert(
       tableName,
       values,
       nullColumnHack: nullColumnHack,
@@ -253,7 +253,7 @@ mixin _SafeInsertFeature {
     Map<String, dynamic> map = t.primaryKeyAndValue();
     Map<String, dynamic> values = t.toJson();
     _convertSafeMap(values);
-    return _db.update(
+    return db.update(
       tableName,
       values,
       conflictAlgorithm: conflictAlgorithm,

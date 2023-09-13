@@ -1,3 +1,8 @@
+## 1.0.2
+
+- Add the new function to deleteMulti or queryMulti
+
+
 ## 1.0.0
 
 - Reformat the codes

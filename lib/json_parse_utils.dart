@@ -114,6 +114,7 @@ extension MapExt on Map? {
     if (value is bool) return value;
     if (value is num) return value == 1;
     if (value == 'true') return true;
+    if (value == '0') return false;
     if (value == '1') return true;
     if (value == 'false') return false;
     _print('json parse failed,exception value::\"$key\":$value');
@@ -343,8 +344,7 @@ class Json2Dart {
   }
 
   ///添加报错回调，详细的解析方式跟map
-  void addDetailCallback(
-      Function(String method, String key, Map? map) callBack) {
+  void addDetailCallback(Function(String method, String key, Map? map) callBack) {
     this.detailCallBack = callBack;
   }
 }

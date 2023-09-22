@@ -36,11 +36,11 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
 
   @override
   Future<int> insertAll(
-      List<T?> t, {
-        String? tableName,
-        String? nullColumnHack,
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      }) async {
+    List<T?> t, {
+    String? tableName,
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) async {
     final _batch = db.batch();
     for (T? c in t) {
       if (c == null) continue;
@@ -65,10 +65,10 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
 
   @override
   Future<int> updateAll(
-      List<T>? t, {
-        String? tableName,
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      }) async {
+    List<T>? t, {
+    String? tableName,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) async {
     if (t == null || t.isEmpty) return Future.value(-1);
     final _batch = db.batch();
     for (T? c in t) {
@@ -105,15 +105,15 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   @override
   Future<List<T>?> query(
       {String? tableName,
-        bool? distinct,
-        List<String>? columns,
-        String? where,
-        List<Object?>? whereArgs,
-        String? groupBy,
-        String? having,
-        String? orderBy,
-        int? limit,
-        int? offset}) async {
+      bool? distinct,
+      List<String>? columns,
+      String? where,
+      List<Object?>? whereArgs,
+      String? groupBy,
+      String? having,
+      String? orderBy,
+      int? limit,
+      int? offset}) async {
     List<Map<String, Object?>> _lists = await db.query(tableName ?? table,
         distinct: distinct,
         columns: columns,
@@ -194,6 +194,13 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
     return db.execute("DROP TABLE ${tableName ?? table}");
   }
 
+  ///add the new column for table,
+  ///the filed just like 'name Text'
+  @override
+  void addColumn(String field) {
+    execute('ALTER TABLE $table ADD COLUMN $field');
+  }
+
   @override
   String composeIds(List<Object?>? datas) {
     if (datas == null || datas.isEmpty) return "";
@@ -250,11 +257,11 @@ mixin _SafeInsertFeature {
 
   ///将模型插入到数据库中
   Future<int> _insertSafe(
-      String tableName,
-      BaseDbModel? t, {
-        String? nullColumnHack,
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      }) {
+    String tableName,
+    BaseDbModel? t, {
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
     if (t == null) return Future.value(-1);
     Map<String, dynamic> values = t.toJson();
     _convertSafeMap(values);
@@ -268,11 +275,11 @@ mixin _SafeInsertFeature {
 
   ///将模型插入到数据库中
   Future<int> _insertMap(
-      String tableName,
-      Map<String, dynamic> t, {
-        String? nullColumnHack,
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      }) {
+    String tableName,
+    Map<String, dynamic> t, {
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
     Map<String, dynamic> values = Map.from(t);
     _convertSafeMap(values);
     return db.insert(
@@ -285,10 +292,10 @@ mixin _SafeInsertFeature {
 
   ///更新数据库中的模型
   Future<int> _updateSafe(
-      String tableName,
-      BaseDbModel? t, {
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      }) {
+    String tableName,
+    BaseDbModel? t, {
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
     if (t == null) return Future.value(-1);
     Map<String, dynamic> map = t.primaryKeyAndValue();
     Map<String, dynamic> values = t.toJson();

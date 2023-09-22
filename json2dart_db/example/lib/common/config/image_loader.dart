@@ -107,7 +107,7 @@ class ImageLoader extends StatelessWidget {
   double? _sigmaY;
   double? border;
   Color? borderColor;
-  BorderRadius? _borderRadius;
+  BorderRadiusGeometry? _borderRadius;
   String? _thumbUrl;
   final Decoration? decoration;
 
@@ -335,7 +335,7 @@ class ImageLoader extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             ClipRRect(
-              borderRadius: _borderRadius,
+              borderRadius: _borderRadius ?? BorderRadius.zero,
               child: _Image(
                 _canLoadImage ? url : null,
                 fit: fit,
@@ -350,13 +350,11 @@ class ImageLoader extends StatelessWidget {
                 height: _height,
               ),
             ),
-            Container(
-              child: ClipRRect(
-                borderRadius: _borderRadius,
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: _sigmaX!, sigmaY: _sigmaY!),
-                  child: Container(color: _blurColor ?? Colors.white10),
-                ),
+            ClipRRect(
+              borderRadius: _borderRadius ?? BorderRadius.zero,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: _sigmaX!, sigmaY: _sigmaY!),
+                child: Container(color: _blurColor ?? Colors.white10),
               ),
             ),
           ],

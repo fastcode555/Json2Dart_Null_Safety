@@ -90,5 +90,11 @@ mixin _HelpMixin<T> {
   T fromJson(Map json);
 }
 
+///增加升级表操作的功能
+mixin _UpgradeTableFeature {
+  void addColumn(String field);
+}
+
 ///Abstract BaseDao
-abstract class ABBaseDao<T> with _InsertMixin<T>, _QueryMixin<T>, _DeleteMixin<T>, _UpdateMixin<T>, _HelpMixin<T> {}
+abstract class ABBaseDao<T>
+    with _InsertMixin<T>, _QueryMixin<T>, _DeleteMixin<T>, _UpdateMixin<T>, _HelpMixin<T>, _UpgradeTableFeature {}

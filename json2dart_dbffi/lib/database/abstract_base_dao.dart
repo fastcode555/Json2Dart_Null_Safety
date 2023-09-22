@@ -8,11 +8,11 @@ mixin _InsertMixin<T> {
 
   ///插入所有model
   Future<int> insertAll(
-      List<T?> t, {
-        String? tableName,
-        String? nullColumnHack,
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      });
+    List<T?> t, {
+    String? tableName,
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  });
 
   ///插入map
   Future<int> insertMap(Map<String, dynamic> t, [String? tableName]);
@@ -21,15 +21,15 @@ mixin _QueryMixin<T> {
   ///调用sqflite 封装好的查询
   Future<List<T>?> query(
       {String? tableName,
-        bool? distinct,
-        List<String>? columns,
-        String? where,
-        List<Object?>? whereArgs,
-        String? groupBy,
-        String? having,
-        String? orderBy,
-        int? limit,
-        int? offset});
+      bool? distinct,
+      List<String>? columns,
+      String? where,
+      List<Object?>? whereArgs,
+      String? groupBy,
+      String? having,
+      String? orderBy,
+      int? limit,
+      int? offset});
 
   ///根据id，查询一个
   Future<T?> queryOne(Object arg, [String? tableName]);
@@ -67,10 +67,15 @@ mixin _UpdateMixin<T> {
 
   ///更新所有数据库
   Future<int> updateAll(
-      List<T>? t, {
-        String? tableName,
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      });
+    List<T>? t, {
+    String? tableName,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  });
+}
+
+///增加升级表操作的功能
+mixin _UpgradeTableFeature {
+  void addColumn(String field);
 }
 
 mixin _HelpMixin<T> {
@@ -90,4 +95,5 @@ mixin _HelpMixin<T> {
 }
 
 ///Abstract BaseDao
-abstract class ABBaseDao<T> with _InsertMixin<T>, _QueryMixin<T>, _DeleteMixin<T>, _UpdateMixin<T>, _HelpMixin<T> {}
+abstract class ABBaseDao<T>
+    with _InsertMixin<T>, _QueryMixin<T>, _DeleteMixin<T>, _UpdateMixin<T>, _HelpMixin<T>, _UpgradeTableFeature {}

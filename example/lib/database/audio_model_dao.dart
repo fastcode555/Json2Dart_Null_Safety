@@ -46,17 +46,11 @@ class AudioModelDao extends BaseDao<AudioModel> {
   @override
   AudioModel fromJson(Map json) => AudioModel.fromJson(json);
 
-  Future<List<AudioModel>> queryMultiIds(List<String>? songIds) async {
+  @override
+  Future<List<AudioModel>> queryMultiIds(List<Object?>? songIds, [String? tableName]) async {
     if (songIds == null || songIds.isEmpty) return [];
-    StringBuffer _buffer = StringBuffer();
-    for (String id in songIds) {
-      _buffer.write('\'$id\'');
-      _buffer.write(',');
-    }
-    String _ids = _buffer.toString();
-    _ids = _ids.substring(0, _ids.length - 1);
     //查询多条记录
-    String sql = "select * from $table where song_num in($_ids) order by index_no ASC";
+    String sql = "select * from $table where song_num in(${composeIds(songIds)}) order by index_no ASC";
     List<AudioModel>? _playlists = await rawQuery(sql);
     return _playlists ?? [];
   }

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../res/index.dart';
@@ -159,7 +160,7 @@ class CustomScaffold extends StatelessWidget {
                     leading: _buildLeading(context),
                     backgroundColor: appBarColor,
                     centerTitle: centerTitle,
-                    brightness: brightness,
+                    systemOverlayStyle: SystemUiOverlayStyle(statusBarBrightness: brightness),
                     automaticallyImplyLeading: automaticallyImplyLeading,
                     actions: actions,
                     title: _getTileWidget(),

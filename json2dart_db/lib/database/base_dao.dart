@@ -194,6 +194,13 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
     return db.execute("DROP TABLE ${tableName ?? table}");
   }
 
+  ///add the new column for table,
+  ///the filed just like 'name Text'
+  @override
+  void addColumn(String field) {
+    execute('ALTER TABLE $table ADD COLUMN $field');
+  }
+
   @override
   String composeIds(List<Object?>? datas) {
     if (datas == null || datas.isEmpty) return "";

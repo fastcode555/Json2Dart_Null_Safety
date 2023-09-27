@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'json2dart.dart';
+
 /// @author Barry
 /// @date 2020/9/4
 /// describe:
@@ -181,10 +183,9 @@ extension MapExt on Map? {
         }
       } else if (obj != null) {
         if (obj is List) {
-          return List<T>.from(obj);
+          return _listFrom<T>(obj, key);
         } else if (obj is String) {
-          List _list = jsonDecode(obj);
-          return List<T>.from(_list);
+          return _listFrom<T>(jsonDecode(obj), key);
         }
       }
     } catch (e) {
@@ -211,10 +212,9 @@ extension MapExt on Map? {
             }
           } else {
             if (obj is List) {
-              return List<T>.from(obj);
+              return _listFrom<T>(obj, key);
             } else if (obj is String) {
-              List _list = jsonDecode(obj);
-              return List<T>.from(_list);
+              return _listFrom<T>(jsonDecode(obj), key);
             }
           }
         }
@@ -269,26 +269,6 @@ extension MapExt on Map? {
     return null;
   }
 
-  bool _isClassBean(Object obj) {
-    bool isClassBean = true;
-    if (obj is String || obj is num || obj is bool) {
-      isClassBean = false;
-    } else if (obj is Map && obj.isEmpty) {
-      isClassBean = false;
-    }
-    return isClassBean;
-  }
-
-  void _print(String msg) {
-    print(msg);
-    Json2Dart.instance.callBack?.call(msg);
-    //Monitor.instance.put('JsonError', msg);
-  }
-
-  void _printDetail(String method, String key, Map? map) {
-    Json2Dart.instance.detailCallBack?.call(method, key, map);
-  }
-
   ///key and value的功能
   Map put(String key, Object? value) {
     if (value != null && value is String && value.isNotEmpty) {
@@ -324,27 +304,126 @@ extension MapExt on Map? {
   }
 }
 
-class Json2Dart {
-  static Json2Dart? _instance;
-
-  factory Json2Dart() => _getInstance();
-
-  static Json2Dart get instance => _getInstance();
-
-  static Json2Dart _getInstance() => _instance ??= Json2Dart._();
-
-  Json2Dart._();
-
-  Function(String)? callBack;
-  Function(String method, String key, Map? map)? detailCallBack;
-
-  ///添加报错回调
-  void addCallback(Function(String) callBack) {
-    this.callBack = callBack;
+bool _isClassBean(Object obj) {
+  bool isClassBean = true;
+  if (obj is String || obj is num || obj is bool) {
+    isClassBean = false;
+  } else if (obj is Map && obj.isEmpty) {
+    isClassBean = false;
   }
+  return isClassBean;
+}
 
-  ///添加报错回调，详细的解析方式跟map
-  void addDetailCallback(Function(String method, String key, Map? map) callBack) {
-    this.detailCallBack = callBack;
+void _print(String msg) {
+  print(msg);
+  Json2Dart.instance.callBack?.call(msg);
+}
+
+void _printDetail(String method, String key, Map? map) {
+  Json2Dart.instance.detailCallBack?.call(method, key, map);
+}
+
+int _secureInt(dynamic value, [String? key]) {
+  if (value is int) return value;
+  if (value == null) return 0;
+  if (value is double) return value.toInt();
+  if (value is String) {
+    try {
+      if (value.contains(".")) {
+        return double.parse(value).toInt();
+      }
+      return int.parse(value);
+    } catch (e) {
+      print(e);
+      _print('json parse failed,exception value:\"$key\":$value');
+    }
   }
+  return 0;
+}
+
+num _secureNum(dynamic value, [String? key]) {
+  if (value == null) return 0;
+  if (value is int) return value;
+  if (value is double) return value;
+  try {
+    if (value is String) {
+      if (value.contains('.')) {
+        return double.parse(value);
+      } else {
+        return int.parse(value);
+      }
+    }
+  } catch (e) {
+    print(e);
+    _print('json parse failed,exception value::\"$key\":$value');
+  }
+  return 0;
+}
+
+double _secureDouble(dynamic value, [String? key]) {
+  if (value == null) return 0.0;
+  if (value is double) return value;
+  try {
+    double result = double.parse(value.toString());
+    return result;
+  } catch (e) {
+    print(e);
+    _print('json parse failed,exception value:\"$key\":$value');
+  }
+  return 0.0;
+}
+
+String _secureString(dynamic value) {
+  if (value == null) return '';
+  if (value is String) return value;
+  return value.toString();
+}
+
+bool _secureBool(dynamic value, [String? key]) {
+  if (value == null) return false;
+  if (value is bool) return value;
+  if (value is num) return value == 1;
+  if (value == 'true') return true;
+  if (value == '0') return false;
+  if (value == '1') return true;
+  if (value == 'false') return false;
+  _print('json parse failed,exception value::\"$key\":$value');
+  return false;
+}
+
+List<T> _listFrom<T>(List<dynamic> obj, [String? key]) {
+  String type = "$T";
+  if (type == "int") {
+    List<int> results = [];
+    for (int i = 0; i < obj.length; i++) {
+      results.add(_secureInt(obj[i], key));
+    }
+    return results.cast<T>();
+  } else if (type == "num") {
+    List<num> results = [];
+    for (int i = 0; i < obj.length; i++) {
+      results.add(_secureNum(obj[i], key));
+    }
+    return results.cast<T>();
+  } else if (type == "double") {
+    List<double> results = [];
+    for (int i = 0; i < obj.length; i++) {
+      results.add(_secureDouble(obj[i], key));
+    }
+    return results.cast<T>();
+  } else if (type == "String") {
+    List<String> results = [];
+    for (int i = 0; i < obj.length; i++) {
+      results.add(_secureString(obj[i]));
+    }
+    return results.cast<T>();
+  } else if (type == "bool") {
+    List<bool> results = [];
+    for (int i = 0; i < obj.length; i++) {
+      results.add(_secureBool(obj[i], key));
+    }
+    return results.cast<T>();
+  }
+  print("类型：$T");
+  return List<T>.from(obj);
 }

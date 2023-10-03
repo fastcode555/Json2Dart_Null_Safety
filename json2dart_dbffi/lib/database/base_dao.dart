@@ -314,7 +314,9 @@ mixin _SafeInsertFeature {
     for (String key in values.keys) {
       Object? value = values[key];
       if (value == null) continue;
-      if (_isClassBean(value)) {
+      if (value is bool) {
+        values[key] = value.toString();
+      } else if (_isClassBean(value)) {
         values[key] = jsonEncode(value);
       }
     }

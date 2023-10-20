@@ -1,7 +1,7 @@
 name: json2dart_db
 description: use json2dart_safe togethor to surppot the database，easy support
 
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/fastcode555/Json2Dart_Null_Safety/tree/master/json2dart_db
 
 environment:

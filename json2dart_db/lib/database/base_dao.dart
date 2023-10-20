@@ -208,7 +208,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
     if (datas is List<String>) {
       for (var id in datas) {
         if (id == null) continue;
-        buffer.write('\'$id\'');
+        buffer.write('"$id"');
         buffer.write(',');
       }
       String ids = buffer.toString();

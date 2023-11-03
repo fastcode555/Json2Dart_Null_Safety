@@ -41,19 +41,19 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
     String? nullColumnHack,
     ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
   }) async {
-    final _batch = db.batch();
+    final batch = db.batch();
     for (T? c in t) {
       if (c == null) continue;
       Map<String, dynamic> values = c.toJson();
       _convertSafeMap(values);
-      _batch.insert(
+      batch.insert(
         tableName ?? table,
         values,
         nullColumnHack: nullColumnHack,
         conflictAlgorithm: conflictAlgorithm,
       );
     }
-    await _batch.commit(noResult: true);
+    await batch.commit(noResult: true);
     return Future.value(0);
   }
 
@@ -70,13 +70,13 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
     ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
   }) async {
     if (t == null || t.isEmpty) return Future.value(-1);
-    final _batch = db.batch();
+    final batch = db.batch();
     for (T? c in t) {
       if (c == null) continue;
       Map<String, dynamic> values = c.toJson();
       Map keyAndValues = c.primaryKeyAndValue();
       _convertSafeMap(values);
-      _batch.update(
+      batch.update(
         tableName ?? table,
         values,
         conflictAlgorithm: conflictAlgorithm,
@@ -84,7 +84,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
         whereArgs: [keyAndValues.values.first],
       );
     }
-    await _batch.commit(noResult: true);
+    await batch.commit(noResult: true);
     return Future.value(0);
   }
 
@@ -103,7 +103,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   }
 
   @override
-  Future<List<T>?> query(
+  Future<List<T>> query(
       {String? tableName,
       bool? distinct,
       List<String>? columns,
@@ -114,7 +114,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
       String? orderBy,
       int? limit,
       int? offset}) async {
-    List<Map<String, Object?>> _lists = await db.query(tableName ?? table,
+    List<Map<String, Object?>> lists = await db.query(tableName ?? table,
         distinct: distinct,
         columns: columns,
         where: where,
@@ -124,46 +124,46 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
         orderBy: orderBy,
         limit: limit,
         offset: offset);
-    if (_lists.isEmpty) return null;
-    List<T> _datas = [];
-    for (Map<String, Object?> map in _lists) {
-      _datas.add(fromJson(map));
+    if (lists.isEmpty) return [];
+    List<T> datas = [];
+    for (Map<String, Object?> map in lists) {
+      datas.add(fromJson(map));
     }
-    return _datas;
+    return datas;
   }
 
   @override
-  Future<List<T>?> queryAll([String? tableName]) async {
-    List<Map<String, Object?>> _lists = await db.query(tableName ?? table);
-    if (_lists.isEmpty) return null;
-    List<T> _datas = [];
-    for (Map<String, Object?> map in _lists) {
-      _datas.add(fromJson(map));
+  Future<List<T>> queryAll([String? tableName]) async {
+    List<Map<String, Object?>> lists = await db.query(tableName ?? table);
+    if (lists.isEmpty) return [];
+    List<T> datas = [];
+    for (Map<String, Object?> map in lists) {
+      datas.add(fromJson(map));
     }
-    return _datas;
+    return datas;
   }
 
   @override
   Future<T?> queryOne(Object arg, [String? tableName]) async {
-    List<T>? _items = await query(tableName: tableName, where: "$_primaryKey = ?", whereArgs: [arg]);
-    return _items?.first;
+    List<T> items = await query(tableName: tableName, where: "$_primaryKey = ?", whereArgs: [arg]);
+    return items.isNotEmpty ? items.first : null;
   }
 
   @override
   Future<int> queryCount([String? tableName]) async {
-    List<Map<String, dynamic>> _maps = await db.query(tableName ?? table, columns: [_primaryKey]);
-    return _maps.length;
+    List<Map<String, dynamic>> maps = await db.query(tableName ?? table, columns: [_primaryKey]);
+    return maps.length;
   }
 
   @override
-  Future<List<T>?> rawQuery(String sql, [List<Object?>? arguments]) async {
-    List<Map<String, Object?>> _lists = await db.rawQuery(sql, arguments);
-    if (_lists.isEmpty) return null;
-    List<T> _datas = [];
-    for (Map<String, Object?> map in _lists) {
-      _datas.add(fromJson(map));
+  Future<List<T>> rawQuery(String sql, [List<Object?>? arguments]) async {
+    List<Map<String, Object?>> lists = await db.rawQuery(sql, arguments);
+    if (lists.isEmpty) return [];
+    List<T> datas = [];
+    for (Map<String, Object?> map in lists) {
+      datas.add(fromJson(map));
     }
-    return _datas;
+    return datas;
   }
 
   @override
@@ -179,12 +179,12 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
 
   @override
   Future<T?> random([String? tableName]) async {
-    List<T>? items = await query(tableName: tableName, orderBy: "RANDOM()", limit: 1);
-    return items?.first;
+    List<T> items = await query(tableName: tableName, orderBy: "RANDOM()", limit: 1);
+    return items.isNotEmpty ? items.first : null;
   }
 
   @override
-  Future<List<T>?> randoms(int count, [String? tableName]) async {
+  Future<List<T>> randoms(int count, [String? tableName]) async {
     List<T>? items = await query(tableName: tableName, orderBy: "RANDOM()", limit: count);
     return items;
   }
@@ -205,7 +205,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   String composeIds(List<Object?>? datas) {
     if (datas == null || datas.isEmpty) return "";
     StringBuffer buffer = StringBuffer();
-    if (datas is List<String>) {
+    if (datas is List<String> || datas is List<String?>) {
       for (var id in datas) {
         if (id == null) continue;
         buffer.write('"$id"');
@@ -223,13 +223,13 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   @override
   Future<int> deleteMulti(List<Object?>? datas, [String? tableName]) async {
     if (datas is List<T>) {
-      final _batch = db.batch();
+      final batch = db.batch();
       for (T? c in datas) {
         if (c == null) continue;
         Map map = c.primaryKeyAndValue();
-        _batch.delete(tableName ?? table, where: "${map.keys.first} = ?", whereArgs: [map.values.first]);
+        batch.delete(tableName ?? table, where: "${map.keys.first} = ?", whereArgs: [map.values.first]);
       }
-      await _batch.commit(noResult: true);
+      await batch.commit(noResult: true);
     } else {
       String ids = composeIds(datas);
       String sql = "delete from $table where $_primaryKey in ($ids)";
@@ -248,7 +248,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
     if (ids.trim().isEmpty) return [];
     String sql = "select * from $table where $_primaryKey in($ids)";
     List<T>? results = await rawQuery(sql);
-    return results ?? [];
+    return results;
   }
 }
 

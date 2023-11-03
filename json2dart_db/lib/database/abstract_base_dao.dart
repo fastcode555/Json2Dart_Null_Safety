@@ -20,7 +20,7 @@ mixin _InsertMixin<T> {
 }
 mixin _QueryMixin<T> {
   ///调用sqflite 封装好的查询
-  Future<List<T>?> query(
+  Future<List<T>> query(
       {String? tableName,
       bool? distinct,
       List<String>? columns,
@@ -36,19 +36,19 @@ mixin _QueryMixin<T> {
   Future<T?> queryOne(Object arg, [String? tableName]);
 
   ///查询该表的所有数据
-  Future<List<T>?> queryAll([String? tableName]);
+  Future<List<T>> queryAll([String? tableName]);
 
   ///查询该表的总数
   Future<int> queryCount([String? tableName]);
 
   ///调用sql语句执行
-  Future<List<T>?> rawQuery(String sql, [List<Object?>? arguments]);
+  Future<List<T>> rawQuery(String sql, [List<Object?>? arguments]);
 
   ///随机获取一个数据
   Future<T?> random([String? tableName]);
 
   ///随机查询一组数据
-  Future<List<T>?> randoms(int count, [String? tableName]);
+  Future<List<T>> randoms(int count, [String? tableName]);
 
   ///查询多个ids
   Future<List<T>> queryMultiIds(List<Object?>? datas, [String? tableName]);
@@ -76,7 +76,7 @@ mixin _UpdateMixin<T> {
 
 mixin _HelpMixin<T> {
   ///组装Ids
-  String composeIds(List<Object> ids);
+  String composeIds(List<Object> datas);
 
   ///执行sql语句
   Future<void> execute(String sql, [List<Object?>? arguments]);

@@ -35,8 +35,7 @@ class PlaylistModelDao extends BaseDao<PlaylistModel> {
   Future<List<PlaylistModel>> queryMultiIds(List<Object?>? playlistIds, [String? tableName]) async {
     if (playlistIds == null || playlistIds.isEmpty) return [];
     String sql = "select * from $table where playlist_id in(${playlistIds.join(',')})";
-    List<PlaylistModel>? _playlists = await rawQuery(sql);
-    return _playlists ?? [];
+    return rawQuery(sql);
   }
 
   ///根据存储的额外id，进行导入

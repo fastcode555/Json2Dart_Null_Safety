@@ -51,7 +51,6 @@ class AudioModelDao extends BaseDao<AudioModel> {
     if (songIds == null || songIds.isEmpty) return [];
     //查询多条记录
     String sql = "select * from $table where song_num in(${composeIds(songIds)}) order by index_no ASC";
-    List<AudioModel>? _playlists = await rawQuery(sql);
-    return _playlists ?? [];
+    return rawQuery(sql);
   }
 }

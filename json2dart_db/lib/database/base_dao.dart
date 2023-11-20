@@ -35,7 +35,8 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   Future<int> insert(T? t, [String? tableName]) => _insertSafe(tableName ?? table, t);
 
   @override
-  Future<int> insertAll(List<T?> t, {
+  Future<int> insertAll(
+    List<T?> t, {
     String? tableName,
     String? nullColumnHack,
     ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
@@ -63,7 +64,8 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   Future<int> update(T? t, [String? tableName]) => _updateSafe(tableName ?? table, t);
 
   @override
-  Future<int> updateAll(List<T>? t, {
+  Future<int> updateAll(
+    List<T>? t, {
     String? tableName,
     ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
   }) async {
@@ -101,16 +103,17 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   }
 
   @override
-  Future<List<T>> query({String? tableName,
-    bool? distinct,
-    List<String>? columns,
-    String? where,
-    List<Object?>? whereArgs,
-    String? groupBy,
-    String? having,
-    String? orderBy,
-    int? limit,
-    int? offset}) async {
+  Future<List<T>> query(
+      {String? tableName,
+      bool? distinct,
+      List<String>? columns,
+      String? where,
+      List<Object?>? whereArgs,
+      String? groupBy,
+      String? having,
+      String? orderBy,
+      int? limit,
+      int? offset}) async {
     List<Map<String, Object?>> lists = await db.query(tableName ?? table,
         distinct: distinct,
         columns: columns,
@@ -205,7 +208,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
     if (datas is List<String> || datas is List<String?>) {
       for (var id in datas) {
         if (id == null) continue;
-        if (id.contains("'")) {
+        if (id is String && id.contains("'")) {
           buffer.write('"$id"');
         } else {
           buffer.write('\'$id\'');
@@ -246,9 +249,7 @@ abstract class BaseDao<T extends BaseDbModel> extends ABBaseDao<T> with _SafeIns
   @override
   Future<List<T>> queryMultiIds(List<Object?>? datas, [String? tableName]) async {
     String ids = composeIds(datas);
-    if (ids
-        .trim()
-        .isEmpty) return [];
+    if (ids.trim().isEmpty) return [];
     String sql = "select * from $table where $_primaryKey in($ids)";
     List<T>? results = await rawQuery(sql);
     return results;
@@ -259,11 +260,12 @@ mixin _SafeInsertFeature {
   Database get db;
 
   ///将模型插入到数据库中
-  Future<int> _insertSafe(String tableName,
-      BaseDbModel? t, {
-        String? nullColumnHack,
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      }) {
+  Future<int> _insertSafe(
+    String tableName,
+    BaseDbModel? t, {
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
     if (t == null) return Future.value(-1);
     Map<String, dynamic> values = t.toJson();
     _convertSafeMap(values);
@@ -276,11 +278,12 @@ mixin _SafeInsertFeature {
   }
 
   ///将模型插入到数据库中
-  Future<int> _insertMap(String tableName,
-      Map<String, dynamic> t, {
-        String? nullColumnHack,
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      }) {
+  Future<int> _insertMap(
+    String tableName,
+    Map<String, dynamic> t, {
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
     Map<String, dynamic> values = Map.from(t);
     _convertSafeMap(values);
     return db.insert(
@@ -292,10 +295,11 @@ mixin _SafeInsertFeature {
   }
 
   ///更新数据库中的模型
-  Future<int> _updateSafe(String tableName,
-      BaseDbModel? t, {
-        ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
-      }) {
+  Future<int> _updateSafe(
+    String tableName,
+    BaseDbModel? t, {
+    ConflictAlgorithm? conflictAlgorithm = ConflictAlgorithm.replace,
+  }) {
     if (t == null) return Future.value(-1);
     Map<String, dynamic> map = t.primaryKeyAndValue();
     Map<String, dynamic> values = t.toJson();

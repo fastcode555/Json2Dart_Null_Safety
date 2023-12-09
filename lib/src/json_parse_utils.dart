@@ -176,6 +176,12 @@ extension MapExt on Map? {
       Object? obj = this![key];
       if (toBean != null && obj != null) {
         if (obj is List) {
+          var e = obj[0];
+          //二维数组的处理
+          if (e is List) {
+            //ele.map((v) => toBean(v)).toList(),这一步无法cast，所以会变成List<Dynamic>类型，最终见到的格式就是List<List>
+            return obj.map((ele) => ele.map((v) => toBean(v)).toList()).toList().cast<T>();
+          }
           return obj.map((v) => toBean(v)).toList().cast<T>();
         } else if (obj is String) {
           List _list = jsonDecode(obj);
@@ -205,6 +211,12 @@ extension MapExt on Map? {
         if (obj != null) {
           if (toBean != null) {
             if (obj is List) {
+              var e = obj[0];
+              //二维数组的处理
+              if (e is List) {
+                //ele.map((v) => toBean(v)).toList(),这一步无法cast，所以会变成List<Dynamic>类型，最终见到的格式就是List<List>
+                return obj.map((ele) => ele.map((v) => toBean(v)).toList()).toList().cast<T>();
+              }
               return obj.map((v) => toBean(v)).toList().cast<T>();
             } else if (obj is String) {
               List _list = jsonDecode(obj);

@@ -1,8 +1,8 @@
 name: json2dart_safe
 description: A plugin to generated json with Null-Safety feature and safe convert with default value.
 
-version: 1.5.5
+version: 1.5.6
 homepage: https://github.com/fastcode555/Json2Dart_Null_Safety.git
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.12.0 <4.0.0'

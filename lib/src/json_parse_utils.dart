@@ -6,6 +6,18 @@ import 'json2dart.dart';
 /// @date 2020/9/4
 /// describe:
 
+extension _ListExt on List {
+  bool get is2dArray {
+    if (this.isEmpty) return false;
+    for (Object obj in this) {
+      if (obj is List) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
 extension MapExt on Map? {
   ///单字段解析
   String asString(String key, [String? defValue]) {
@@ -176,9 +188,9 @@ extension MapExt on Map? {
       Object? obj = this![key];
       if (toBean != null && obj != null) {
         if (obj is List) {
-          var e = obj[0];
+          if (obj.isEmpty) return [];
           //二维数组的处理
-          if (e is List) {
+          if (obj.is2dArray) {
             //ele.map((v) => toBean(v)).toList(),这一步无法cast，所以会变成List<Dynamic>类型，最终见到的格式就是List<List>
             return obj.map((ele) => ele.map((v) => toBean(v)).toList()).toList().cast<T>();
           }
@@ -202,6 +214,40 @@ extension MapExt on Map? {
     return null;
   }
 
+  ///Two-dimensional array 二维数组解析
+  List<List<T>>? asArray2d<T>(String key, [Function(Map json)? toBean]) {
+    if (this == null) return null;
+    try {
+      Object? obj = this![key];
+      if (toBean != null && obj != null) {
+        if (obj is List) {
+          if (obj.isEmpty) return [];
+          if (obj.is2dArray) {
+            return obj.map((ele) => ele.map((v) => toBean(v)).toList().cast<T>()).toList().cast<List<T>>();
+          }
+          return [];
+        } else if (obj is String) {
+          List _list = jsonDecode(obj);
+          if (_list.is2dArray) {
+            return _list.map((ele) => ele.map((v) => toBean(v)).toList().cast<T>()).toList().cast<List<T>>();
+          }
+          return [];
+        }
+      } else if (obj != null) {
+        if (obj is List) {
+          return _array2dFrom<T>(obj, key);
+        } else if (obj is String) {
+          return _array2dFrom<T>(jsonDecode(obj), key);
+        }
+      }
+    } catch (e) {
+      print(e);
+      _print('json parse failed,exception value::\"$key\":${this![key]}');
+      _printDetail('asList', key, this);
+    }
+    return null;
+  }
+
   ///多字段解析成Lists
   List<T>? asLists<T>(List<String> keys, [Function(Map json)? toBean]) {
     if (this == null) return null;
@@ -211,9 +257,9 @@ extension MapExt on Map? {
         if (obj != null) {
           if (toBean != null) {
             if (obj is List) {
-              var e = obj[0];
+              if (obj.isEmpty) return [];
               //二维数组的处理
-              if (e is List) {
+              if (obj.is2dArray) {
                 //ele.map((v) => toBean(v)).toList(),这一步无法cast，所以会变成List<Dynamic>类型，最终见到的格式就是List<List>
                 return obj.map((ele) => ele.map((v) => toBean(v)).toList()).toList().cast<T>();
               }
@@ -405,6 +451,7 @@ bool _secureBool(dynamic value, [String? key]) {
 
 List<T> _listFrom<T>(List<dynamic> obj, [String? key]) {
   String type = "$T";
+  obj = obj.where((value) => value != null).toList();
   if (type == "int") {
     List<int> results = [];
     for (int i = 0; i < obj.length; i++) {
@@ -436,6 +483,18 @@ List<T> _listFrom<T>(List<dynamic> obj, [String? key]) {
     }
     return results.cast<T>();
   }
-  print("类型：$T");
+  // print("类型：$T");
   return List<T>.from(obj);
+}
+
+///二维数组普通类型解析
+List<List<T>> _array2dFrom<T>(List<dynamic> obj, [String? key]) {
+  if (obj.is2dArray) {
+    return obj
+        .where((element) => element != null)
+        .map((e) => _listFrom(e, key).toList().cast<T>())
+        .toList()
+        .cast<List<T>>();
+  }
+  return [];
 }

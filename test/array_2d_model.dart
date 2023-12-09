@@ -1,27 +1,28 @@
 import 'package:json2dart_safe/json2dart.dart';
 import 'dart:convert';
 
-class ArrayListModel {
-  List<List>? otherRewards;
-  List<List>? mainRewards;
-  List<List>? imageArrays;
-  List<List>? pointsArrays;
+class Array2dModel {
+  List<List<OtherRewards>>? otherRewards;
+  List<List<MainRewards>>? mainRewards;
   String? pointsPic;
-  String? targetReward;
-  String? endTime;
+  List<List<int>>? pointsArrays;
+  int? targetReward;
+  int? endTime;
   List<YourRewards>? yourRewards;
-  String? points;
-  String? startTime;
+  int? points;
+  int? startTime;
   String? topicPic;
-  String? topic3;
-  String? topic4;
-  String? campaignId;
-  String? displayStatus;
+  int? topic3;
+  int? topic4;
+  List<List<String>>? imageArrays;
+  int? campaignId;
+  int? displayStatus;
 
-  ArrayListModel({
+  Array2dModel({
     this.otherRewards,
     this.mainRewards,
     this.pointsPic,
+    this.pointsArrays,
     this.targetReward,
     this.endTime,
     this.yourRewards,
@@ -30,18 +31,16 @@ class ArrayListModel {
     this.topicPic,
     this.topic3,
     this.topic4,
+    this.imageArrays,
     this.campaignId,
     this.displayStatus,
-    this.imageArrays,
-    this.pointsArrays,
   });
 
-  ArrayListModel clone() => ArrayListModel(
+  Array2dModel clone() => Array2dModel(
         otherRewards: otherRewards?.map((v) => v.map((e) => e.clone()).toList()).toList(),
         mainRewards: mainRewards?.map((v) => v.map((e) => e.clone()).toList()).toList(),
-        imageArrays: imageArrays?.map((e) => List<String>.from(e)).toList(),
-        pointsArrays: pointsArrays?.map((e) => List<int>.from(e)).toList(),
         pointsPic: pointsPic,
+        pointsArrays: pointsArrays?.map((e) => List<int>.from(e)).toList(),
         targetReward: targetReward,
         endTime: endTime,
         yourRewards: yourRewards?.map((v) => v.clone()).toList(),
@@ -50,6 +49,7 @@ class ArrayListModel {
         topicPic: topicPic,
         topic3: topic3,
         topic4: topic4,
+        imageArrays: imageArrays?.map((e) => List<String>.from(e)).toList(),
         campaignId: campaignId,
         displayStatus: displayStatus,
       );
@@ -57,9 +57,8 @@ class ArrayListModel {
   Map<String, dynamic> toJson() => {
         'other_rewards': otherRewards?.map((v) => v.map((e) => e.toJson()).toList()).toList(),
         'main_rewards': mainRewards?.map((v) => v.map((e) => e.toJson()).toList()).toList(),
-        'points_arrays': pointsArrays,
-        'image_arrays': imageArrays,
         'points_pic': pointsPic,
+        'points_arrays': pointsArrays,
         'target_reward': targetReward,
         'end_time': endTime,
         'your_rewards': yourRewards?.map((v) => v.toJson()).toList(),
@@ -68,26 +67,27 @@ class ArrayListModel {
         'topic_pic': topicPic,
         'topic_3': topic3,
         'topic_4': topic4,
+        'image_arrays': imageArrays,
         'campaign_id': campaignId,
         'display_status': displayStatus,
       };
 
-  ArrayListModel.fromJson(Map json) {
-    otherRewards = json.asList<List>('other_rewards', (v) => OtherRewards.fromJson(v));
-    mainRewards = json.asList<List>('main_rewards', (v) => MainRewards.fromJson(v));
-    imageArrays = json.asList<List>('image_arrays');
-    pointsArrays = json.asList<List>('points_arrays');
+  Array2dModel.fromJson(Map json) {
+    otherRewards = json.asArray2d<OtherRewards>('other_rewards', (v) => OtherRewards.fromJson(v));
+    mainRewards = json.asArray2d<MainRewards>('main_rewards', (v) => MainRewards.fromJson(v));
     pointsPic = json.asString('points_pic');
-    targetReward = json.asString('target_reward');
-    endTime = json.asString('end_time');
+    pointsArrays = json.asArray2d<int>('points_arrays');
+    targetReward = json.asInt('target_reward');
+    endTime = json.asInt('end_time');
     yourRewards = json.asList<YourRewards>('your_rewards', (v) => YourRewards.fromJson(v));
-    points = json.asString('points');
-    startTime = json.asString('start_time');
+    points = json.asInt('points');
+    startTime = json.asInt('start_time');
     topicPic = json.asString('topic_pic');
-    topic3 = json.asString('topic_3');
-    topic4 = json.asString('topic_4');
-    campaignId = json.asString('campaign_id');
-    displayStatus = json.asString('display_status');
+    topic3 = json.asInt('topic_3');
+    topic4 = json.asInt('topic_4');
+    imageArrays = json.asArray2d<String>('image_arrays');
+    campaignId = json.asInt('campaign_id');
+    displayStatus = json.asInt('display_status');
   }
 
   @override
@@ -95,8 +95,8 @@ class ArrayListModel {
 }
 
 class OtherRewards {
-  String? amount;
-  String? tp;
+  int? amount;
+  int? tp;
 
   OtherRewards({
     this.amount,
@@ -114,8 +114,8 @@ class OtherRewards {
       };
 
   OtherRewards.fromJson(Map json) {
-    amount = json.asString('amount');
-    tp = json.asString('tp');
+    amount = json.asInt('amount');
+    tp = json.asInt('tp');
   }
 
   @override
@@ -123,8 +123,8 @@ class OtherRewards {
 }
 
 class MainRewards {
-  String? amount;
-  String? tp;
+  int? amount;
+  int? tp;
 
   MainRewards({
     this.amount,
@@ -142,8 +142,8 @@ class MainRewards {
       };
 
   MainRewards.fromJson(Map json) {
-    amount = json.asString('amount');
-    tp = json.asString('tp');
+    amount = json.asInt('amount');
+    tp = json.asInt('tp');
   }
 
   @override
@@ -202,8 +202,8 @@ class RawInfo {
 }
 
 class YourRewards {
-  String? rewardValue;
-  String? rewardType;
+  int? rewardValue;
+  int? rewardType;
   String? rewardAddr;
   RawInfo? rawInfo;
 
@@ -229,8 +229,8 @@ class YourRewards {
       };
 
   YourRewards.fromJson(Map json) {
-    rewardValue = json.asString('reward_value');
-    rewardType = json.asString('reward_type');
+    rewardValue = json.asInt('reward_value');
+    rewardType = json.asInt('reward_type');
     rewardAddr = json.asString('reward_addr');
     rawInfo = json.asBean('raw_info', (v) => RawInfo.fromJson(v));
   }

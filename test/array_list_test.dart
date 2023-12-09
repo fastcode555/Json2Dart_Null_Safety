@@ -1,3 +1,9 @@
+import 'dart:convert';
+
+import 'array_list_model.dart';
+
+void main() {
+  String content = '''
 {
   "campaign_id": 10,
   "start_time": 1693972698,
@@ -10,6 +16,7 @@
     [
       "0"
     ],
+    null,
     [
       "1",
       "2",
@@ -126,4 +133,30 @@
       }
     ]
   ]
+}
+  ''';
+  var model = ArrayListModel.fromJson(jsonDecode(content));
+  //无法指定类型，类型不清楚
+  for (List list in model.mainRewards!) {
+    for (MainRewards item in list) {
+      print(item.toString());
+    }
+  }
+
+  //测试基本类型
+  print("${model.pointsArrays?.toString()}");
+  print("${model.imageArrays?.toString()}");
+
+  //测试bean类型
+  print("${model.mainRewards?.toString()}");
+  print("${model.yourRewards?.toString()}");
+  print("${model.otherRewards?.toString()}");
+
+  //测试clone
+  var model2 = model.clone();
+  print("${model.mainRewards?.hashCode}");
+  print("${model2.mainRewards?.hashCode}");
+
+  print("${model.mainRewards![0][0].hashCode}");
+  print("${model2.mainRewards![0][0].hashCode}");
 }

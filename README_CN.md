@@ -206,7 +206,7 @@ Future<ResultData> search(Map<String, dynamic> parameters) {
 
 以下两种方式都是本人捣鼓的，第二网站的搭建是某位大神的，我也是clone 大神的flutter web项目搭建的（感谢！！！）
 
-- [插件下载地址](https://github.com/fastcode555/JsonBeanGenerator/tree/master/publish_version)
+- [插件下载地址](https://github.com/fastcode555/JsonBeanGenerator/releases)
 - [model生成地址](https://fastcode555.github.io/#tools/Json2DartPage)
 
 ### 四.json转dart引用

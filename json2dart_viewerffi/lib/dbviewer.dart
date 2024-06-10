@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_ume/flutter_ume.dart';
+import 'package:flutter_ume_plus/flutter_ume_plus.dart';
 
 import 'src/overlay_panel.dart';
 

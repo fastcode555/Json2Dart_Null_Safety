@@ -44,8 +44,8 @@ class CustomScaffold extends StatelessWidget {
               leading: _buildLeading(context),
               elevation: 0.0,
               centerTitle: centerTitle,
-              title: title ?? Text(lable ?? ''),
-            )
+        title: title ?? Text(lable ?? '', style: const TextStyle(color: Colors.white)),
+      )
           : null,
       body: body,
     );
@@ -53,9 +53,9 @@ class CustomScaffold extends StatelessWidget {
 
   _buildLeading(BuildContext context) => automaticallyImplyLeading
       ? (leading ??
-          IconButton(
-            onPressed: Navigator.of(context).pop,
-            icon: const Icon(Icons.arrow_back_ios),
-          ))
+      IconButton(
+        onPressed: Navigator.of(context).pop,
+        icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+      ))
       : null;
 }

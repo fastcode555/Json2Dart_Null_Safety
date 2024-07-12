@@ -5,7 +5,13 @@ import 'package:gesound/res/index.dart';
 
 class AppImageConfig extends ImageLoaderConfigInterface {
   @override
-  LoadingErrorWidgetBuilder getErrorBuilder(double? width, double? height, double? border, Color? borderColor) {
+  LoadingErrorWidgetBuilder getErrorBuilder(
+    double? width,
+    double? height,
+    double? border,
+    Color? borderColor,
+    double? radius,
+  ) {
     double? _width = (width ?? 0) > (height ?? 0) ? height : width;
     _width = ((_width ?? 0) / 3.0);
     _width = _width == 0 ? null : _width;
@@ -30,7 +36,13 @@ class AppImageConfig extends ImageLoaderConfigInterface {
   }
 
   @override
-  PlaceholderWidgetBuilder getPlaceBuilder(double? width, double? height, double? border, Color? borderColor) {
+  PlaceholderWidgetBuilder getPlaceBuilder(
+    double? width,
+    double? height,
+    double? border,
+    Color? borderColor,
+    double? radius,
+  ) {
     double? _width = (width ?? 0) > (height ?? 0) ? height : width;
     _width = ((_width ?? 0) / 3.0);
     _width = _width == 0 ? null : _width;

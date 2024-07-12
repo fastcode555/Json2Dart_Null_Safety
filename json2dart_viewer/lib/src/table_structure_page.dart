@@ -10,8 +10,7 @@ class TableStructurePage extends StatelessWidget {
   final String tableName;
   static const String routeName = "/src/TableStructurePage";
 
-  const TableStructurePage({required this.tableName, Key? key})
-      : super(key: key);
+  const TableStructurePage({required this.tableName, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +24,7 @@ class TableStructurePage extends StatelessWidget {
             if (data.data == null) return const SizedBox();
             return SelectableText(
               (data.data?.sql ?? '').trim(),
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             );
           },
         ),

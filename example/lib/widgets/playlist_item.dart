@@ -39,7 +39,7 @@ class _PlaylistItemState extends State<PlaylistItem> {
         padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
         child: Row(
           children: [
-            ImageLoader.roundCorner(widget.model.cover, width: 50, radius: 4),
+            ImageLoader.round(widget.model.cover, width: 50, radius: 4),
             const SizedBox(width: 12),
             Expanded(
               child: Column(

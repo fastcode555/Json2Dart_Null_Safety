@@ -75,5 +75,7 @@
         <key>NSAllowsArbitraryLoadsForMedia</key>
         <true/>
     </dict>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>

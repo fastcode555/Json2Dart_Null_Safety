@@ -51,13 +51,26 @@ class _TableDetailPageState extends State<TableDetailPage> {
       title: _buildTitleWidget(),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pushNamed(
-              TableStructurePage.routeName,
-              arguments: widget.tableName),
-          child: Text('Structure'),
+          onPressed: () => Navigator.of(context).pushNamed(TableStructurePage.routeName, arguments: widget.tableName),
+          child: const Text(
+            'Structure',
+            style: TextStyle(color: Colors.amberAccent, fontWeight: FontWeight.w700),
+          ),
         ),
-        TextButton(onPressed: _handleClearDatas, child: Text('Clear Data')),
-        TextButton(onPressed: _handleDropTable, child: Text('Drop')),
+        TextButton(
+          onPressed: _handleClearDatas,
+          child: const Text(
+            'Clear Data',
+            style: TextStyle(color: Colors.amberAccent, fontWeight: FontWeight.w700),
+          ),
+        ),
+        TextButton(
+          onPressed: _handleDropTable,
+          child: const Text(
+            'Drop',
+            style: TextStyle(color: Colors.amberAccent, fontWeight: FontWeight.w700),
+          ),
+        ),
       ],
       body: LayoutBuilder(
         builder: (_, constraint) {

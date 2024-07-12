@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:get/get.dart';
 
 import 'image_loader_config.dart';
 
@@ -40,8 +41,18 @@ Widget _buildBorderCircleImage(double? border, Color? borderColor, Widget child,
   return child;
 }
 
+//收集url
+void _collect(String? url) {
+  _imageUrls ??= [];
+  if (!_imageUrls!.contains(url) && !TextUtil.isEmpty(url)) {
+    _imageUrls!.add(url!);
+  }
+}
+
 //作为收集urls的临时存储,release不起作用,主要用于新需求编写测试代码使用
 List<String>? _imageUrls;
+
+double? _devicePixelRatio;
 
 class ImageLoader extends StatelessWidget {
   //随机获取一个图片的url
@@ -113,6 +124,9 @@ class ImageLoader extends StatelessWidget {
 
   static ImageLoaderConfigInterface? config;
 
+  ///according the widget size load the image size，but sometime，some animation have problems，so cannot use diffrents size
+  final bool useSingleCache;
+
   //普通图片
   static const int TYPE_NORMAL = 0;
 
@@ -129,6 +143,9 @@ class ImageLoader extends StatelessWidget {
 
   //使用滚动组件NotificationListener包裹住滚动的view，如果滚动停止，就进行加载
   final Type? notification;
+
+  final Duration? fadeOutDuration;
+  final Duration? fadeInDuration;
 
   bool get _canLoadImage => notification == null || notification == ScrollEndNotification;
 
@@ -150,6 +167,9 @@ class ImageLoader extends StatelessWidget {
     this.border,
     this.borderColor,
     this.notification,
+    this.useSingleCache = false,
+    this.fadeOutDuration,
+    this.fadeInDuration,
   }) : super(key: key) {
     this._width = width;
     this._height = height;
@@ -172,13 +192,16 @@ class ImageLoader extends StatelessWidget {
     this.transitionOnUserGestures = false,
     this.decoration,
     this.notification,
+    this.useSingleCache = false,
+    this.fadeOutDuration,
+    this.fadeInDuration,
   }) {
     this._radius = radius;
     this._type = TYPE_CIRCLE;
   }
 
   //圆角图片
-  ImageLoader.roundCorner(
+  ImageLoader.round(
     this.url, {
     this.placeBuilder,
     this.errorBuilder,
@@ -196,6 +219,9 @@ class ImageLoader extends StatelessWidget {
     this.transitionOnUserGestures = false,
     this.decoration,
     this.notification,
+    this.useSingleCache = false,
+    this.fadeOutDuration,
+    this.fadeInDuration,
   }) {
     this._radius = radius;
     this._type = TYPE_ROUND_CORNER;
@@ -224,6 +250,9 @@ class ImageLoader extends StatelessWidget {
     Color? blurColor,
     this.decoration,
     this.notification,
+    this.useSingleCache = false,
+    this.fadeOutDuration,
+    this.fadeInDuration,
   }) {
     this._radius = radius;
     this._type = TYPE_BLUR;
@@ -241,6 +270,7 @@ class ImageLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _devicePixelRatio = _devicePixelRatio ?? context.devicePixelRatio;
     if (_radius == null && decoration != null && decoration is BoxDecoration) {
       BoxDecoration boxDecoration = decoration as BoxDecoration;
       if (boxDecoration.shape == BoxShape.circle) {
@@ -275,6 +305,9 @@ class ImageLoader extends StatelessWidget {
         placeHolder: placeHolder,
         errorHolder: errorHolder,
         heroTag: heroTag,
+        fadeInDuration: fadeInDuration,
+        fadeOutDuration: fadeOutDuration,
+        radius: _radius,
       );
     } else if (_type == TYPE_CIRCLE) {
       if (_radius == null || _radius == 0) {
@@ -293,7 +326,11 @@ class ImageLoader extends StatelessWidget {
                 errorHolder: errorHolder,
                 borderColor: borderColor,
                 border: border,
+                useSingleCache: useSingleCache,
                 heroTag: heroTag,
+                fadeInDuration: fadeInDuration,
+                fadeOutDuration: fadeOutDuration,
+                radius: _radius,
               ),
             );
           },
@@ -309,24 +346,33 @@ class ImageLoader extends StatelessWidget {
         placeBuilder: placeBuilder,
         radius: _radius,
         border: border,
+        useSingleCache: useSingleCache,
         borderColor: borderColor,
+        fadeInDuration: fadeInDuration,
+        fadeOutDuration: fadeOutDuration,
       );
     } else if (_type == TYPE_ROUND_CORNER) {
       return ClipRRect(
         clipBehavior: Clip.hardEdge,
         borderRadius: _borderRadius ?? BorderRadius.all(Radius.circular(_radius!)),
-        child: _Image(_canLoadImage ? url : null,
-            fit: fit,
-            thumbUrl: _thumbUrl,
-            placeHolder: placeHolder,
-            errorHolder: errorHolder,
-            placeBuilder: placeBuilder,
-            errorBuilder: errorBuilder,
-            borderColor: borderColor,
-            border: border,
-            width: _width ?? _height,
-            height: _height ?? _width,
-            heroTag: heroTag),
+        child: _Image(
+          _canLoadImage ? url : null,
+          fit: fit,
+          thumbUrl: _thumbUrl,
+          placeHolder: placeHolder,
+          errorHolder: errorHolder,
+          placeBuilder: placeBuilder,
+          errorBuilder: errorBuilder,
+          borderColor: borderColor,
+          border: border,
+          width: _width ?? _height,
+          height: _height ?? _width,
+          useSingleCache: useSingleCache,
+          fadeInDuration: fadeInDuration,
+          fadeOutDuration: fadeOutDuration,
+          radius: _radius,
+          heroTag: heroTag,
+        ),
       );
     } else if (_type == TYPE_BLUR) {
       return SizedBox(
@@ -347,7 +393,10 @@ class ImageLoader extends StatelessWidget {
                 width: _width,
                 border: border,
                 borderColor: borderColor,
+                fadeOutDuration: fadeOutDuration,
+                fadeInDuration: fadeInDuration,
                 height: _height,
+                radius: _radius,
               ),
             ),
             Container(
@@ -379,6 +428,9 @@ class _CircleImage extends StatelessWidget {
   final double? border;
   final Color? borderColor;
   final bool? transitionOnUserGestures;
+  final bool useSingleCache;
+  final Duration? fadeInDuration;
+  final Duration? fadeOutDuration;
 
   _CircleImage(
     this.url, {
@@ -392,11 +444,23 @@ class _CircleImage extends StatelessWidget {
     this.border = 0,
     this.borderColor = Colors.white,
     this.radius,
+    this.useSingleCache = false,
     this.transitionOnUserGestures = false,
+    this.fadeInDuration,
+    this.fadeOutDuration,
   }) : super(key: key);
+
+  int? _getMemCacheWidth() {
+    return useSingleCache ? null : ((radius! * _devicePixelRatio!).toInt());
+  }
+
+  int? _getMemCacheHeight() {
+    return useSingleCache ? null : ((radius! * _devicePixelRatio!).toInt());
+  }
 
   @override
   Widget build(BuildContext context) {
+    _collect(url);
     PlaceholderWidgetBuilder? _placeBuilder;
     LoadingErrorWidgetBuilder? _errorBuilder;
     if (ImageLoader.config == null) {
@@ -409,6 +473,10 @@ class _CircleImage extends StatelessWidget {
     if (_isNetUrl(url)) {
       return CachedNetworkImage(
         imageUrl: url!,
+        memCacheHeight: _getMemCacheWidth(),
+        memCacheWidth: _getMemCacheHeight(),
+        fadeOutDuration: fadeOutDuration ?? const Duration(milliseconds: 1000),
+        fadeInDuration: fadeInDuration ?? const Duration(milliseconds: 500),
         imageBuilder: (context, imageProvider) => _buildBorderCircleImage(
             border,
             borderColor,
@@ -484,7 +552,7 @@ class _CircleImage extends StatelessWidget {
                   ),
                 ),
               )
-            : _errorBuilder!(context, url!, null);
+            : _errorBuilder!(context, url ?? "", Object());
       }
     }
   }
@@ -504,6 +572,10 @@ class _Image extends StatelessWidget {
   final double? border;
   final Color? borderColor;
   final bool transitionOnUserGestures;
+  final bool useSingleCache;
+  final Duration? fadeOutDuration;
+  final Duration? fadeInDuration;
+  final double? radius;
 
   _Image(
     this.url, {
@@ -518,12 +590,25 @@ class _Image extends StatelessWidget {
     this.height,
     this.border,
     this.borderColor,
+    this.useSingleCache = true,
     this.transitionOnUserGestures = false,
     this.thumbUrl,
+    this.fadeOutDuration,
+    this.fadeInDuration,
+    this.radius,
   }) : super(key: key);
+
+  int? _getMemCacheWidth(double? width) {
+    return useSingleCache ? null : (width != null ? (width * _devicePixelRatio!).toInt() : null);
+  }
+
+  int? _getMemCacheHeight(double? height) {
+    return useSingleCache ? null : (height != null ? (height * _devicePixelRatio!).toInt() : null);
+  }
 
   @override
   Widget build(BuildContext context) {
+    _collect(url);
     LoadingErrorWidgetBuilder? _errorBuilder;
     PlaceholderWidgetBuilder? _placeBuilder;
     double? _width = width ?? height;
@@ -531,39 +616,49 @@ class _Image extends StatelessWidget {
     if (ImageLoader.config == null) {
       debugPrint("you are supported to use ImageLoader.init(ImageLoaderConfig)");
     } else {
-      _errorBuilder = errorBuilder ?? ImageLoader.config?.getErrorBuilder(_width, _height, border, borderColor);
-      _placeBuilder = placeBuilder ?? ImageLoader.config?.getPlaceBuilder(_width, _height, border, borderColor);
+      _errorBuilder = errorBuilder ?? ImageLoader.config?.getErrorBuilder(_width, _height, border, borderColor, radius);
+      _placeBuilder = placeBuilder ?? ImageLoader.config?.getPlaceBuilder(_width, _height, border, borderColor, radius);
     }
     if (_isNetUrl(url)) {
-      return CachedNetworkImage(
-        imageUrl: url!,
-        key: ValueKey(url),
-        fit: fit,
-        fadeOutDuration: Duration(milliseconds: thumbUrl != null && thumbUrl!.length > 0 ? 0 : 1000),
-        fadeInDuration: Duration(milliseconds: thumbUrl != null && thumbUrl!.length > 0 ? 0 : 500),
-        width: _width,
-        height: _height,
-        imageBuilder: (context, imageProvider) => _buildBorderCircleImage(
-          border,
-          borderColor,
-          _buildHeroWidget(
-            heroTag,
-            transitionOnUserGestures: transitionOnUserGestures,
-            child: Image(
-              image: imageProvider,
-              fit: fit,
-              width: _width,
-              height: _height,
-              alignment: Alignment.center,
-              repeat: ImageRepeat.noRepeat,
-              matchTextDirection: false,
-              filterQuality: FilterQuality.low,
+      return LayoutBuilder(
+        builder: (_, constraint) {
+          _width = _width ?? constraint.maxWidth;
+          _height = _height ?? constraint.maxHeight;
+          return CachedNetworkImage(
+            imageUrl: url!,
+            key: ValueKey(url),
+            fit: fit,
+            fadeOutDuration:
+                fadeOutDuration ?? Duration(milliseconds: thumbUrl != null && thumbUrl!.length > 0 ? 0 : 1000),
+            fadeInDuration:
+                fadeInDuration ?? Duration(milliseconds: thumbUrl != null && thumbUrl!.length > 0 ? 0 : 500),
+            width: _width,
+            height: _height,
+            memCacheWidth: _getMemCacheWidth(_width),
+            memCacheHeight: _getMemCacheHeight(_height),
+            imageBuilder: (context, imageProvider) => _buildBorderCircleImage(
+              border,
+              borderColor,
+              _buildHeroWidget(
+                heroTag,
+                transitionOnUserGestures: transitionOnUserGestures,
+                child: Image(
+                  image: imageProvider,
+                  fit: fit,
+                  width: _width,
+                  height: _height,
+                  alignment: Alignment.center,
+                  repeat: ImageRepeat.noRepeat,
+                  matchTextDirection: false,
+                  filterQuality: FilterQuality.low,
+                ),
+              ),
+              shape: BoxShape.rectangle,
             ),
-          ),
-          shape: BoxShape.rectangle,
-        ),
-        placeholder: _buildPlaceWidgetBuilder(context, url, _width, _height, _placeBuilder),
-        errorWidget: _buildErrorWidgetBuilder(context, url, _width, _height, _errorBuilder),
+            placeholder: _buildPlaceWidgetBuilder(context, url, _width, _height, _placeBuilder, radius),
+            errorWidget: _buildErrorWidgetBuilder(context, url, _width, _height, _errorBuilder, radius),
+          );
+        },
       );
     } else {
       return _loadFileOrAssertImage(_errorBuilder, _width, _height, context);
@@ -581,13 +676,15 @@ class _Image extends StatelessWidget {
           child: Image.file(
             imageFile,
             fit: fit,
+            cacheWidth: width != null ? (width * _devicePixelRatio!).toInt() : null,
+            //cacheHeight: height != null ? (height * _devicePixelRatio!).toInt() : null,
             errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
               return errorBuilder != null
                   ? errorBuilder(context, url ?? '', error)
                   : _buildHeroWidget(
                       heroTag,
                       transitionOnUserGestures: transitionOnUserGestures,
-                      child: Image.asset(errorHolder ?? '', width: width, height: height),
+                      child: Image.asset(errorHolder ?? '', width: width, height: height, fit: fit),
                     );
             },
             width: width,
@@ -598,9 +695,21 @@ class _Image extends StatelessWidget {
           ? _buildHeroWidget(
               heroTag,
               transitionOnUserGestures: transitionOnUserGestures,
-              child: Image.asset(url != null && url!.length > 0 ? url! : errorHolder!, width: width, height: height),
+              child: Image.asset(
+                url != null && url!.length > 0 ? url! : errorHolder!,
+                width: width,
+                height: height,
+                fit: fit,
+                cacheWidth: width != null ? (width * _devicePixelRatio!).toInt() : null,
+                cacheHeight: height != null ? (height * _devicePixelRatio!).toInt() : null,
+                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                  return errorHolder != null
+                      ? Image.asset(errorHolder ?? '', width: width, height: height, fit: fit)
+                      : (errorBuilder != null ? errorBuilder(context, url ?? '', error) : const SizedBox());
+                },
+              ),
             )
-          : errorBuilder!(context, url ?? '', null);
+          : errorBuilder!(context, url ?? '', Object());
     }
   }
 
@@ -610,6 +719,7 @@ class _Image extends StatelessWidget {
     double? width,
     double? height,
     PlaceholderWidgetBuilder? placeBuilder,
+    double? radius,
   ) {
     //修改,使用者单独传了一个默认图片,单方法配置,优先于全配置,便于定制化,比如默认店铺默认一张默认店铺的图片,商品默认一张商品的图片
     //有设置了thumbUrl,优先加载小图
@@ -624,7 +734,14 @@ class _Image extends StatelessWidget {
             _buildHeroWidget(
               heroTag,
               transitionOnUserGestures: transitionOnUserGestures,
-              child: Image.asset(placeHolder ?? '', width: width, height: height),
+              child: Image.asset(
+                placeHolder ?? '',
+                width: width,
+                height: height,
+                fit: fit,
+                cacheWidth: width != null ? (width * _devicePixelRatio!).toInt() : null,
+                cacheHeight: height != null ? (height * _devicePixelRatio!).toInt() : null,
+              ),
             ),
             shape: BoxShape.rectangle,
           );
@@ -639,6 +756,7 @@ class _Image extends StatelessWidget {
     double? width,
     double? height,
     LoadingErrorWidgetBuilder? errorBuilder,
+    double? radius,
   ) {
     //有设置了thumbUrl,优先加载小图
     if (thumbUrl != null && thumbUrl!.length > 0) {
@@ -649,7 +767,14 @@ class _Image extends StatelessWidget {
       return (context, url, error) => _buildHeroWidget(
             heroTag,
             transitionOnUserGestures: transitionOnUserGestures,
-            child: Image.asset(errorHolder ?? '', width: width, height: height),
+            child: Image.asset(
+              errorHolder ?? '',
+              width: width,
+              height: height,
+              fit: fit,
+              cacheWidth: width != null ? (width * _devicePixelRatio!).toInt() : null,
+              cacheHeight: height != null ? (height * _devicePixelRatio!).toInt() : null,
+            ),
           );
     }
     //没有使用默认的
@@ -668,6 +793,7 @@ class _Image extends StatelessWidget {
       border: border,
       borderColor: borderColor,
       errorHolder: errorHolder,
+      radius: radius,
     );
   }
 }

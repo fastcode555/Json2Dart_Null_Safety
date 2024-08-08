@@ -1,4 +1,0 @@
-"CFBundleName" = "BookReader";
-"NSCameraUsageDescription" = "Used for user to set avatar or feedback picture";
-"NSPhotoLibraryUsageDescription" = "Used for user to set avatar or feedback picture";
-"NSMicrophoneUsageDescription" = "Used to capture audio for the image selector plugin";

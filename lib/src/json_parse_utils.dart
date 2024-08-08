@@ -36,6 +36,7 @@ extension MapExt on Map? {
       Object? value = this![key];
       if (value == null) continue;
       if (value is String) {
+        if (value.isEmpty) continue;
         return value;
       } else {
         _values ??= [];

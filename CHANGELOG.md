@@ -1,3 +1,7 @@
+## 1.5.7
+
+- fixed the bugs
+
 ## 1.5.1
 
 - refactor according to the suggestion

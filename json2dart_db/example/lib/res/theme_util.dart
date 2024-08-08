@@ -14,21 +14,6 @@ class ThemeUtil {
         focusColor: _themeColor,
         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: _themeColor)),
       ),
-      primaryTextTheme: const TextTheme(
-        headline1: TextStyle(color: Colors.black, inherit: true),
-        headline2: TextStyle(color: Colors.black, inherit: true),
-        headline3: TextStyle(color: Colors.black, inherit: true),
-        headline4: TextStyle(color: Colors.black, inherit: true),
-        headline5: TextStyle(color: Colors.black, inherit: true),
-        headline6: TextStyle(color: Colors.black, inherit: true),
-        subtitle1: TextStyle(color: Colors.black, inherit: true),
-        subtitle2: TextStyle(color: Colors.black, inherit: true),
-        bodyText1: TextStyle(color: Colors.black, inherit: true),
-        bodyText2: TextStyle(color: Colors.black, inherit: true),
-        caption: TextStyle(color: Colors.black, inherit: true),
-        button: TextStyle(color: Colors.black, inherit: true),
-        overline: TextStyle(color: Colors.black, inherit: true),
-      ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
             //primary: Colours.app_main,
@@ -58,7 +43,6 @@ class ThemeUtil {
           backgroundColor: MaterialStateProperty.all<Color>(_themeColor),
         ),
       ),
-      toggleableActiveColor: _themeColor,
       appBarTheme: const AppBarTheme(centerTitle: true),
     );
   }
@@ -73,21 +57,6 @@ class ThemeUtil {
       inputDecorationTheme: InputDecorationTheme(
         focusColor: _themeColor,
         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: _themeColor)),
-      ),
-      primaryTextTheme: const TextTheme(
-        headline1: TextStyle(color: Colors.white, inherit: true),
-        headline2: TextStyle(color: Colors.white, inherit: true),
-        headline3: TextStyle(color: Colors.white, inherit: true),
-        headline4: TextStyle(color: Colors.white, inherit: true),
-        headline5: TextStyle(color: Colors.white, inherit: true),
-        headline6: TextStyle(color: Colors.white, inherit: true),
-        subtitle1: TextStyle(color: Colors.white, inherit: true),
-        subtitle2: TextStyle(color: Colors.white, inherit: true),
-        bodyText1: TextStyle(color: Colors.white, inherit: true),
-        bodyText2: TextStyle(color: Colors.white, inherit: true),
-        caption: TextStyle(color: Colors.black, inherit: true),
-        button: TextStyle(color: Colors.black, inherit: true),
-        overline: TextStyle(color: Colors.black, inherit: true),
       ),
       // bottomAppBarColor: Colours.color_303030,
       // backgroundColor: Colours.color_11151C,
@@ -113,7 +82,6 @@ class ThemeUtil {
           backgroundColor: MaterialStateProperty.all<Color>(_themeColor),
         ),
       ),
-      toggleableActiveColor: _themeColor,
       appBarTheme: const AppBarTheme(centerTitle: true),
     );
   }

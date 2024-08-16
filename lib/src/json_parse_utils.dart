@@ -137,6 +137,30 @@ extension MapExt on Map? {
     return defValue ?? false;
   }
 
+  ///解析成bool值
+  bool asBools(List<String> keys, [bool? defValue]) {
+    List<String> keyHasValues = [];
+    //优先使用返回值就是bool的作为返回值
+    for (String key in keys) {
+      Object? value = this![key];
+      if (value == null) continue;
+      if (value is bool) return value;
+      keyHasValues.add(key);
+    }
+    //找不到bool值，兼容其1，或者0，或者字符串作为返回值
+    for (String key in keyHasValues) {
+      Object? value = this![key];
+      if (value == null) continue;
+      if (value is int && (value == 1 || value == 0)) {
+        return asBool(key);
+      }
+      if (value is String && (value == "true" || value == "false" || value == '1' || value == '0')) {
+        return asBool(key);
+      }
+    }
+    return defValue ?? false;
+  }
+
   ///解析成int或者double值
   num asNum(String key) {
     if (this == null) return 0;

@@ -1,3 +1,7 @@
+## 1.5.8
+
+- spport multi keys to parse bool
+
 ## 1.5.7
 
 - fixed the bugs

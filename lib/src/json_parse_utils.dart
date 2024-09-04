@@ -32,11 +32,12 @@ extension MapExt on Map? {
   String asStrings(List<String> keys, [String? defValue]) {
     if (this == null) return defValue ?? '';
     List<Object>? _values;
-    for (String key in keys) {
+    for (var key in keys) {
       Object? value = this![key];
       if (value == null) continue;
       if (value is String) {
         if (value.isEmpty) continue;
+        _values?.clear();
         return value;
       } else {
         _values ??= [];
@@ -46,7 +47,7 @@ extension MapExt on Map? {
     if (_values != null && _values.isNotEmpty) {
       return _values[0].toString();
     }
-    return defValue ?? "";
+    return defValue ?? '';
   }
 
   ///解析成double值
@@ -56,8 +57,7 @@ extension MapExt on Map? {
     if (value == null) return defValue ?? 0.0;
     if (value is double) return value;
     try {
-      double result = double.parse(value.toString());
-      return result;
+      return double.parse(value.toString());
     } catch (e) {
       print(e);
       _print('json parse failed,exception value:\"$key\":$value');
@@ -69,13 +69,12 @@ extension MapExt on Map? {
   ///多字段解析成double值
   double asDoubles(List<String> keys, [double? defValue]) {
     if (this == null) return defValue ?? 0.0;
-    for (String key in keys) {
+    for (var key in keys) {
       Object? value = this![key];
       if (value == null) continue;
       if (value is double) return value;
       try {
-        double result = double.parse(value.toString());
-        return result;
+        return double.parse(value.toString());
       } catch (e) {
         print(e);
         _print('json parse failed,exception value::\"$key\":$value');
@@ -92,8 +91,7 @@ extension MapExt on Map? {
     if (value == null) return defValue ?? 0;
     if (value is int) return value;
     try {
-      int result = int.parse(value.toString());
-      return result;
+      return int.parse(value.toString());
     } catch (e) {
       print(e);
       _print('json parse failed,exception value::\"$key\":$value');
@@ -105,13 +103,12 @@ extension MapExt on Map? {
   ///解析成ints值
   int asInts(List<String> keys, [int? defValue]) {
     if (this == null) return defValue ?? 0;
-    for (String key in keys) {
+    for (var key in keys) {
       Object? value = this![key];
       if (value == null) continue;
       if (value is int) return value;
       try {
-        int result = int.parse(value.toString());
-        return result;
+        return int.parse(value.toString());
       } catch (e) {
         print(e);
         _print('json parse failed,exception value::\"$key\":$value');
@@ -139,23 +136,23 @@ extension MapExt on Map? {
 
   ///解析成bool值
   bool asBools(List<String> keys, [bool? defValue]) {
-    List<String> keyHasValues = [];
+    var keyHasValues = <String>[];
     //优先使用返回值就是bool的作为返回值
-    for (String key in keys) {
+    for (var key in keys) {
       Object? value = this![key];
       if (value == null) continue;
       if (value is bool) return value;
       keyHasValues.add(key);
     }
     //找不到bool值，兼容其1，或者0，或者字符串作为返回值
-    for (String key in keyHasValues) {
+    for (var key in keyHasValues) {
       Object? value = this![key];
       if (value == null) continue;
       if (value is int && (value == 1 || value == 0)) {
-        return asBool(key);
+        return asBool(key, defValue);
       }
-      if (value is String && (value == "true" || value == "false" || value == '1' || value == '0')) {
-        return asBool(key);
+      if (value is String && (value == 'true' || value == 'false' || value == '1' || value == '0')) {
+        return asBool(key, defValue);
       }
     }
     return defValue ?? false;
@@ -170,11 +167,7 @@ extension MapExt on Map? {
     if (value is double) return value;
     try {
       if (value is String) {
-        if (value.contains('.')) {
-          return double.parse(value);
-        } else {
-          return int.parse(value);
-        }
+        return value.contains('.') ? double.parse(value) : int.parse(value);
       }
     } catch (e) {
       print(e);
@@ -276,7 +269,7 @@ extension MapExt on Map? {
   ///多字段解析成Lists
   List<T>? asLists<T>(List<String> keys, [Function(Map json)? toBean]) {
     if (this == null) return null;
-    for (String key in keys) {
+    for (var key in keys) {
       try {
         Object? obj = this![key];
         if (obj != null) {
@@ -314,7 +307,7 @@ extension MapExt on Map? {
   ///多字段解析成model
   T? asBeans<T>(List<String> keys, Function(Map json) toBean) {
     if (this == null) return null;
-    for (String key in keys) {
+    for (var key in keys) {
       try {
         Object? obj = this![key];
         if (obj != null && _isClassBean(obj)) {
@@ -388,7 +381,7 @@ extension MapExt on Map? {
 }
 
 bool _isClassBean(Object obj) {
-  bool isClassBean = true;
+  var isClassBean = true;
   if (obj is String || obj is num || obj is bool) {
     isClassBean = false;
   } else if (obj is Map && obj.isEmpty) {
@@ -412,7 +405,7 @@ int _secureInt(dynamic value, [String? key]) {
   if (value is double) return value.toInt();
   if (value is String) {
     try {
-      if (value.contains(".")) {
+      if (value.contains('.')) {
         return double.parse(value).toInt();
       }
       return int.parse(value);
@@ -447,7 +440,7 @@ double _secureDouble(dynamic value, [String? key]) {
   if (value == null) return 0.0;
   if (value is double) return value;
   try {
-    double result = double.parse(value.toString());
+    var result = double.parse(value.toString());
     return result;
   } catch (e) {
     print(e);
@@ -475,40 +468,47 @@ bool _secureBool(dynamic value, [String? key]) {
 }
 
 List<T> _listFrom<T>(List<dynamic> obj, [String? key]) {
-  String type = "$T";
+  var type = '$T';
   obj = obj.where((value) => value != null).toList();
-  if (type == "int") {
-    List<int> results = [];
-    for (int i = 0; i < obj.length; i++) {
+  if (type == 'int') {
+    var results = <int>[];
+    for (var i = 0; i < obj.length; i++) {
       results.add(_secureInt(obj[i], key));
     }
     return results.cast<T>();
-  } else if (type == "num") {
-    List<num> results = [];
-    for (int i = 0; i < obj.length; i++) {
+  }
+
+  if (type == 'num') {
+    var results = <num>[];
+    for (var i = 0; i < obj.length; i++) {
       results.add(_secureNum(obj[i], key));
     }
     return results.cast<T>();
-  } else if (type == "double") {
-    List<double> results = [];
-    for (int i = 0; i < obj.length; i++) {
+  }
+
+  if (type == 'double') {
+    var results = <double>[];
+    for (var i = 0; i < obj.length; i++) {
       results.add(_secureDouble(obj[i], key));
     }
     return results.cast<T>();
-  } else if (type == "String") {
-    List<String> results = [];
-    for (int i = 0; i < obj.length; i++) {
+  }
+
+  if (type == 'String') {
+    var results = <String>[];
+    for (var i = 0; i < obj.length; i++) {
       results.add(_secureString(obj[i]));
     }
     return results.cast<T>();
-  } else if (type == "bool") {
-    List<bool> results = [];
-    for (int i = 0; i < obj.length; i++) {
+  }
+
+  if (type == 'bool') {
+    var results = <bool>[];
+    for (var i = 0; i < obj.length; i++) {
       results.add(_secureBool(obj[i], key));
     }
     return results.cast<T>();
   }
-  // print("类型：$T");
   return List<T>.from(obj);
 }
 

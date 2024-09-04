@@ -41,6 +41,6 @@ class PlaylistModelDao extends BaseDao<PlaylistModel> {
   ///根据存储的额外id，进行导入
   Future<PlaylistModel?> queryFromExtraId(String extraId) async {
     List<PlaylistModel>? _models = await query(whereArgs: [extraId], where: "extra_id = ?");
-    return _models != null && _models.isNotEmpty ? _models[0] : null;
+    return _models.isNotEmpty ? _models[0] : null;
   }
 }

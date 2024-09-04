@@ -31,7 +31,7 @@ class InputPanelField extends StatefulWidget {
   final Color? cursorColor;
   final EdgeInsetsGeometry? padding;
 
-  InputPanelField.search({
+  const InputPanelField.search({
     Key? key,
     this.text,
     this.obscureText = false,
@@ -61,7 +61,7 @@ class InputPanelField extends StatefulWidget {
     this.padding,
   }) : super(key: key);
 
-  InputPanelField({
+  const InputPanelField({
     Key? key,
     this.text,
     this.obscureText = false,
@@ -91,7 +91,7 @@ class InputPanelField extends StatefulWidget {
     this.padding,
   }) : super(key: key);
 
-  InputPanelField.noneDecoration({
+  const InputPanelField.noneDecoration({
     Key? key,
     this.text,
     this.obscureText = false,
@@ -165,7 +165,7 @@ class _InputPanelFieldState extends State<InputPanelField> {
     return text == null || text.isEmpty;
   }
 
-  Future<Null> _focusNodeListener() async {
+  Future<void> _focusNodeListener() async {
     if (_focusNode.hasFocus && _controller.text.isNotEmpty) {
       setState(() {
         _isShowClean = true;
@@ -205,7 +205,7 @@ class _InputPanelFieldState extends State<InputPanelField> {
             if (widget.leftIconEnable)
               widget.leftWidget ??
                   Icon(Icons.search, size: 16, color: _iconColor),
-            if (widget.leftIconEnable) SizedBox(width: 5),
+            if (widget.leftIconEnable) const SizedBox(width: 5),
             Expanded(
               child: TextField(
                 focusNode: _focusNode,
@@ -224,15 +224,15 @@ class _InputPanelFieldState extends State<InputPanelField> {
                 cursorColor: widget.cursorColor,
                 enabled: widget.enable,
                 textInputAction: widget.textInputAction,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 //关闭自动联想功能,特别是输入密码的时候
                 autocorrect: Platform.isIOS ? false : true,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(top: 5),
+                  contentPadding: const EdgeInsets.only(top: 5),
                   focusColor: Colors.white,
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle: const TextStyle(color: Colors.white),
                   hintText: !_showHint ? '' : (widget.hintText ?? ''),
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
                 ),
                 onChanged: (character) {
                   setState(() => _isShowClean = character.isNotEmpty);
@@ -267,7 +267,7 @@ class _InputPanelFieldState extends State<InputPanelField> {
               });
             },
           )
-        : SizedBox();
+        : const SizedBox();
   }
 
   get _iconColor => Colors.white;
@@ -280,7 +280,7 @@ class _InputPanelFieldState extends State<InputPanelField> {
                     ? widget.focusColor
                     : (widget.normalColor ??
                         widget.focusColor!.withOpacity(0.5)),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
               )
             : BoxDecoration(
                 color: widget.backGroundColor ?? Colors.transparent,

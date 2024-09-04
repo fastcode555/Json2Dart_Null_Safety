@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 //import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gesound/common/dependency_injection.dart';
@@ -10,7 +9,6 @@ import 'package:gesound/res/colours.dart';
 import 'package:gesound/res/theme_util.dart';
 import 'package:gesound/res/translation_service.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:oktoast/oktoast.dart';
 
 void main() async {
@@ -35,8 +33,8 @@ class MyApp extends StatelessWidget {
       ..userInteractions = false
       ..dismissOnTap = false
       ..maskType = EasyLoadingMaskType.custom
-      ..successWidget = Column(
-        children: const [
+      ..successWidget = const Column(
+        children: [
           Icon(Icons.done, size: 60, color: Colors.white),
           Padding(
             padding: EdgeInsets.all(8),

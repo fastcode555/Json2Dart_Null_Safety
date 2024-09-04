@@ -7,7 +7,6 @@ import 'package:gesound/widgets/buttons.dart';
 import 'package:gesound/widgets/dialog/dialog_toast_util.dart';
 import 'package:get/get.dart';
 
-import '../res/strings.dart';
 import 'controller/category_controller.dart';
 import 'controller/database_controller.dart';
 
@@ -94,14 +93,12 @@ class _PageCategoryState extends State<PageCategory> {
 
 class _CategoryItem extends StatelessWidget {
   final CategoryModel model;
-  final GestureTapCallback? onTap;
   final CategoryController controller;
   final bool isEdit;
 
   const _CategoryItem(
     this.model, {
     required this.controller,
-    this.onTap,
     this.isEdit = false,
     Key? key,
   }) : super(key: key);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gesound/res/index.dart';
-import 'package:gesound/res/text_styles.dart';
 
 class ThemeUtil {
   static ThemeData lightTheme(Color _themeColor) {
@@ -41,7 +40,7 @@ class ThemeUtil {
       indicatorColor: _themeColor,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(_themeColor),
+          backgroundColor: WidgetStateProperty.all<Color>(_themeColor),
         ),
       ),
       appBarTheme: const AppBarTheme(centerTitle: true),
@@ -81,7 +80,7 @@ class ThemeUtil {
       // hoverColor: _themeColor.withOpacity(0.1),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(_themeColor),
+          backgroundColor: WidgetStateProperty.all<Color>(_themeColor),
         ),
       ),
       appBarTheme: const AppBarTheme(centerTitle: true),

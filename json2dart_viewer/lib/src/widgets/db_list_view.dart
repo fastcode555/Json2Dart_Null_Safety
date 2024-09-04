@@ -19,7 +19,7 @@ class DbListView extends StatelessWidget {
       future: _queryList(),
       builder: (_, data) {
         return ListView.separated(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           itemBuilder: (_, index) {
             return DbRowItem(
               index,

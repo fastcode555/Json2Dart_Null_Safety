@@ -41,7 +41,7 @@ class DbRowItem extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 right: i != columnInfos.length - 1
-                    ? BorderSide(color: Colors.white)
+                    ? const BorderSide(color: Colors.white)
                     : BorderSide.none,
               ),
             ),
@@ -49,7 +49,7 @@ class DbRowItem extends StatelessWidget {
             child: AutoSizeText(
               filedValue,
               maxLines: 1,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                   overflow: TextOverflow.ellipsis),
@@ -61,7 +61,7 @@ class DbRowItem extends StatelessWidget {
     }
     if (isLastItem) {
       return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.white))),
         child: Row(children: children),
       );

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:json2dart_safe/json2dart.dart';
 
 void main() {
-  String json = '''{
+  var json = '''{
      "isLike": 1,
       "isFollowed": false,
       "isCache": true,

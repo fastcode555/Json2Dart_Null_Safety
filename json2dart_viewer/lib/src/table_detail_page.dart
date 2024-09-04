@@ -28,7 +28,7 @@ class TableDetailPage extends StatefulWidget {
 class _TableDetailPageState extends State<TableDetailPage> {
   TableInfo? _tableInfo;
   double _width = _minWidth;
-  ValueNotifier<int> _countNotifier = ValueNotifier(0);
+  final ValueNotifier<int> _countNotifier = ValueNotifier(0);
 
   //final TextEditingController _controller = TextEditingController();
 
@@ -81,7 +81,7 @@ class _TableDetailPageState extends State<TableDetailPage> {
               builder: (_, data) {
                 if (_tableInfo == null) return const SizedBox();
                 double containerWidth = _calculateSize(_tableInfo!.columns!.length, constraint.maxWidth);
-                return Container(
+                return SizedBox(
                   width: containerWidth,
                   child: Column(
                     children: [

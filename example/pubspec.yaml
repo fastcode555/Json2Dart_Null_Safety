@@ -47,6 +47,10 @@ dependencies:
   sprintf: ^6.0.0
   adobe_xd: ^2.0.1
 
+  sqflite: any
+  flutter_easyloading: any
+  flutter_cache_manager: any
+  json2dart_safe: any
 dependency_overrides:
   flutter_easyloading: 3.0.0
 

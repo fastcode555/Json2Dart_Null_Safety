@@ -27,7 +27,7 @@ class DBViewer implements Pluggable {
 
   @override
   Widget buildWidget(BuildContext? context) {
-    return Stack(
+    return const Stack(
       children: [
         Align(
           alignment: Alignment.bottomCenter,

@@ -1,5 +1,6 @@
-import 'package:json2dart_safe/json2dart.dart';
 import 'dart:convert';
+
+import 'package:json2dart_safe/json2dart.dart';
 
 class ArrayListModel {
   List<List>? otherRewards;

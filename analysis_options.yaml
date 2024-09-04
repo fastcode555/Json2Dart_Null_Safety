@@ -1,0 +1,68 @@
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at
+  # https://dart-lang.github.io/linter/lints/index.html.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+
+  # fvm flutter analyze
+  rules:
+    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+    prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    avoid_print: true  # 避免使用 print
+    # always_declare_return_types: true  # 要求始终声明返回类型
+    annotate_overrides: true  # 要求在覆盖的方法上使用 @override
+    avoid_empty_else: true  # 避免空的 else 块
+    unnecessary_new: true
+    curly_braces_in_flow_control_structures: true  # 控制结构中始终使用大括号
+    avoid_unused_constructor_parameters: true  # 避免未使用的构造函数参数
+    # always_specify_types: true  # 始终显式声明类型
+    avoid_redundant_argument_values: true  # 避免冗余的参数值
+    prefer_const_constructors: true  # 使用 const 构造函数
+    unnecessary_const: true  # 避免不必要的 const
+    avoid_init_to_null: true  # 避免将变量初始化为 null
+    camel_case_types: true
+    non_constant_identifier_names: true
+    constant_identifier_names: true
+    directives_ordering: true
+    always_put_required_named_parameters_first: true
+    sized_box_for_whitespace: true
+    use_full_hex_values_for_flutter_colors: true
+    void_checks: true
+    unrelated_type_equality_checks: true
+    await_only_futures: true
+    provide_deprecation_message: true
+    comment_references: true
+    prefer_const_literals_to_create_immutables: true  # 在可能的地方使用 const 字面量创建不可变对象
+    avoid_unnecessary_containers: true  # 避免不必要的容器
+    avoid_returning_null_for_void: true  # 避免在 void 函数中返回 null
+    unnecessary_breaks: true
+    unnecessary_await_in_return: true
+    unnecessary_brace_in_string_interps: true
+    unnecessary_lambdas: true
+    unnecessary_null_checks: true
+    library_private_types_in_public_api: ignore
+    lines_longer_than_80_chars: ignore
+    depend_on_referenced_packages: ignore
+    omit_local_variable_types: true
+
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options

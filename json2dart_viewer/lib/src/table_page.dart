@@ -10,6 +10,8 @@ import 'widgets/custom_scaffold.dart';
 class TablePage extends StatefulWidget {
   static const String routeName = "/";
 
+  const TablePage({super.key});
+
   @override
   _TablePageState createState() => _TablePageState();
 }
@@ -25,7 +27,7 @@ class _TablePageState extends State<TablePage> {
         future: BaseDbManager.instance.queryTables(),
         builder: (_, data) {
           return ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             itemBuilder: (_, index) {
               String tableName = data.data![index];
               return InkWell(
@@ -48,14 +50,14 @@ class _TablePageState extends State<TablePage> {
                       SizedBox(
                         width: 30,
                         child: Text('${index + 1}.',
-                            style: TextStyle(color: Colors.white)),
+                            style: const TextStyle(color: Colors.white)),
                       ),
                       FutureBuilder<int>(
                         future: BaseDbManager.instance.queryCount(tableName),
                         builder: (_, data) {
                           return Text(
                             '$tableName(${data.data ?? 0})',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           );

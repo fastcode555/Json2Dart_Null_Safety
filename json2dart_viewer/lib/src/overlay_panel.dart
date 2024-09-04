@@ -9,6 +9,8 @@ import 'table_page.dart';
 /// @date 2020/12/17
 /// describe:悬浮面板
 class OverlayPane extends StatefulWidget {
+  const OverlayPane({super.key});
+
   @override
   _OverlayPaneState createState() => _OverlayPaneState();
 }
@@ -66,7 +68,7 @@ class _OverlayPaneState extends State<OverlayPane> {
         late WidgetBuilder builder;
         switch (settins.name) {
           case TablePage.routeName:
-            builder = (context) => TablePage();
+            builder = (context) => const TablePage();
             break;
           case TableDetailPage.routeName:
             builder = (context) =>

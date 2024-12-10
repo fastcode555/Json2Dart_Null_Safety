@@ -1,6 +1,7 @@
+<!-- 简体中文 -->
 # json2dart 使用指南
 
-+ [English](guide_en.md) | [Deutsch](guide_de.md) | [Português](guide_pt.md) | [日本語](guide_ja.md) | [한국어](guide_ko.md) | 简体中文
+[English](guide_en.md) | [Deutsch](guide_de.md) | [Português](guide_pt.md) | [日本語](guide_ja.md) | [한국어](guide_ko.md) | 简体中文
 
 ## 一、功能概述
 
@@ -31,7 +32,7 @@ json2dart是一个Flutter插件集合，主要提供以下功能：
 ```yaml
 dependencies:
   # JSON解析基础包
-  json2dart_safe: ^1.5.8
+  json2dart_safe: ^1.6.0
   
   # 数据库支持(二选一)
   json2dart_db: ^latest_version    # 普通版
@@ -98,7 +99,7 @@ Json2Dart.instance.addDetailCallback((String method, String key, Map? map) {
 
 ```yaml
 dependencies:
-  json2dart_safe: ^1.5.8
+  json2dart_safe: ^1.6.0
 ```
 
 示例Model:
@@ -160,7 +161,7 @@ Map<String, dynamic> data = user.toJson();
 
 ```yaml
 dependencies:
-  json2dart_safe: ^1.5.8
+  json2dart_safe: ^1.6.0
   json2dart_db: ^latest_version
   json2dart_viewer: ^latest_version
 ```
